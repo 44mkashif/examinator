@@ -1,24 +1,80 @@
-import logo from './logo.svg';
+import Button from '@material-ui/core/Button';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Typography from '@material-ui/core/Typography';
+import Grid from '@material-ui/core/Grid';
+import { makeStyles } from '@material-ui/core/styles';
 import './App.css';
+import { Link } from 'react-router-dom';
+import bgImage from './assets/cover.jpg';
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    height: '100vh',
+    backgroundImage: `url(${bgImage})`,
+  },
+  paper: {
+    margin: theme.spacing(8, 4),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    height: '30vh'
+  },
+  button: {
+    margin: theme.spacing(5, 3, 5),
+    height: '10vh',
+    width: '20vh'
+  },
+  text: {
+    margin: theme.spacing(0, 0, 5),
+  }
+}));
 
 function App() {
+
+  const classes = useStyles();
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Grid container alignItems="center" justify="left" component="main" className={classes.root}>
+        <CssBaseline />
+        <Grid item elevation={6}>
+          <div className={classes.paper}>
+            <Grid container justify="center" className={classes.text}>
+              <Typography component="h1" variant="h2">
+                Examinator
+              </Typography>
+            </Grid>
+            <Grid container justify="center" >
+              <Button
+                variant="contained"
+                color="primary"
+                className={classes.button}
+                component={Link} to="/student"
+              >
+                Student Portal
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                className={classes.button}
+                component={Link} to="/teacher"
+              >
+                Teacher Portal
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                className={classes.button}
+                component={Link} to="/admin/login"
+              >
+                Admin Portal
+              </Button>
+            </Grid>
+          </div>
+        </Grid>
+      </Grid>
     </div>
+
   );
 }
 

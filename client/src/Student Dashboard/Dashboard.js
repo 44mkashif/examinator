@@ -13,7 +13,6 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
-import { AccountBox } from '@material-ui/icons';
 
 function Copyright() {
   return (
@@ -60,12 +59,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+const cards = [1, 2, 3, 4, 5, 6];
 
-export default function Course() {
+export default function Student_Dashboard() {
   const classes = useStyles();
 
   return (
+    
     <React.Fragment>
       <CssBaseline />
       <AppBar position="relative">
@@ -77,7 +77,6 @@ export default function Course() {
         </Toolbar>
       </AppBar>
       <main>
-
         <Container className={classes.cardGrid} maxWidth="md">
           {/* End hero unit */}
           <Grid container spacing={4}>

@@ -49,7 +49,7 @@ function App() {
                 variant="contained"
                 color="primary"
                 className={classes.button}
-                component={Link} to="/student"
+                component={Link} to="/student/login"
               >
                 Student Portal
               </Button>
@@ -57,7 +57,7 @@ function App() {
                 variant="contained"
                 color="primary"
                 className={classes.button}
-                component={Link} to="/teacher"
+                component={Link} to="/teacher/login"
               >
                 Teacher Portal
               </Button>

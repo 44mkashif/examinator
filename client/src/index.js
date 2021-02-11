@@ -6,7 +6,7 @@ import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 
 import SignInStudent from './Login Student/login_student';
 import SignInTeacher from './Login Teacher/login_Teacher';
-import Course from './Courses/courses';
+import Student_Dashboard from './Student Dashboard/Dashboard';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 
 const theme = createMuiTheme({
@@ -40,9 +40,12 @@ ReactDOM.render(
     <BrowserRouter>
       <Switch>
         <Route path="/" exact component={App} />
-        <Route path="/student" exact component={SignInStudent} />
-        <Route path="/teacher" exact component={SignInTeacher} />
-        <Route path="/courses" exact component={Course} />
+        <Route path="/Student/Login" exact component={SignInStudent} />
+        <Route path="/Student/Dashboard" exact component={Student_Dashboard} />
+
+        
+        <Route path="/Teacher/Login" exact component={SignInTeacher} />
+        
       </Switch>
     </BrowserRouter>
   </ThemeProvider>,

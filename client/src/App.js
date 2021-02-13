@@ -7,6 +7,7 @@ import './App.css';
 import { Link } from 'react-router-dom';
 import bgImage from './assets/cover.jpg';
 
+
 const useStyles = makeStyles((theme) => ({
   root: {
     height: '100vh',
@@ -32,6 +33,7 @@ const useStyles = makeStyles((theme) => ({
 function App() {
 
   const classes = useStyles();
+  
 
   return (
     <div className="App">

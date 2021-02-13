@@ -4,9 +4,17 @@ import './index.css';
 import App from './App';
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 
-import SignInStudent from './Login Student/login_student';
-import SignInTeacher from './Login Teacher/login_Teacher';
-import Student_Dashboard from './Student Dashboard/Dashboard';
+
+import StudentLogin from './Pages/student/Login';
+import StudentDashboard from './Pages/student/Dashboard';
+import StudentCourse from './Pages/student/Course';
+
+import TeacherLogin from './Pages/Teacher/Login';
+import TeacherDashboard from './Pages/Teacher/Dashboard';
+import TeacherCourse from './Pages/Teacher/Course';
+
+
+
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 
 const theme = createMuiTheme({
@@ -40,11 +48,14 @@ ReactDOM.render(
     <BrowserRouter>
       <Switch>
         <Route path="/" exact component={App} />
-        <Route path="/Student/Login" exact component={SignInStudent} />
-        <Route path="/Student/Dashboard" exact component={Student_Dashboard} />
+        <Route path="/Student/Login" exact component={StudentLogin} />
+        <Route path="/Student/Dashboard" exact component={StudentDashboard} />
+        <Route path="/Student/Course" exact component={StudentCourse} />
 
         
-        <Route path="/Teacher/Login" exact component={SignInTeacher} />
+        <Route path="/Teacher/Login" exact component={TeacherLogin} />
+        <Route path="/Teacher/Dashboard" exact component={TeacherDashboard} />
+        <Route path="/Teacher/Course" exact component={TeacherCourse} />
         
       </Switch>
     </BrowserRouter>

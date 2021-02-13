@@ -1,32 +1,44 @@
 import React from 'react';
-import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
-import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
-import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
-import { AccountBox } from '@material-ui/icons';
+import ButtonBase from '@material-ui/core/ButtonBase'; 
+import { useHistory } from 'react-router-dom';
+import AppBar from './Components/AppBar';
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
+import AssignmentIcon from '@material-ui/icons/Assignment';
+
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import Grow from '@material-ui/core/Grow';
+import Paper from '@material-ui/core/Paper';
+import Popper from '@material-ui/core/Popper';
+import MenuItem from '@material-ui/core/MenuItem';
+import MenuList from '@material-ui/core/MenuList';
+
+import Menu from '@material-ui/core/Menu';
+import Fade from '@material-ui/core/Fade';
 
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
       <Link color="inherit" href="https://material-ui.com/">
-        Your Website
+        Examinator
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
     </Typography>
   );
 }
+
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -60,29 +72,69 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+const cards = [1, 2, 3, 4, 5, 6];
 
-export default function Course() {
+export default function Dashboard() {
   const classes = useStyles();
 
+  //Routing Functions
+  const history = useHistory();
+
+  const navigateTo = (path) => history.push(path);
+
+  //Popper Menu Functions
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+   //Popper Idhr tk he
+
   return (
+    
     <React.Fragment>
       <CssBaseline />
-      <AppBar position="relative">
-        <Toolbar>
-          <AccountBoxIcon className={classes.icon} />
-          <Typography variant="h6" color="inherit" noWrap>
-            Examinator
-          </Typography>
-        </Toolbar>
-      </AppBar>
+      <AppBar />
       <main>
-
+        <div>
+          <Button 
+          variant="contained" 
+          size="large" 
+          color="primary" 
+          aria-controls="fade-menu" 
+          aria-haspopup="true" 
+          onClick={handleClick}
+          >
+            <AssignmentIcon className={classes.extendedIcon} />
+            Exam
+          </Button>
+          <Menu
+            id="fade-menu"
+            anchorEl={anchorEl}
+            keepMounted
+            open={open}
+            onClose={handleClose}
+            TransitionComponent={Fade}
+          >
+            <MenuItem onClick={event => { navigateTo('../teacher/course?id=1') }}>Start an Instant Exam</MenuItem>
+            <MenuItem onClick={handleClose}>Schedule an Exam</MenuItem>
+            <MenuItem onClick={handleClose}>Reschedule an Exam</MenuItem>
+          </Menu>
+        </div>
         <Container className={classes.cardGrid} maxWidth="md">
           {/* End hero unit */}
           <Grid container spacing={4}>
             {cards.map((card) => (
               <Grid item key={card} xs={12} sm={6} md={4}>
+                  <ButtonBase
+                      onClick={event => {navigateTo('../teacher/course?id=1')}}
+                  >
                 <Card className={classes.card}>
                   <CardMedia
                     className={classes.cardMedia}
@@ -97,15 +149,16 @@ export default function Course() {
                       This will be course description
                     </Typography>
                   </CardContent>
-                  <CardActions>
+                  {/* <CardActions>
                     <Button size="small" color="primary">
-                      Course
+                    Course
                     </Button>
                     <Button size="small" color="primary">
-                      Exam Schedule
+                    Exam Schedule
                     </Button>
-                  </CardActions>
+                  </CardActions> */}
                 </Card>
+                  </ButtonBase>
               </Grid>
             ))}
           </Grid>
@@ -114,10 +167,10 @@ export default function Course() {
       {/* Footer */}
       <footer className={classes.footer}>
         <Typography variant="h6" align="center" gutterBottom>
-          Footer
+          Examinator
         </Typography>
         <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
-          Something here to give the footer a purpose!
+          Smart Examination System
         </Typography>
         <Copyright />
       </footer>

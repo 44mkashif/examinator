@@ -55,6 +55,7 @@ const useStyles = makeStyles((theme) => ({
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
+    borderRadius: 25,
   },
 }));
 
@@ -70,7 +71,7 @@ export default function Login() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Teacher Sign In
+            Instructor Sign In
           </Typography>
           <form className={classes.form} noValidate>
             <TextField

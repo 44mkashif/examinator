@@ -53,8 +53,12 @@ const useStyles = makeStyles((theme) => ({
     width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing(1),
   },
+  textField: {
+    borderRadius: 25,
+  },
   submit: {
     margin: theme.spacing(3, 0, 2),
+    borderRadius: 25,
   },
 }));
 
@@ -64,7 +68,6 @@ export default function Login() {
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
-      <Grid item xs={false} sm={4} md={7} className={classes.image} />
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
         <div className={classes.paper}>
           <Avatar className={classes.avatar}>
@@ -74,7 +77,8 @@ export default function Login() {
             Student Sign In
           </Typography>
           <form className={classes.form} noValidate>
-            <TextField
+            <TextField 
+              className={classes.textField}
               variant="outlined"
               margin="normal"
               required
@@ -86,6 +90,7 @@ export default function Login() {
               autoFocus
             />
             <TextField
+              className={classes.textField}
               variant="outlined"
               margin="normal"
               required
@@ -127,6 +132,7 @@ export default function Login() {
           </form>
         </div>
       </Grid>
+      <Grid item xs={false} sm={4} md={7} className={classes.image} />
     </Grid>
   );
 }

@@ -12,10 +12,11 @@ import StudentCourse from './Pages/student/Course';
 import TeacherLogin from './Pages/Teacher/Login';
 import TeacherDashboard from './Pages/Teacher/Dashboard';
 import TeacherCourse from './Pages/Teacher/Course';
+import TeacherSchedule from './Pages/Teacher/Schedule';
 
 
 
-import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 const theme = createMuiTheme({
   palette: {
@@ -55,7 +56,8 @@ ReactDOM.render(
         
         <Route path="/Teacher/Login" exact component={TeacherLogin} />
         <Route path="/Teacher/Dashboard" exact component={TeacherDashboard} />
-        <Route path="/Teacher/Course" exact component={TeacherCourse} />
+        <Route path="/Teacher/course" exact component={TeacherCourse} />
+        <Route path="/Teacher/course/Schedule" exact component={TeacherSchedule} />
         
       </Switch>
     </BrowserRouter>

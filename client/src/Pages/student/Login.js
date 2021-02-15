@@ -54,8 +54,11 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(1),
   },
   textField: {
-    borderRadius: 25,
+    [`& fieldset`]:{
+      borderRadius:25
+    } 
   },
+  
   submit: {
     margin: theme.spacing(3, 0, 2),
     borderRadius: 25,

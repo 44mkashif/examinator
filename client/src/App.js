@@ -38,10 +38,10 @@ const useStyles = makeStyles((theme) => ({
   button: {
     margin: theme.spacing(5, 3, 5),
     height: '5vh',
-    width: '20vh',
+    width: '25vh',
     borderWidth: '3px', 
-    boxShadow: '1px 2px 4px'
-    // borderRadius: '10%'
+    boxShadow: '3px 3px 5px #4f5254',
+    borderRadius: 25
   },
 
   text: {
@@ -71,8 +71,9 @@ function App() {
               </Typography>
             </Grid>
             <Grid container justify="center" >
+              
               <Button
-                variant="outlined"
+                variant="contained"
                 color="primary"
                 className={classes.button}
                 component={Link} to="/student/login"
@@ -80,15 +81,15 @@ function App() {
                 Student Portal
               </Button>
               <Button
-                variant="outlined"
+                variant="contained"
                 color="primary"
                 className={classes.button}
                 component={Link} to="/teacher/login"
               >
-                Teacher Portal
+                Instructor Portal
               </Button>
               <Button
-                variant="outlined"
+                variant="contained"
                 color="primary"
                 className={classes.button}
                 component={Link} to="/admin/login"

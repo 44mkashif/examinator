@@ -1,5 +1,4 @@
 import React from 'react';
-import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
@@ -12,6 +11,7 @@ import Link from '@material-ui/core/Link';
 import ButtonBase from '@material-ui/core/ButtonBase'; 
 import { useHistory } from 'react-router-dom';
 import AppBar from './Components/AppBar';
+import courseImage from './../../assets/course.jpg';
 
 import Fab from '@material-ui/core/Fab';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
@@ -53,6 +53,7 @@ const useStyles = makeStyles((theme) => ({
   },
   cardMedia: {
     paddingTop: '56.25%', // 16:9
+    backgroundImage: `url(${courseImage})`,
   },
   cardContent: {
     flexGrow: 1,
@@ -121,7 +122,7 @@ export default function Dashboard() {
                 <Card className={classes.card}>
                   <CardMedia
                     className={classes.cardMedia}
-                    image="https://images.unsplash.com/photo-1499750310107-5fef28a66643?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80"
+                    // image="https://images.unsplash.com/photo-1499750310107-5fef28a66643?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80"
                     title="Image title"
                   />
                   <CardContent className={classes.cardContent}>

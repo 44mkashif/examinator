@@ -84,7 +84,7 @@ export default function Dashboard() {
                 <Card className={classes.card}>
                   <CardMedia
                     className={classes.cardMedia}
-                    image="https://images.unsplash.com/photo-1499750310107-5fef28a66643?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80"
+                      image="../assets/cover.jpg"
                     title="Image title"
                   />
                   <CardContent className={classes.cardContent}>

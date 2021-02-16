@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
     transform: 'scale(2,2) translateX(-200px)',
   },
   paper: {
-    marginLeft: '8px',
+    margin: theme.spacing(0, 4),
     marginTop: '25vh',
     display: 'flex',
     flexDirection: 'column',
@@ -52,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
     width: '25vh',
     borderWidth: '3px',
     boxShadow: '2px 2px 5px',
-    borderRadius: 100,
+    borderRadius: 25,
     backgroundColor: "white",
   },
 

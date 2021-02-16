@@ -1,14 +1,12 @@
 import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import './App.css';
 import { Link } from 'react-router-dom';
 import bgImage from './assets/cover.png';
-import logo from './assets/examinator-logo.png';
+import logo from './assets/logo-dark.png';
 import 'fontsource-roboto';
-import Avatar from '@material-ui/core/Avatar';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -43,12 +41,6 @@ const useStyles = makeStyles((theme) => ({
     height: '30vh',
     transform: 'scale(0.5,0.5) translateX(+380px) translateY(+250px)'
   },
-  avatar: {
-    margin: theme.spacing(1),
-    height: '190px',
-    width: '190px',
-    // backgroundColor: theme.palette.secondary.main,
-  },
   button: {
     margin: theme.spacing(5, 3, 5),
     height: '5vh',
@@ -79,9 +71,9 @@ function App() {
             <Grid item elevation={6} className={classes.round}>
               <div className={classes.paper}>
                 <Grid container justify="center" className={classes.text}>
-                  <Avatar className={classes.avatar}>
+                  <div>
                     <img className={classes.logo} src={logo} alt=""/>
-                  </Avatar>
+                  </div>
                 </Grid>
                 <Grid container justify="center" className={classes.text}>
                   <Typography className="intro" variant='h3'>

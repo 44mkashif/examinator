@@ -5,8 +5,8 @@ import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import './App.css';
 import { Link } from 'react-router-dom';
-import bgImage from './assets/cover.jpg';
-import logo from './assets/examinator-logo.jpeg';
+import bgImage from './assets/cover.png';
+import logo from './assets/examinator-logo.png';
 import 'fontsource-roboto';
 import Avatar from '@material-ui/core/Avatar';
 
@@ -14,37 +14,53 @@ import Avatar from '@material-ui/core/Avatar';
 const useStyles = makeStyles((theme) => ({
   root: {
     height: '100vh',
-    backgroundImage: `url(${bgImage})`,
-    paddingTop: '70px',
-    backgroundSize: '100% 100%'
+    // backgroundImage: `url(${bgImage})`,
+    // paddingTop: '70px',
+    backgroundSize: '100% 100%',
+    overflowY: 'hidden'
+  },
+  rightContainer: {
+    height: '100vh'
+  },
+  cover: {
+    height: '50%'
   },
   logo: {
     height: '190px',
     width: '190px'
+  },
+  round :{
+    borderTopRightRadius: 500,
+    borderBottomRightRadius: 500,
+    backgroundColor: theme.palette.primary.main,
+    transform: 'scale(2,2) translateX(-200px)',
   },
   paper: {
     margin: theme.spacing(8, 4),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    height: '30vh'
+    height: '30vh',
+    transform: 'scale(0.5,0.5) translateX(+380px) translateY(+250px)'
   },
   avatar: {
     margin: theme.spacing(1),
     height: '190px',
     width: '190px',
-    backgroundColor: theme.palette.secondary.main,
+    // backgroundColor: theme.palette.secondary.main,
   },
   button: {
     margin: theme.spacing(5, 3, 5),
     height: '5vh',
     width: '25vh',
     borderWidth: '3px', 
-    boxShadow: '3px 3px 5px #4f5254',
-    borderRadius: 25
+    boxShadow: '2px 2px 5px',
+    borderRadius: 25,
+    backgroundColor: "white",
   },
 
   text: {
+    color: '#fff',
     margin: theme.spacing(0, 0, 5),
   }
 }));
@@ -56,48 +72,51 @@ function App() {
 
   return (
     <div className="App">
-      <Grid container justify="left" component="main" className={classes.root}>
-        <CssBaseline />
-        <Grid item elevation={6}>
-          <div className={classes.paper}>
-            <Grid container justify="center" className={classes.text}>
-              <Avatar className={classes.avatar}>
-                <img className={classes.logo} src={logo} alt=""/>
-              </Avatar>
+      <Grid container>
+        <Grid item xs={12} sm={7}>
+          <Grid container justify="left" component="main" className={classes.root}>
+            {/* <CssBaseline /> */}
+            <Grid item elevation={6} className={classes.round}>
+              <div className={classes.paper}>
+                <Grid container justify="center" className={classes.text}>
+                  <Avatar className={classes.avatar}>
+                    <img className={classes.logo} src={logo} alt=""/>
+                  </Avatar>
+                </Grid>
+                <Grid container justify="center" className={classes.text}>
+                  <Typography className="intro" variant='h3'>
+                    EXAMINATOR
+                  </Typography>
+                </Grid>
+                <Grid container justify="center" >
+                  <Button
+                    variant="contained"            
+                    className={classes.button}
+                    component={Link} to="/student/login"
+                  >
+                    Student Portal
+                  </Button>
+                  <Button
+                    variant="contained"
+                    className={classes.button}
+                    component={Link} to="/teacher/login"
+                  >
+                    Instructor Portal
+                  </Button>
+                  <Button
+                    variant="contained"
+                    className={classes.button}
+                    component={Link} to="/admin/login"
+                  >
+                    Admin Portal
+                  </Button>
+                </Grid>
+              </div>
             </Grid>
-            <Grid container justify="center" className={classes.text}>
-              <Typography className="intro" color="primary" variant='h3'>
-                EXAMINATOR
-              </Typography>
-            </Grid>
-            <Grid container justify="center" >
-              
-              <Button
-                variant="contained"
-                color="primary"
-                className={classes.button}
-                component={Link} to="/student/login"
-              >
-                Student Portal
-              </Button>
-              <Button
-                variant="contained"
-                color="primary"
-                className={classes.button}
-                component={Link} to="/teacher/login"
-              >
-                Instructor Portal
-              </Button>
-              <Button
-                variant="contained"
-                color="primary"
-                className={classes.button}
-                component={Link} to="/admin/login"
-              >
-                Admin Portal
-              </Button>
-            </Grid>
-          </div>
+          </Grid>
+        </Grid>
+        <Grid item xs={12} sm={5} container alignItems="center" className={classes.rightContainer}>
+          <img className={classes.cover} src={bgImage} alt=""/>
         </Grid>
       </Grid>
     </div>

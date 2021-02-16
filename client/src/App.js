@@ -102,7 +102,7 @@ function App() {
                   <Button
                     variant="contained"
                     className={classes.button}
-                    component={Link} to="/admin/login"
+                  // component={Link} to="/admin/login"
                   >
                     Admin Portal
                   </Button>

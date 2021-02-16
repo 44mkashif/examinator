@@ -17,6 +17,10 @@ const useStyles = makeStyles((theme) => ({
     backgroundSize: '100% 100%',
     overflowY: 'hidden'
   },
+  leftContainer: {
+    height: '100vh',
+    // marginTop: '50vh'
+  },
   rightContainer: {
     height: '100vh'
   },
@@ -27,27 +31,28 @@ const useStyles = makeStyles((theme) => ({
     height: '190px',
     width: '190px'
   },
-  round :{
+  round: {
     borderTopRightRadius: 500,
     borderBottomRightRadius: 500,
     backgroundColor: theme.palette.primary.main,
     transform: 'scale(2,2) translateX(-200px)',
   },
   paper: {
-    margin: theme.spacing(8, 4),
+    marginLeft: '8px',
+    marginTop: '25vh',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     height: '30vh',
-    transform: 'scale(0.5,0.5) translateX(+380px) translateY(+250px)'
+    transform: 'scale(0.5,0.5) translateX(+380px)'
   },
   button: {
     margin: theme.spacing(5, 3, 5),
     height: '5vh',
     width: '25vh',
-    borderWidth: '3px', 
+    borderWidth: '3px',
     boxShadow: '2px 2px 5px',
-    borderRadius: 25,
+    borderRadius: 100,
     backgroundColor: "white",
   },
 
@@ -60,19 +65,18 @@ const useStyles = makeStyles((theme) => ({
 function App() {
 
   const classes = useStyles();
-  
 
   return (
     <div className="App">
-      <Grid container>
-        <Grid item xs={12} sm={7}>
-          <Grid container justify="left" component="main" className={classes.root}>
+      <Grid container component="main">
+        <Grid xs={12} sm={7} className={classes.leftContainer}>
+          <Grid container justify="left" className={classes.root}>
             {/* <CssBaseline /> */}
             <Grid item elevation={6} className={classes.round}>
               <div className={classes.paper}>
                 <Grid container justify="center" className={classes.text}>
                   <div>
-                    <img className={classes.logo} src={logo} alt=""/>
+                    <img className={classes.logo} src={logo} alt="" />
                   </div>
                 </Grid>
                 <Grid container justify="center" className={classes.text}>
@@ -82,7 +86,7 @@ function App() {
                 </Grid>
                 <Grid container justify="center" >
                   <Button
-                    variant="contained"            
+                    variant="contained"
                     className={classes.button}
                     component={Link} to="/student/login"
                   >
@@ -108,7 +112,7 @@ function App() {
           </Grid>
         </Grid>
         <Grid item xs={12} sm={5} container alignItems="center" className={classes.rightContainer}>
-          <img className={classes.cover} src={bgImage} alt=""/>
+          <img className={classes.cover} src={bgImage} alt="" />
         </Grid>
       </Grid>
     </div>

@@ -1,5 +1,5 @@
 import React from 'react';
-import Avatar from '@material-ui/core/Avatar';
+import logo from './../../assets/logo-light.png';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
@@ -9,7 +9,6 @@ import Link from '@material-ui/core/Link';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -30,6 +29,7 @@ function Copyright() {
 const useStyles = makeStyles((theme) => ({
   root: {
     height: '100vh',
+    overflowY: 'hidden'
   },
   image: {
     backgroundImage: 'url(https://www.sainte-marie.ca/wp-content/uploads/2020/03/livre_numerique_shutterstock_1161966886.jpg)',
@@ -39,23 +39,37 @@ const useStyles = makeStyles((theme) => ({
     backgroundSize: 'cover',
     backgroundPosition: 'center',
   },
+  round :{
+    borderTopRightRadius: 500,
+    borderBottomRightRadius: 500,
+    // backgroundColor: theme.palette.primary.main,
+    transform: 'scale(2,2) translateX(-100px)',
+  },
   paper: {
     margin: theme.spacing(8, 4),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    transform: 'scale(0.5,0.5) translateX(+250px) translateY(+150px)'
   },
   avatar: {
     margin: theme.spacing(1),
     backgroundColor: theme.palette.secondary.main,
+  },
+  logo: {
+    height: '100px',
+    width: '100px'
   },
   form: {
     width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing(1),
   },
   textField: {
-    borderRadius: 25,
+    [`& fieldset`]:{
+      borderRadius:25
+    } 
   },
+  
   submit: {
     margin: theme.spacing(3, 0, 2),
     borderRadius: 25,
@@ -68,11 +82,12 @@ export default function Login() {
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
-      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square className={classes.round}>
         <div className={classes.paper}>
-          <Avatar className={classes.avatar}>
-            <LockOutlinedIcon />
-          </Avatar>
+        <div>
+          <img className={classes.logo} src={logo} alt=""/>
+        </div>
+     
           <Typography component="h1" variant="h5">
             Student Sign In
           </Typography>

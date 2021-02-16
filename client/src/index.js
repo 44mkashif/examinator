@@ -21,16 +21,16 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 const theme = createMuiTheme({
   palette: {
     primary: {
-      light: '#33ab9f',
-      main: '#009688',
-      dark: '#00695f',
+      light: '#52eff7',
+      main: '#4aabb1',
+      dark: '#0b979e',
       contrastText: '#fff',
     },
     secondary: {
-      light: '#4aedc4',
-      main: '#1de9b6',
-      dark: '#14a37f',
-      contrastText: '#000',
+      light: '#659294',
+      main: '#4a7a7d',
+      dark: '#386163',
+      contrastText: '#fff',
     },
     error: {
       light: '#f6685e',

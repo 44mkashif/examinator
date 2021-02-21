@@ -117,7 +117,7 @@ export default function Dashboard() {
 
               <Grid item key={course} xs={12} sm={6} md={4}>
                   <ButtonBase
-                      onClick={event => {navigateTo('../teacher/course?id=1')}}
+                      onClick={event => {navigateTo('../instructor/course?id=1')}}
                   >
                 <Card className={classes.card}>
                   <CardMedia

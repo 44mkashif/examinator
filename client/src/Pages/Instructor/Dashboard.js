@@ -14,7 +14,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
-import ButtonBase from '@material-ui/core/ButtonBase'; 
+import ButtonBase from '@material-ui/core/ButtonBase';
 import { useHistory } from 'react-router-dom';
 import AppBar from '@material-ui/core/AppBar';
 import courseImage from './../../assets/course.jpg';
@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
   },
   card: {
     width: 300,
-    margin: theme.spacing(0, 3, 3),
+    margin: theme.spacing(1, 3, 2),
     // display: 'flex',
     // flexDirection: 'column',
   },
@@ -93,7 +93,7 @@ var courseCodes = ['CS453', 'CS112', 'CE432', 'DS456', 'CE446', 'CS321'];
 
 var addCourse = () => {
   courses.push("Kiwi");
-  console.log('course pushed'+courses)
+  console.log('course pushed' + courses)
 }
 
 // this.state = {
@@ -119,34 +119,34 @@ export default function Dashboard() {
   //Popper Menu Functions
 
 
-   //Popper Idhr tk he
+  //Popper Idhr tk he
 
   return (
-    
+
     <React.Fragment>
       <CssBaseline />
-      
+
       <AppBar position="relative">
         <Toolbar>
           <Grid container spacing={2} justify='space-between' alignItems='center'>
-              <div>
-                <Grid container>
-                  <img src={logoImg} alt="logo" className={classes.logoImg} />
-                  <Typography variant="h6" color="inherit" noWrap>
-                    Examinator
+            <div>
+              <Grid container>
+                <img src={logoImg} alt="logo" className={classes.logoImg} />
+                <Typography variant="h6" color="inherit" noWrap>
+                  Examinator
                   </Typography>
-                </Grid>
-              </div>
-              <div>
-              
-                <Button raised className={classes.button}>
-                  <AddCircleIcon className={classes.extendedIcon} />
-                  <Typography className={classes.buttonText}>
-                    Add Course
+              </Grid>
+            </div>
+            <div>
+
+              <Button raised className={classes.button}>
+                <AddCircleIcon className={classes.extendedIcon} />
+                <Typography className={classes.buttonText}>
+                  Add Course
                   </Typography>
-                </Button>
-              </div>  
-        </Grid>
+              </Button>
+            </div>
+          </Grid>
         </Toolbar>
       </AppBar>
 
@@ -160,25 +160,24 @@ export default function Dashboard() {
         <Container className={classes.cardGrid}>
           <Grid container spacing={2} justify="center">
             {courses.map((course, index) => (
-
               <div key={course} className={classes.card}>
-                  <ButtonBase
-                      onClick={event => {navigateTo('../instructor/course?id=1')}}
-                  >
-                <Card className={classes.card}>
-                  <CardHeader
-                    avatar={
-                      <Avatar aria-label="recipe" className={classes.avatar}>
-                        {courseCodes[index][0] + courseCodes[index][1]}
+                <ButtonBase
+                  onClick={event => { navigateTo('../instructor/course?id=1') }}
+                >
+                  <Card className={classes.card} elevation={7}>
+                    <CardHeader
+                      avatar={
+                        <Avatar aria-label="recipe" className={classes.avatar}>
+                          {courseCodes[index][0] + courseCodes[index][1]}
                         </Avatar>
                       }
-                    title={course}
-                    subheader={courseCodes[index]}
-                  />
-                  <CardMedia
-                    className={classes.cardMedia}
-                  />
-                </Card>
+                      title={course}
+                      subheader={courseCodes[index]}
+                    />
+                    <CardMedia
+                      className={classes.cardMedia}
+                    />
+                  </Card>
                 </ButtonBase>
               </div>
             ))}
@@ -196,6 +195,6 @@ export default function Dashboard() {
         <Copyright />
       </footer>
       {/* End footer */}
-    </React.Fragment>
+    </React.Fragment >
   );
 }

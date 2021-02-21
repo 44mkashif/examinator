@@ -51,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
     width: '25vh',
     borderWidth: '3px',
     boxShadow: '2px 2px 5px',
-    borderRadius: 25,
+    borderRadius: 100,
     backgroundColor: "white",
   },
 

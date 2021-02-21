@@ -1,5 +1,11 @@
 import React from 'react';
 import Card from '@material-ui/core/Card';
+import CardHeader from '@material-ui/core/CardHeader';
+import Avatar from '@material-ui/core/Avatar';
+import IconButton from '@material-ui/core/IconButton';
+import CardActions from '@material-ui/core/CardActions';
+import clsx from 'clsx';
+import Collapse from '@material-ui/core/Collapse';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -10,11 +16,13 @@ import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
 import ButtonBase from '@material-ui/core/ButtonBase'; 
 import { useHistory } from 'react-router-dom';
-import AppBar from './Components/AppBar';
+import AppBar from '@material-ui/core/AppBar';
 import courseImage from './../../assets/course.jpg';
-
+import Toolbar from '@material-ui/core/Toolbar';
+import logoImg from './../../assets/logo-dark.png';
 import Fab from '@material-ui/core/Fab';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
+import Button from '@material-ui/core/Button';
 
 
 function Copyright() {
@@ -29,8 +37,6 @@ function Copyright() {
     </Typography>
   );
 }
-
-
 const useStyles = makeStyles((theme) => ({
   icon: {
     marginRight: theme.spacing(2),
@@ -47,9 +53,10 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: theme.spacing(8),
   },
   card: {
-    height: '100%',
-    display: 'flex',
-    flexDirection: 'column',
+    width: 300,
+    margin: theme.spacing(0, 3, 3),
+    // display: 'flex',
+    // flexDirection: 'column',
   },
   cardMedia: {
     paddingTop: '56.25%', // 16:9
@@ -62,13 +69,26 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.paper,
     padding: theme.spacing(6),
   },
+  logoImg: {
+    width: 35,
+    marginRight: 10
+  },
+  button: {
+    borderRadius: 100,
+    padding: 10
+  },
+  buttonText: {
+    color: theme.palette.primary.contrastText,
+  },
+  extendedIcon: {
+    color: theme.palette.primary.contrastText,
+    marginRight: 5
+  }
 }));
 
 
-
-
-
 var courses = ['Devops', 'Data Structures', 'Data Science', 'Robotic Vision', 'Web Engineering', 'Block Chain'];
+var courseCodes = ['CS453', 'CS112', 'CE432', 'DS456', 'CE446', 'CS321'];
 
 
 var addCourse = () => {
@@ -85,6 +105,11 @@ var addCourse = () => {
 // }
 export default function Dashboard() {
   const classes = useStyles();
+  const [expanded, setExpanded] = React.useState(false);
+
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
+  };
 
   //Routing Functions
   const history = useHistory();
@@ -101,49 +126,61 @@ export default function Dashboard() {
     <React.Fragment>
       <CssBaseline />
       
-      <AppBar />
+      <AppBar position="relative">
+        <Toolbar>
+          <Grid container spacing={2} justify='space-between' alignItems='center'>
+              <div>
+                <Grid container>
+                  <img src={logoImg} alt="logo" className={classes.logoImg} />
+                  <Typography variant="h6" color="inherit" noWrap>
+                    Examinator
+                  </Typography>
+                </Grid>
+              </div>
+              <div>
+              
+                <Button raised className={classes.button}>
+                  <AddCircleIcon className={classes.extendedIcon} />
+                  <Typography className={classes.buttonText}>
+                    Add Course
+                  </Typography>
+                </Button>
+              </div>  
+        </Grid>
+        </Toolbar>
+      </AppBar>
 
-      <div>
+      {/* <div>
         <Fab variant="extended" onClick={addCourse} color="primary" aria-label="add" className={classes.margin} >
           <AddCircleIcon className={classes.extendedIcon} />
           Add Course
         </Fab>
-      </div>
+      </div> */}
       <main>
-        <Container className={classes.cardGrid} maxWidth="md">
-          {/* End hero unit */}
-          <Grid container spacing={4}>
-            {courses.map((course) => (
+        <Container className={classes.cardGrid}>
+          <Grid container spacing={2} justify="center">
+            {courses.map((course, index) => (
 
-              <Grid item key={course} xs={12} sm={6} md={4}>
+              <div key={course} className={classes.card}>
                   <ButtonBase
                       onClick={event => {navigateTo('../instructor/course?id=1')}}
                   >
                 <Card className={classes.card}>
+                  <CardHeader
+                    avatar={
+                      <Avatar aria-label="recipe" className={classes.avatar}>
+                        {courseCodes[index][0] + courseCodes[index][1]}
+                        </Avatar>
+                      }
+                    title={course}
+                    subheader={courseCodes[index]}
+                  />
                   <CardMedia
                     className={classes.cardMedia}
-                    // image="https://images.unsplash.com/photo-1499750310107-5fef28a66643?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80"
-                    title="Image title"
                   />
-                  <CardContent className={classes.cardContent}>
-                    <Typography gutterBottom variant="h5" component="h2">
-                      {course}
-                    </Typography>
-                    <Typography>
-                      This will be course description
-                    </Typography>
-                  </CardContent>
-                  {/* <CardActions>
-                    <Button size="small" color="primary">
-                    Course
-                    </Button>
-                    <Button size="small" color="primary">
-                    Exam Schedule
-                    </Button>
-                  </CardActions> */}
                 </Card>
-                  </ButtonBase>
-              </Grid>
+                </ButtonBase>
+              </div>
             ))}
           </Grid>
         </Container>

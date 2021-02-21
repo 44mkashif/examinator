@@ -15,6 +15,7 @@ import InstructorDashboard from './Pages/Instructor/Dashboard';
 import InstructorCourse from './Pages/Instructor/Course';
 import InstructorSchedule from './Pages/Instructor/Schedule';
 import InstructorPaper from './Pages/Instructor/Paper';
+import InstructorExam from './Pages/Instructor/Exam'
 
 
 
@@ -61,6 +62,7 @@ ReactDOM.render(
         <Route path="/Instructor/Course" exact component={InstructorCourse} />
         <Route path="/Instructor/Course/Schedule" exact component={InstructorSchedule} />
         <Route path="/Instructor/Course/Paper" exact component={InstructorPaper} />
+        <Route path="/Instructor/Course/Exam" exact component={InstructorExam} />
         
       </Switch>
     </BrowserRouter>

@@ -2,11 +2,19 @@ import React from 'react';
 
 import AppBar from './Components/AppBar';
 import ScheduleButton from './ScheduleButton';
-import PaperButton from './PaperButton';
 
 import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
+
+import Container from '@material-ui/core/Container';
+
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import Typography from '@material-ui/core/Typography';
+
+import ButtonBase from '@material-ui/core/ButtonBase'; 
+
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -19,9 +27,12 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+var exams = ['Midterm', 'Final Term'];
 
 export default function Course() {
 
+    const history = useHistory();
+    const navigateTo = (path) => history.push(path);
     const classes = useStyles();
 
     return (
@@ -30,40 +41,40 @@ export default function Course() {
             
 
             <div className={classes.root}>
-                <Grid container spacing={3}>
-                    <Grid item xs={12} sm={6}>
-                        Question Paper
-                        <Grid container spacing={2}>
-                            <Grid item xs={12} sm={6}>
-                                <Paper className={classes.paper}>xs=12 sm=6</Paper>
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <Paper className={classes.paper}>xs=12 sm=6</Paper>
-                            </Grid>
-                        </Grid>
+                <Container className={classes.cardGrid} maxWidth="md">
+                    {/* End hero unit */}
+                    <Grid container spacing={4}>
+                        {exams.map((exam) => (
 
-                        <Paper className={classes.paper}>
-                            <PaperButton />
-                        </Paper>
-
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                        Scheduled Exam
-                        <Grid container spacing={2}>
-                         <Grid item xs={12} sm={6}>
-                            <Paper className={classes.paper}>xs=12 sm=6</Paper>
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <Paper className={classes.paper}>xs=12 sm=6</Paper>
-                        </Grid>   
-                        </Grid>
+                            <Grid item key={exam} xs={12} sm={6} md={4}>
+                                <ButtonBase
+                                    onClick={event => { navigateTo('../instructor/course/exam') }}
+                                >
+                                    <Card className={classes.card}>
+                                        <CardContent className={classes.cardContent}>
+                                            <Typography gutterBottom variant="h5" component="h2">
+                                                {exam}
+                                            </Typography>
+                                            <Typography>
+                                                12/12/21 10:00 PM
+                                            </Typography>
+                                        </CardContent>
+                                        {/* <CardActions>
+                    <Button size="small" color="primary">
+                    Course
+                    </Button>
+                    <Button size="small" color="primary">
+                    Exam Schedule
+                    </Button>
+                  </CardActions> */}
+                                    </Card>
+                                </ButtonBase>
+                            </Grid>
+                        ))}
                         
-                        <Paper className={classes.paper}>
-                            <ScheduleButton />
-                        </Paper>
-                        
                     </Grid>
-                </Grid>
+                    <ScheduleButton />
+                </Container>
             </div>
 
         </React.Fragment>  

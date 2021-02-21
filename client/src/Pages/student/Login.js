@@ -11,6 +11,7 @@ import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import bgImage from './../../assets/studentLogin.jpg';
 
 
 function Copyright() {
@@ -18,7 +19,7 @@ function Copyright() {
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
       <Link color="inherit" href="https://material-ui.com/">
-        Your Website
+        Examinator
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -29,7 +30,9 @@ function Copyright() {
 const useStyles = makeStyles((theme) => ({
   root: {
     height: '100vh',
-    overflowY: 'hidden'
+    overflowY: 'hidden',
+    backgroundSize: '100% 100%',
+    backgroundImage: `url(${bgImage})`,
   },
   image: {
     backgroundImage: 'url(https://www.sainte-marie.ca/wp-content/uploads/2020/03/livre_numerique_shutterstock_1161966886.jpg)',
@@ -39,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundSize: 'cover',
     backgroundPosition: 'center',
   },
-  round :{
+  round: {
     borderTopRightRadius: 500,
     borderBottomRightRadius: 500,
     // backgroundColor: theme.palette.primary.main,
@@ -50,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    transform: 'scale(0.5,0.5) translateX(+250px) translateY(+150px)'
+    transform: 'scale(0.5,0.5) translateX(+250px)'
   },
   avatar: {
     margin: theme.spacing(1),
@@ -65,14 +68,16 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(1),
   },
   textField: {
-    [`& fieldset`]:{
-      borderRadius:25
-    } 
+    [`& fieldset`]: {
+      borderRadius: 100,
+      borderWidth: '2px'
+    },
+
   },
-  
+
   submit: {
     margin: theme.spacing(3, 0, 2),
-    borderRadius: 25,
+    borderRadius: 100,
   },
 }));
 
@@ -82,17 +87,17 @@ export default function Login() {
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
-      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square className={classes.round}>
+      <Grid item xs={12} sm={8} md={5} component={Paper} container alignItems="center" justify="center" elevation={6} square className={classes.round}>
         <div className={classes.paper}>
-        <div>
-          <img className={classes.logo} src={logo} alt=""/>
-        </div>
-     
+          <div>
+            <img className={classes.logo} src={logo} alt="" />
+          </div>
+
           <Typography component="h1" variant="h5">
             Student Sign In
           </Typography>
           <form className={classes.form} noValidate>
-            <TextField 
+            <TextField
               className={classes.textField}
               variant="outlined"
               margin="normal"
@@ -147,7 +152,7 @@ export default function Login() {
           </form>
         </div>
       </Grid>
-      <Grid item xs={false} sm={4} md={7} className={classes.image} />
+      {/* <Grid item xs={false} sm={4} md={7} className={classes.image} /> */}
     </Grid>
   );
 }

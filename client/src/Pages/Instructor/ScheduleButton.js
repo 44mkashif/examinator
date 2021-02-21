@@ -10,6 +10,9 @@ import Backdrop from '@material-ui/core/Backdrop';
 import { useHistory } from 'react-router-dom';
 
 import Scheduler from './Schedule';
+import Button from '@material-ui/core/Button';
+
+import TextField from '@material-ui/core/TextField';
 
 const useStyles = makeStyles((theme) => ({
     modal: {
@@ -23,9 +26,13 @@ const useStyles = makeStyles((theme) => ({
         boxShadow: theme.shadows[5],
         padding: theme.spacing(2, 4, 3),
     },
+    root: {
+        '& > *': {
+            margin: theme.spacing(1),
+            width: '25ch',
+        },
+    },
 }));
-
-
 
 
 export default function ScheduleButton() {
@@ -66,9 +73,22 @@ export default function ScheduleButton() {
             >
                 <Fade in={openMenu}>
                     <div className={classes.paper}>
-                        <h2 id="transition-modal-title">Tra nsition modal</h2>
-                        <p id="transition-modal-description">react-transition-group animates me.</p>
+                        <h2 id="transition-modal-title">Schedule Exam</h2>
+
+                        <form className={classes.root} noValidate autoComplete="off">
+                            <TextField id="standard-basic" label="Exam Name" />
+                        </form>
+
+                        <form className={classes.root} noValidate autoComplete="off">
+                            <TextField id="standard-basic" label="No of Questions" type='number' />
+                        </form>
+
                         <Scheduler />
+                        <br/>
+                        <Button variant="contained" color="primary" onClick={event => { navigateTo('../instructor/course/paper') }}>
+                            Save
+                        </Button>
+
                     </div>
                 </Fade>
             </Modal>

@@ -5,6 +5,8 @@ import AssignmentIcon from '@material-ui/icons/Assignment';
 
 import { useHistory } from 'react-router-dom';
 
+import Button from '@material-ui/core/Button';
+
 const useStyles = makeStyles((theme) => ({
     modal: {
         display: 'flex',
@@ -43,9 +45,9 @@ export default function ScheduleButton() {
 
     return (
             <div>
-            <Fab color="secondary" aria-label="add" className={classes.margin} onClick={event => { navigateTo('../instructor/course/paper') }}>
-                <AssignmentIcon />
-                </Fab>
+            <Button variant="contained" color="primary" onClick={event => { navigateTo('../instructor/course/paper')}}>
+                Primary
+            </Button>
             </div>
 
     );

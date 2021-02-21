@@ -24,7 +24,7 @@ export default function Scheduler() {
                 <KeyboardDatePicker
                     margin="normal"
                     id="date-picker-dialog"
-                    label="Date picker dialog"
+                    label="Exam Date"
                     format="MM/dd/yyyy"
                     value={selectedDate}
                     onChange={handleDateChange}
@@ -35,7 +35,7 @@ export default function Scheduler() {
                 <KeyboardTimePicker
                     margin="normal"
                     id="time-picker"
-                    label="Time picker"
+                    label="Exam Time"
                     value={selectedDate}
                     onChange={handleDateChange}
                     KeyboardButtonProps={{

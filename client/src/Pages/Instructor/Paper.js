@@ -10,8 +10,13 @@ import TextField from '@material-ui/core/TextField';
 
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import FormControl from '@material-ui/core/FormControl';
+
+import Button from '@material-ui/core/Button';
+
+import { Link } from 'react-router-dom';
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -23,7 +28,18 @@ const useStyles = makeStyles((theme) => ({
         color: theme.palette.text.secondary,
 
     },
-}));
+    formControl: {
+        margin: theme.spacing(1),
+        minWidth: 200,
+        justifyContent:'end'
+        
+    },
+    selectEmpty: {
+        marginTop: theme.spacing(2),
+    },
+    }));
+
+var questions = [1, 2, 3, 4];
 
 
 
@@ -41,13 +57,14 @@ export default function SimplePaper() {
             <AppBar/>
             <div className={classes.root}>
                 <Grid container spacing={3} justify="center">
+                    {questions.map((Question) => (
                     <Grid item xs={8}>
                         <Paper >
                             <div>
                                 <TextField
                                     id="outlined-full-width"
                                     label="Question"
-                                    style={{ margin: 8 }}
+                                    // style={{ marginRight: 8 }}
                                     placeholder="What is what in what?"
                                     fullWidth
                                     margin="normal"
@@ -56,6 +73,7 @@ export default function SimplePaper() {
                                     }}
                                     variant="outlined"
                                 />
+                                <br/>
                                 <TextField
                                     label="Option A"
                                     id="outlined-margin-dense"
@@ -64,25 +82,6 @@ export default function SimplePaper() {
                                     margin="dense"
                                     variant="outlined"
                                 />
-                                <FormControl variant="outlined" className={classes.formControl}>
-                                    <InputLabel id="demo-simple-select-outlined-label">option</InputLabel>
-                                    <Select
-                                        labelId="demo-simple-select-outlined-label"
-                                        id="demo-simple-select-outlined"
-                                        value={option}
-                                        autoWidth
-                                        onChange={handleChange}
-                                        label="Option"
-                                    >
-                                        <MenuItem value="">
-                                            <em>None</em>
-                                        </MenuItem>
-                                        <MenuItem value={10}>Option 1</MenuItem>
-                                        <MenuItem value={20}>Option 2</MenuItem>
-                                        <MenuItem value={30}>Option 3</MenuItem>
-                                        <MenuItem value={40}>Option 4</MenuItem>
-                                    </Select>
-                                </FormControl>
                                 <br />
                                 <TextField
                                     label="Option B"
@@ -110,10 +109,38 @@ export default function SimplePaper() {
                                     margin="dense"
                                     variant="outlined"
                                 />
+                                <br/>
+                                <FormControl variant="outlined" className={classes.formControl}>
+                                    <InputLabel id="demo-simple-select-outlined-label">Correct Answer</InputLabel>
+                                    <Select
+                                        labelId="demo-simple-select-outlined-label"
+                                        id="demo-simple-select-outlined"
+                                        value={option}
+                                        onChange={handleChange}
+                                        label="Correct Answer"
+                                    >
+                                        <MenuItem value="">
+                                            <em>Select Correct Option</em>
+                                        </MenuItem>
+                                        <MenuItem value={1}>Option A</MenuItem>
+                                        <MenuItem value={2}>Option B</MenuItem>
+                                        <MenuItem value={3}>Option C</MenuItem>
+                                        <MenuItem value={4}>Option D</MenuItem>
+
+                                    </Select>
+                                </FormControl>
                             </div>
                         </Paper>
                     </Grid>
+                    ))}
                 </Grid>
+                
+                <div >
+                <Button variant="contained" color="primary" 
+                        component={Link} to="/Instructor/dashboard">
+                Save
+                </Button>
+                </div>
             </div>
             
         </React.Fragment>

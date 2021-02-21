@@ -6,7 +6,6 @@ import './App.css';
 import { Link } from 'react-router-dom';
 import bgImage from './assets/cover.png';
 import logo from './assets/logo-dark.png';
-import 'fontsource-roboto';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -95,7 +94,7 @@ function App() {
                   <Button
                     variant="contained"
                     className={classes.button}
-                    component={Link} to="/teacher/login"
+                    component={Link} to="/Instructor/login"
                   >
                     Instructor Portal
                   </Button>

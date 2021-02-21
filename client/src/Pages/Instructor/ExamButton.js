@@ -101,7 +101,7 @@ export default function Exambutton() {
             >
                 <Fade in={openMenu}>
                     <div className={classes.paper}>
-                        <h2 id="transition-modal-title">Transition modal</h2>
+                        <h2 id="transition-modal-title">Tra nsition modal</h2>
                         <p id="transition-modal-description">react-transition-group animates me.</p>
                         <Scheduler/>
                     </div>

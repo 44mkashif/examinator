@@ -3,16 +3,18 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
+import 'fontsource-roboto';
 
 
 import StudentLogin from './Pages/student/Login';
 import StudentDashboard from './Pages/student/Dashboard';
 import StudentCourse from './Pages/student/Course';
 
-import TeacherLogin from './Pages/Teacher/Login';
-import TeacherDashboard from './Pages/Teacher/Dashboard';
-import TeacherCourse from './Pages/Teacher/Course';
-import TeacherSchedule from './Pages/Teacher/Schedule';
+import InstructorLogin from './Pages/Instructor/Login';
+import InstructorDashboard from './Pages/Instructor/Dashboard';
+import InstructorCourse from './Pages/Instructor/Course';
+import InstructorSchedule from './Pages/Instructor/Schedule';
+import InstructorPaper from './Pages/Instructor/Paper';
 
 
 
@@ -32,7 +34,7 @@ const theme = createMuiTheme({
       dark: '#386163',
       contrastText: '#fff',
     },
-    error: {
+    error: {  
       light: '#f6685e',
       main: '#f44336',
       dark: '#aa2e25',
@@ -54,10 +56,11 @@ ReactDOM.render(
         <Route path="/Student/Course" exact component={StudentCourse} />
 
         
-        <Route path="/Teacher/Login" exact component={TeacherLogin} />
-        <Route path="/Teacher/Dashboard" exact component={TeacherDashboard} />
-        <Route path="/Teacher/course" exact component={TeacherCourse} />
-        <Route path="/Teacher/course/Schedule" exact component={TeacherSchedule} />
+        <Route path="/Instructor/Login" exact component={InstructorLogin} />
+        <Route path="/Instructor/Dashboard" exact component={InstructorDashboard} />
+        <Route path="/Instructor/Course" exact component={InstructorCourse} />
+        <Route path="/Instructor/Course/Schedule" exact component={InstructorSchedule} />
+        <Route path="/Instructor/Course/Paper" exact component={InstructorPaper} />
         
       </Switch>
     </BrowserRouter>

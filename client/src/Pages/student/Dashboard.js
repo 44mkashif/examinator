@@ -1,19 +1,17 @@
 import React from 'react';
-import AppBar from '@material-ui/core/AppBar';
-import Button from '@material-ui/core/Button';
-import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
-import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
-import { AccountBox } from '@material-ui/icons';
+import ButtonBase from '@material-ui/core/ButtonBase'; 
+import { useHistory } from 'react-router-dom';
+import AppBar from './Components/AppBar';
+
 
 function Copyright() {
   return (
@@ -27,6 +25,7 @@ function Copyright() {
     </Typography>
   );
 }
+
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -60,33 +59,32 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+const cards = [1, 2, 3, 4, 5, 6];
 
-export default function Course() {
+export default function Dashboard() {
   const classes = useStyles();
+  const history = useHistory();
+  const navigateTo = (path) => history.push(path);
 
   return (
+    
     <React.Fragment>
       <CssBaseline />
-      <AppBar position="relative">
-        <Toolbar>
-          <AccountBoxIcon className={classes.icon} />
-          <Typography variant="h6" color="inherit" noWrap>
-            Examinator
-          </Typography>
-        </Toolbar>
-      </AppBar>
+      <AppBar />
       <main>
-
+        
         <Container className={classes.cardGrid} maxWidth="md">
           {/* End hero unit */}
           <Grid container spacing={4}>
             {cards.map((card) => (
               <Grid item key={card} xs={12} sm={6} md={4}>
+                  <ButtonBase
+                      onClick={event => {navigateTo('../student/course?id=1')}}
+                  >
                 <Card className={classes.card}>
                   <CardMedia
                     className={classes.cardMedia}
-                    image="https://images.unsplash.com/photo-1499750310107-5fef28a66643?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80"
+                      image="../assets/cover.jpg"
                     title="Image title"
                   />
                   <CardContent className={classes.cardContent}>
@@ -97,15 +95,16 @@ export default function Course() {
                       This will be course description
                     </Typography>
                   </CardContent>
-                  <CardActions>
+                  {/* <CardActions>
                     <Button size="small" color="primary">
-                      Course
+                    Course
                     </Button>
                     <Button size="small" color="primary">
-                      Exam Schedule
+                    Exam Schedule
                     </Button>
-                  </CardActions>
+                  </CardActions> */}
                 </Card>
+                  </ButtonBase>
               </Grid>
             ))}
           </Grid>

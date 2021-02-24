@@ -12,8 +12,8 @@ let studentSchema = new mongoose.Schema(
             type: String,
             required: true
         },
-        userName: {
-            type: String,
+        regNo: {
+            type: Number,
             required: true
         },
         email: {

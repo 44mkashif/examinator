@@ -13,14 +13,14 @@ class StudentController {
             } else {
                 let fname = req.body.fname;
                 let lname = req.body.lname;
-                let username = req.body.username;
+                let regNo = req.body.regNo;
                 let email = req.body.email;
                 let password = bcrypt.hashSync(req.body.password, 10);
                 
                 var student = new Student({
                     fName: fname,
                     lName: lname,
-                    userName: username,
+                    regNo: regNo,
                     password: password,
                     email: email
                 });

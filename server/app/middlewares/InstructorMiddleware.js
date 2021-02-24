@@ -1,6 +1,6 @@
 'use strict'
 
-const { Instructor } = require('./../schema/instructor');
+const { Instructor } = require('./../models/instructor');
 const jwt = require('jsonwebtoken');
 
 class InstructorMiddleware {
@@ -8,21 +8,21 @@ class InstructorMiddleware {
         try {
             let token = req.header('auth-token');
             jwt.verify(token, '3xaw!uAf0r$3cr3t', (err, decoded) => {
-                if(err) {
+                if (err) {
                     console.log(err);
-                    return res.status(403).send({success: false, msg: 'Invalid Token Request'})
+                    return res.status(403).send({ success: false, msg: 'Invalid Token Request' })
                 } else {
                     req.id = decoded._id;
-                    let instructor = Instructor.findOne({ $and: [{_id: req.id}, {authToken: token}] });
-                    if(instructor) {
+                    let instructor = Instructor.findOne({ $and: [{ _id: req.id }, { authToken: token }] });
+                    if (instructor) {
                         next();
                     } else {
-                        return res.status(403).send({success: false, msg: 'Invalid Token Request'})
+                        return res.status(403).send({ success: false, msg: 'Invalid Token Request' })
                     }
                 }
             })
         } catch (error) {
-            return res.status(400).send({success: false, msg: error});
+            return res.status(400).send({ success: false, msg: error });
         }
     }
 }

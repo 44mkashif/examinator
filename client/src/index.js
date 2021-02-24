@@ -3,27 +3,39 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
+import 'fontsource-roboto';
 
-import SignInStudent from './Login Student/login_student';
-import SignInTeacher from './Login Teacher/login_Teacher';
-import Course from './Courses/courses';
-import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
+
+import StudentLogin from './Pages/student/Login';
+import StudentDashboard from './Pages/student/Dashboard';
+import StudentCourse from './Pages/student/Course';
+
+import InstructorLogin from './Pages/Instructor/Login';
+import InstructorDashboard from './Pages/Instructor/Dashboard';
+import InstructorCourse from './Pages/Instructor/Course';
+import InstructorSchedule from './Pages/Instructor/Schedule';
+import InstructorPaper from './Pages/Instructor/Paper';
+import InstructorExam from './Pages/Instructor/Exam'
+
+
+
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 const theme = createMuiTheme({
   palette: {
     primary: {
-      light: '#33ab9f',
-      main: '#009688',
-      dark: '#00695f',
+      light: '#52eff7',
+      main: '#4aabb1',
+      dark: '#0b979e',
       contrastText: '#fff',
     },
     secondary: {
-      light: '#4aedc4',
-      main: '#1de9b6',
-      dark: '#14a37f',
-      contrastText: '#000',
+      light: '#659294',
+      main: '#4a7a7d',
+      dark: '#386163',
+      contrastText: '#fff',
     },
-    error: {
+    error: {  
       light: '#f6685e',
       main: '#f44336',
       dark: '#aa2e25',
@@ -40,9 +52,18 @@ ReactDOM.render(
     <BrowserRouter>
       <Switch>
         <Route path="/" exact component={App} />
-        <Route path="/student" exact component={SignInStudent} />
-        <Route path="/teacher" exact component={SignInTeacher} />
-        <Route path="/courses" exact component={Course} />
+        <Route path="/Student/Login" exact component={StudentLogin} />
+        <Route path="/Student/Dashboard" exact component={StudentDashboard} />
+        <Route path="/Student/Course" exact component={StudentCourse} />
+
+        
+        <Route path="/Instructor/Login" exact component={InstructorLogin} />
+        <Route path="/Instructor/Dashboard" exact component={InstructorDashboard} />
+        <Route path="/Instructor/Course" exact component={InstructorCourse} />
+        <Route path="/Instructor/Course/Schedule" exact component={InstructorSchedule} />
+        <Route path="/Instructor/Course/Paper" exact component={InstructorPaper} />
+        <Route path="/Instructor/Course/Exam" exact component={InstructorExam} />
+        
       </Switch>
     </BrowserRouter>
   </ThemeProvider>,

@@ -44,7 +44,7 @@ export default function SimplePaper() {
                 <Paper className={classes.text}>
                     <FormControl component="fieldset">
                         <FormLabel component="legend">
-                            {q} What is the best case time complexity of deleting a node in a Singly Linked list?
+                            What is the best case time complexity of deleting a node in a Singly Linked list?
                                 </FormLabel>
                         <RadioGroup aria-label="gender" name="gender1" value={value} onChange={handleChange}>
                             <FormControlLabel value="female" control={<Radio />} label="Female" />

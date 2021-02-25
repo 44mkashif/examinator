@@ -14,7 +14,8 @@ import { useHistory } from 'react-router-dom';
 import AppBar from '@material-ui/core/AppBar';
 import courseImage from './../../assets/course.jpg';
 import Toolbar from '@material-ui/core/Toolbar';
-import logoImg from './../../assets/logo-dark.png';
+import logoImg from './../../assets/navbar-2.png';
+import Fab from '@material-ui/core/Fab';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import Button from '@material-ui/core/Button';
 
@@ -161,7 +162,7 @@ export default function Dashboard() {
                   <Card className={classes.card} elevation={7}>
                     <CardHeader
                       avatar={
-                        <Avatar aria-label="recipe" className={classes.avatar}>
+                        <Avatar className={classes.avatar}>
                           {courseCodes[index][0] + courseCodes[index][1]}
                         </Avatar>
                       }

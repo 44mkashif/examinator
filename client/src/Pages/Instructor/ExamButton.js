@@ -1,18 +1,13 @@
 import React from 'react';
-
-
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import MenuItem from '@material-ui/core/MenuItem';
-
 import Menu from '@material-ui/core/Menu';
 import Fade from '@material-ui/core/Fade';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
-
 import Button from '@material-ui/core/Button';
 import { useHistory } from 'react-router-dom';
-
 import Scheduler from './Schedule';
 
 const useStyles = makeStyles((theme) => ({
@@ -101,7 +96,7 @@ export default function Exambutton() {
             >
                 <Fade in={openMenu}>
                     <div className={classes.paper}>
-                        <h2 id="transition-modal-title">Tra nsition modal</h2>
+                        <h2 id="transition-modal-title">Transition modal</h2>
                         <p id="transition-modal-description">react-transition-group animates me.</p>
                         <Scheduler/>
                     </div>

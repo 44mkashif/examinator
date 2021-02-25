@@ -6,9 +6,11 @@ import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import 'fontsource-roboto';
 
 
-import StudentLogin from './Pages/student/Login';
-import StudentDashboard from './Pages/student/Dashboard';
-import StudentCourse from './Pages/student/Course';
+import StudentLogin from './Pages/Student/Login';
+import StudentDashboard from './Pages/Student/Dashboard';
+import StudentCourse from './Pages/Student/Course';
+import StudentExam from './Pages/Student/Exam';
+import StudentPaper from './Pages/Student/Paper';
 
 import InstructorLogin from './Pages/Instructor/Login';
 import InstructorDashboard from './Pages/Instructor/Dashboard';
@@ -55,6 +57,8 @@ ReactDOM.render(
         <Route path="/Student/Login" exact component={StudentLogin} />
         <Route path="/Student/Dashboard" exact component={StudentDashboard} />
         <Route path="/Student/Course" exact component={StudentCourse} />
+        <Route path="/Student/Course/Exam" exact component={StudentExam} />
+        <Route path="/Student/Course/Paper" exact component={StudentPaper} />
 
         
         <Route path="/Instructor/Login" exact component={InstructorLogin} />

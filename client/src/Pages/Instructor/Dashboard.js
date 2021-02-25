@@ -2,11 +2,6 @@ import React from 'react';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import Avatar from '@material-ui/core/Avatar';
-import IconButton from '@material-ui/core/IconButton';
-import CardActions from '@material-ui/core/CardActions';
-import clsx from 'clsx';
-import Collapse from '@material-ui/core/Collapse';
-import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
@@ -19,7 +14,7 @@ import { useHistory } from 'react-router-dom';
 import AppBar from '@material-ui/core/AppBar';
 import courseImage from './../../assets/course.jpg';
 import Toolbar from '@material-ui/core/Toolbar';
-import logoImg from './../../assets/logo-dark.png';
+import logoImg from './../../assets/navbar-2.png';
 import Fab from '@material-ui/core/Fab';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import Button from '@material-ui/core/Button';
@@ -167,7 +162,7 @@ export default function Dashboard() {
                   <Card className={classes.card} elevation={7}>
                     <CardHeader
                       avatar={
-                        <Avatar aria-label="recipe" className={classes.avatar}>
+                        <Avatar className={classes.avatar}>
                           {courseCodes[index][0] + courseCodes[index][1]}
                         </Avatar>
                       }

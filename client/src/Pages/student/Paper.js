@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
         flexGrow: 1,
     },
     paper: {
-        padding: theme.spacing(2),
+        padding: theme.spacing(1),
       //  textAlign: 'center',
         color: theme.palette.text.secondary,
         userSelect: 'none',
@@ -37,11 +37,11 @@ export default function AutoGrid() {
         <React.Fragment>
             <AppBar />
             <div className={classes.root}>
-                <Grid container spacing={3}>
+                <Grid container>
                     <Grid item xs={9}>
                         {questions}
                     </Grid>
-                    <Grid item xs>
+                    <Grid item xs={3}>
                         <Paper className={classes.paper}>xs</Paper>
                     </Grid>
                 </Grid>

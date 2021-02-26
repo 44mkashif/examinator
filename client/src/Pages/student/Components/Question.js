@@ -43,7 +43,7 @@ export default function Question() {
                 <FormControl component="fieldset">
                     <FormLabel component="legend">
                         What is the best case time complexity of deleting a node in a Singly Linked list?
-                                </FormLabel>
+                    </FormLabel>
                     <RadioGroup aria-label="gender" name="gender1" value={value} onChange={handleChange}>
                         <FormControlLabel value="female" control={<Radio />} label="Female" />
                         <FormControlLabel value="male" control={<Radio />} label="Male" />
@@ -53,7 +53,7 @@ export default function Question() {
                 </FormControl>
                 <Grid container justify="center" >
                     <Button variant="contained" color="primary" className={classes.button} >
-                    Save & Next
+                        Save & Next
                     </Button>
                 </Grid>
             </Paper>

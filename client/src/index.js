@@ -7,6 +7,7 @@ import 'fontsource-roboto';
 import StudentLogin from './Pages/Student/Login';
 import StudentDashboard from './Pages/Student/Dashboard';
 import StudentCourse from './Pages/Student/Course';
+import StudentExamInstruction from './Pages/Student/ExamInstruction';
 import StudentExam from './Pages/Student/Exam';
 import StudentPaper from './Pages/Student/Paper';
 import InstructorLogin from './Pages/Instructor/Login';
@@ -56,6 +57,7 @@ ReactDOM.render(
         <Route path="/Student/Login" exact component={StudentLogin} />
         <Route path="/Student/Dashboard" exact component={StudentDashboard} />
         <Route path="/Student/Course" exact component={StudentCourse} />
+        <Route path="/Student/Course/ExamInstruction" exact component={StudentExamInstruction} />
         <Route path="/Student/Course/Exam" exact component={StudentExam} />
         <Route path="/Student/Course/Paper" exact component={StudentPaper} />
 

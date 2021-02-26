@@ -18,6 +18,7 @@ import logoImg from './../../assets/logo-dark.png';
 
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import Button from '@material-ui/core/Button';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 
 function Copyright() {
@@ -136,6 +137,12 @@ export default function Dashboard() {
                 <AddCircleIcon className={classes.extendedIcon} />
                 <Typography className={classes.buttonText}>
                   Enroll Course
+                  </Typography>
+              </Button>
+              <Button raised className={classes.button}>
+                <ExitToAppIcon className={classes.extendedIcon} />
+                <Typography className={classes.buttonText}>
+                  Log Out
                   </Typography>
               </Button>
             </div>

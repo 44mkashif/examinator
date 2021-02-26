@@ -17,7 +17,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import logoImg from './../../assets/navbar-2.png';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import Button from '@material-ui/core/Button';
-
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 function Copyright() {
   return (
@@ -137,6 +137,12 @@ export default function Dashboard() {
                 <AddCircleIcon className={classes.extendedIcon} />
                 <Typography className={classes.buttonText}>
                   Add Course
+                  </Typography>
+              </Button>
+              <Button raised className={classes.button}>
+                <ExitToAppIcon className={classes.extendedIcon} />
+                <Typography className={classes.buttonText}>
+                  Log Out
                   </Typography>
               </Button>
             </div>

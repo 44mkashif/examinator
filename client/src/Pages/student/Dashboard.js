@@ -102,9 +102,7 @@ export default function Dashboard() {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
 
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
-  };
+
 
   //Routing Functions
   const history = useHistory();

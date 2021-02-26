@@ -86,7 +86,7 @@ export default function Exam() {
                         <Button 
                         variant="contained" 
                         color="primary"
-                        component={Link} to="/Exam">
+                        component={Link} to="./Exam">
                         Start Now!
                         </Button>
                         

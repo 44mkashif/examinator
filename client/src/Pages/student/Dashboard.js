@@ -144,13 +144,6 @@ export default function Dashboard() {
           </Grid>
         </Toolbar>
       </AppBar>
-
-      {/* <div>
-        <Fab variant="extended" onClick={addCourse} color="primary" aria-label="add" className={classes.margin} >
-          <AddCircleIcon className={classes.extendedIcon} />
-          Add Course
-        </Fab>
-      </div> */}
       <main>
         <Container className={classes.cardGrid}>
           <Grid container spacing={2} justify="center">
@@ -163,7 +156,7 @@ export default function Dashboard() {
                   <Card className={classes.card}>
                     <CardHeader
                       avatar={
-                        <Avatar aria-label="recipe" className={classes.avatar}>
+                        <Avatar className={classes.avatar}>
                           {courseCodes[index][0] + courseCodes[index][1]}
                         </Avatar>
                       }

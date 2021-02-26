@@ -4,14 +4,11 @@ import './index.css';
 import App from './App';
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import 'fontsource-roboto';
-
-
 import StudentLogin from './Pages/Student/Login';
 import StudentDashboard from './Pages/Student/Dashboard';
 import StudentCourse from './Pages/Student/Course';
 import StudentExam from './Pages/Student/Exam';
 import StudentPaper from './Pages/Student/Paper';
-
 import InstructorLogin from './Pages/Instructor/Login';
 import InstructorDashboard from './Pages/Instructor/Dashboard';
 import InstructorCourse from './Pages/Instructor/Course';

@@ -15,7 +15,6 @@ import AppBar from '@material-ui/core/AppBar';
 import courseImage from './../../assets/course.jpg';
 import Toolbar from '@material-ui/core/Toolbar';
 import logoImg from './../../assets/navbar-2.png';
-import Fab from '@material-ui/core/Fab';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import Button from '@material-ui/core/Button';
 

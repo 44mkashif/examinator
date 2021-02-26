@@ -1,11 +1,9 @@
 import AppBar from './Components/AppBar'; 
 import React from 'react';
-
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
-
 import Grid from '@material-ui/core/Grid';
-
+import Button from '@material-ui/core/Button';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -18,11 +16,13 @@ const useStyles = makeStyles((theme) => ({
     },
     paper: {
         padding: theme.spacing(2),
-        textAlign: 'center',
+      //  textAlign: 'center',
         color: theme.palette.text.secondary,
+        userSelect: 'none',
+        marginTop: '30px'
     },
     text: {
-        userSelect: 'none'
+        
     }
 }));
 
@@ -40,20 +40,35 @@ export default function SimplePaper() {
     var mcq = [];
     for (const q of questions ){
         mcq.push(
-            <Grid item xs={8}>
-                <Paper className={classes.text}>
-                    <FormControl component="fieldset">
-                        <FormLabel component="legend">
-                            {q} What is the best case time complexity of deleting a node in a Singly Linked list?
-                                </FormLabel>
-                        <RadioGroup aria-label="gender" name="gender1" value={value} onChange={handleChange}>
-                            <FormControlLabel value="female" control={<Radio />} label="Female" />
-                            <FormControlLabel value="male" control={<Radio />} label="Male" />
-                            <FormControlLabel value="O(logn)" control={<Radio />} label="O (nlogn)" />
-                            <FormControlLabel value="O(1)" control={<Radio />} label="O (1)" />
-                        </RadioGroup>
-                    </FormControl>
-                </Paper>
+            <Grid container xs={12}>
+                <Grid item xs={8}> 
+                    <Paper className={classes.paper}>
+                        <FormControl component="fieldset">
+                            <FormLabel component="legend">
+                                {q} What is the best case time complexity of deleting a node in a Singly Linked list?
+                                    </FormLabel>
+                            <RadioGroup aria-label="gender" name="gender1" value={value} onChange={handleChange}>
+                                <FormControlLabel value="female" control={<Radio />} label="Female" />
+                                <FormControlLabel value="male" control={<Radio />} label="Male" />
+                                <FormControlLabel value="O(logn)" control={<Radio />} label="O (nlogn)" />
+                                <FormControlLabel value="O(1)" control={<Radio />} label="O (1)" />
+                            </RadioGroup>
+                        </FormControl>
+                        <Grid container spacing={2} justify='center' alignItems='center'>
+                            <Button 
+                                variant="contained" 
+                                color="primary" 
+                                className={classes.button} 
+                                style={{width:'20'}} 
+                            >
+                                Next 
+                            </Button>
+                        </Grid>
+                    </Paper>
+                </Grid>
+                <Grid item xs={4}>
+                    <Paper className={classes.paper}>xs=4</Paper>
+                </Grid>
             </Grid>
         )
     }

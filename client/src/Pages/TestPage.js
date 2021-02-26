@@ -12,6 +12,9 @@ import Checkbox from '@material-ui/core/Checkbox';
 
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 
+import Button from '@material-ui/core/Button';
+import { Link } from 'react-router-dom';
+
     
 
 const useStyles = makeStyles((theme) => ({
@@ -79,6 +82,10 @@ export default function Exam() {
                             />
 
                         </Paper>
+                        <Button variant="contained" color="primary"
+                            component={Link} to="/Instructor/dashboard">
+                            Start Now!
+                </Button>
                     </Grid>
                 </Grid>
             </div>

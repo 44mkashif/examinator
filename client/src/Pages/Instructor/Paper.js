@@ -29,7 +29,7 @@ export default function SimplePaper() {
             <AppBar/>
             <div className={classes.root}>
                 <Grid container spacing={3} justify="center">
-                    <Grid item xs={8}>
+                    <Grid item xs={8} >
                         {questions}
                     </Grid>
                 </Grid>

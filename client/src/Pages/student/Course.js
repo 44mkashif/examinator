@@ -10,6 +10,9 @@ import { useHistory } from 'react-router-dom';
 import logoImg from './../../assets/navbar-2.png';
 import Toolbar from '@material-ui/core/Toolbar';
 import AppBar from '@material-ui/core/AppBar';
+import AccessTimeIcon from '@material-ui/icons/AccessTime';
+import DateRangeIcon from '@material-ui/icons/DateRange';
+
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
@@ -33,6 +36,15 @@ const useStyles = makeStyles((theme) => ({
         paddingTop: theme.spacing(8),
         paddingBottom: theme.spacing(8),
     },
+    iconClass: {
+        color: theme.palette.secondary.dark,
+        marginLeft: 10,
+        paddingTop: 10
+    },
+    margin: {
+        marginLeft: 10,
+        paddingTop: 10
+    }
 
 }));
 
@@ -62,7 +74,7 @@ export default function Course() {
             </AppBar>
 
             <div className={classes.root}>
-                <Container className={classes.cardGrid} maxWidth="md">
+                <Container className={classes.cardGrid} >
                     <Grid container spacing={4} justify="center">
                         {exams.map((exam) => (
                             <div key={exam} className={classes.card}>
@@ -73,11 +85,20 @@ export default function Course() {
                                         <CardContent className={classes.cardContent}>
                                             <Typography gutterBottom variant="h5" component="h2">
                                                 {exam}
-                                            </Typography>
-                                            <Typography>
-                                                12/12/21 10:00 PM
-                                            </Typography>
-                                            
+                                            </Typography>   
+                                            <Grid container align='left'>
+                                                <DateRangeIcon 
+                                                className={classes.iconClass}/>
+                                                <Typography className={classes.margin}>
+                                                    12 Jan, 2021
+                                                </Typography>
+                                            </Grid>
+                                            <Grid container align='left' >
+                                                <AccessTimeIcon className={classes.iconClass}/>
+                                                <Typography className={classes.margin}>
+                                                    10:00 PM
+                                                </Typography>
+                                            </Grid> 
                                         </CardContent>
                                     </Card>
                                 </ButtonBase>

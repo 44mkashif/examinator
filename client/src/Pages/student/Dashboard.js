@@ -14,9 +14,7 @@ import AppBar from '@material-ui/core/AppBar';
 import courseImage from './../../assets/course.jpg';
 import Toolbar from '@material-ui/core/Toolbar';
 import logoImg from './../../assets/logo-dark.png';
-
 import { Link } from 'react-router-dom';
-
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import Button from '@material-ui/core/Button';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';

@@ -14,7 +14,7 @@ export default function appBar(){
             <div>
               <Grid container>
                 <img src={logoImg} alt="logo" style={{width: 40, marginRight: 10}} />
-                <Typography variant="h6" color="inherit" noWrap>
+                <Typography style={{ color: 'white'}}>
                   Examinator
                 </Typography>
               </Grid>

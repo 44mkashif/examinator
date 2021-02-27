@@ -1,5 +1,8 @@
 # Examinator
 
+## About
+Examinator is a smart examination system developed to assist in invigilation of online exams using Artificial Intelligence to monitor a student using their webcam feed. The purpose of the system is to show invigilators filtered streams based on the level of suspiciousness.
+
 ## Quick Start
 
 ``` bash

@@ -4,6 +4,8 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import logoImg from './../../../assets/navbar-2.png';
 import AppBar from '@material-ui/core/AppBar';
+import Button from '@material-ui/core/Button';
+import { Link } from 'react-router-dom';
 
 export default function appBar(){
     return(
@@ -12,10 +14,12 @@ export default function appBar(){
             <Grid container spacing={2} justify='space-between' alignItems='center'>
                 <div>
                 <Grid container>
-                    <img src={logoImg} alt="logo" style={{width: 40, marginRight: 10}} />
-                    <Typography variant="h6" color="inherit" noWrap>
-                    Examinator
-                    </Typography>
+                            <Button component={Link} to="/student/dashboard">
+                                <img src={logoImg} alt="logo" style={{ width: 40, marginRight: 10 }} />
+                                <Typography variant="h6" color="inherit" noWrap>
+                                    Examinator
+                                </Typography>
+                            </Button>
                 </Grid>
                 </div>
             </Grid>

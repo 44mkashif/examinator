@@ -60,13 +60,45 @@ export default function Exam() {
                                 </Typography>
                                 <Box borderTop={1} {...defaultProps} />
                                 <Typography variant="body1" gutterBottom>
-                                    Our front-end quiz focuses on complex single-page applications and on tools for appealing and responsive site design. It covers the following topics:
-                                    JavaScript and general coding logic: we'll show you some code snippets and ask you questions about what they do. We'll also ask you questions about JavaScript, running from basic syntax up to performance optimizations.
-                                    CSS: we'll ask questions around how browsers choose which rule to apply to a particular element, how CSS actually controls page layout, and how CSS enables responsive design.
-                                    Algorithms: the use cases and performance of common textbook algorithms.
-                                    HTTP and security: how browsers and servers communicate, how those communications are authenticated and secured, and how to avoid common security vulnerabilities.
-                                    Full-stack system design: what layers make up a typical web stack and how concerns are separated between front-end and back-end.
-                                    We don't expect most engineers to know the answers to all of these questions, so don't worry if you're unsure of a few of them. If you're not sure about an answer, select I don't know.
+                                    <p>Before beginning the exam:</p>
+                                    <ol >
+                                        <li>Make sure you have a good internet connection.</li>
+                                        <li>Log out of Blackboard and then back into Blackboard before you begin. This will help with connectivity issues.</li>
+                                        <li>If you are taking the exam late in the day, it is recommended that you reboot your computer before beginning to free up memory resources from other programs on your computer.</li>
+                                        <li>Shut down all Instant Messaging tools (Skype, AIM, MSN Messenger) and Email programs as they can conflict with Blackboard.</li>
+                                        <li>Enter the Blackboard course using Firefox. Do not use any other internet browser.</li>
+                                        <li>Maximize your browser window before starting the test. Minimizing the browser window during the exam can prevent the submission of your exam.</li>
+                                        <li>When you begin the exam click the link only ONCE to launch the test. Double-clicking can lock the test.</li>
+                                    </ol>
+                                    <p>During the exam:</p>
+                                    <ol >
+                                        <li>Do not resize (minimize) the browser during the test.</li>
+                                        <li>Never click the &ldquo;Back&rdquo; button on the browser. This will take you out of the test and prevent Blackboard from tracking your selected answers.</li>
+                                        <li>Avoid using the scroll button on your mouse if present.</li>
+                                        <li>Click the &ldquo;Submit&rdquo; button to submit your exam. Do not press &ldquo;Enter&rdquo; on the keyboard to submit the exam.</li>
+                                        <li>Save your test using the &ldquo;Save&rdquo; button periodically during the exam.</li>
+                                    </ol>
+                                    <p>Instructions for accessing the Exam.</p>
+                                    <ol >
+                                        <li>Read the notes above titled &ldquo;Before beginning the exam&rdquo; and &ldquo;During the exam.&rdquo;</li>
+                                        <li>Your instructor will provide your password. This password is required to open the exam.</li>
+                                        <li>Log in to the Blackboard course.</li>
+                                        <li>Click on the &ldquo;Exam Information&rdquo; link from the left menu.</li>
+                                        <li>When ready to begin, click on the &ldquo;General Geology Exam 1 Fall 2013&rdquo; link to open</li>
+                                        <li>the exam. &nbsp;&nbsp;</li>
+                                    </ol>
+                                    <ul>
+                                        <li>Do not begin until you are ready to start!</li>
+                                        <li>The exam must be started between 7 AM on Tuesday, October 22nd, and 8:30 PM on Wednesday, October 23rd.</li>
+                                    </ul>
+                                    <ol >
+                                        <li>Use the password sent to your student email account to open the exam.</li>
+                                        <li>You will have 1.5 hours to complete your exam.</li>
+                                        <li>The exam must be completed in one sitting. You can only open it once.</li>
+                                        <li>Answer all questions in the exam.</li>
+                                    </ol>
+                                    <p>Click the &ldquo;Submit&rdquo; button in the bottom right corner when you are done submitting your work.</p>
+                                    <p>Iur exam, you must contact your instructor immediately by phone. Jennifer Lewis can be reached at 03017344555. If she does not hear from you right away, your exam may not be accepted, and you may receive a zero on the exam.</p>
                                  </Typography>
                             </div>
                             <FormControlLabel

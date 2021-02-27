@@ -1,17 +1,11 @@
 import React from 'react';
 import AppBar from './Components/AppBar';
 import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-
 import Typography from '@material-ui/core/Typography';
-
 import Box from '@material-ui/core/Box';
-
 import Checkbox from '@material-ui/core/Checkbox';
-
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-
 import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
 
@@ -61,16 +55,16 @@ export default function Exam() {
         <React.Fragment>
             <AppBar />
             <div className={classes.root}>
-                <Grid container spacing={5} justify="center" alignItems="center" className={classes.container}>
+                <Grid container justify="center" className={classes.container}>
                     <Grid item md={8}>
-                        <Paper className={classes.paper}>
+                        
                             <div>
-                                <Typography variant="h2" component="h2" gutterBottom justify= 'center'>
+                                <Typography variant="h2" component="h2" gutterBottom align= 'center'>
                                     Exam Name
                                 </Typography>
-                                <Box borderTop={1} {...defaultProps} />
+                                <Box borderTop={3} {...defaultProps} />
                                 <Typography variant="body1" gutterBottom>
-                                    <p>Before beginning the exam:</p>
+                                    <h3 align= 'center'>Before beginning the exam</h3>
                                     <ol >
                                         <li>Make sure you have a good internet connection.</li>
                                         <li>Log out of Blackboard and then back into Blackboard before you begin. This will help with connectivity issues.</li>
@@ -80,7 +74,7 @@ export default function Exam() {
                                         <li>Maximize your browser window before starting the test. Minimizing the browser window during the exam can prevent the submission of your exam.</li>
                                         <li>When you begin the exam click the link only ONCE to launch the test. Double-clicking can lock the test.</li>
                                     </ol>
-                                    <p>During the exam:</p>
+                                    <h3 align= 'center'>During the exam</h3>
                                     <ol >
                                         <li>Do not resize (minimize) the browser during the test.</li>
                                         <li>Never click the &ldquo;Back&rdquo; button on the browser. This will take you out of the test and prevent Blackboard from tracking your selected answers.</li>
@@ -88,7 +82,7 @@ export default function Exam() {
                                         <li>Click the &ldquo;Submit&rdquo; button to submit your exam. Do not press &ldquo;Enter&rdquo; on the keyboard to submit the exam.</li>
                                         <li>Save your test using the &ldquo;Save&rdquo; button periodically during the exam.</li>
                                     </ol>
-                                    <p>Instructions for accessing the Exam.</p>
+                                    <h3 align= 'center'> Instructions for accessing the Exam</h3>
                                     <ol >
                                         <li>Read the notes above titled &ldquo;Before beginning the exam&rdquo; and &ldquo;During the exam.&rdquo;</li>
                                         <li>Your instructor will provide your password. This password is required to open the exam.</li>
@@ -107,9 +101,12 @@ export default function Exam() {
                                         <li>The exam must be completed in one sitting. You can only open it once.</li>
                                         <li>Answer all questions in the exam.</li>
                                     </ol>
-                                    <p>Click the &ldquo;Submit&rdquo; button in the bottom right corner when you are done submitting your work.</p>
-                                    <p>Iur exam, you must contact your instructor immediately by phone. Jennifer Lewis can be reached at 03017344555. If she does not hear from you right away, your exam may not be accepted, and you may receive a zero on the exam.</p>
-                                 </Typography>
+                                    <h4 align= 'center'>Click the &ldquo;Submit&rdquo; button in the bottom right corner when you are done submitting your work.</h4>
+                                    
+                                    <p>Your exam, you must contact your instructor immediately by phone. Jennifer Lewis can be reached at 03017344555.</p>
+                                    <p>If she does not hear from you right away, your exam may not be accepted, and you may receive a zero on the exam.</p>
+                                    <Box borderTop={1} {...defaultProps} /> 
+                                </Typography>
                             </div>
                             <FormControlLabel
                                 control={
@@ -122,7 +119,7 @@ export default function Exam() {
                                 }
                                 label=" Pledge: I promise to answer myself without help from anyone."
                             />
-                        </Paper>
+                        
                         <Grid item align="center" className={classes.margin}>
                             <Button className={classes.button}
                             variant="contained" 

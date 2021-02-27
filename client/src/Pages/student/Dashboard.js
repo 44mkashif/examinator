@@ -8,13 +8,13 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import Link from '@material-ui/core/Link';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import { useHistory } from 'react-router-dom';
 import AppBar from '@material-ui/core/AppBar';
 import courseImage from './../../assets/course.jpg';
 import Toolbar from '@material-ui/core/Toolbar';
 import logoImg from './../../assets/logo-dark.png';
+import { Link } from 'react-router-dom';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import Button from '@material-ui/core/Button';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
@@ -124,10 +124,12 @@ export default function Dashboard() {
           <Grid container spacing={2} justify='space-between' alignItems='center'>
             <div>
               <Grid container>
-                <img src={logoImg} alt="logo" className={classes.logoImg} />
-                <Typography variant="h6" color="inherit" noWrap>
-                  Examinator
-                  </Typography>
+                      <Button component={Link} to="/student/dashboard">
+                                <img src={logoImg} alt="logo" style={{ width: 40, marginRight: 10 }} />
+                                <Typography variant="h6" color="inherit" noWrap>
+                                    Examinator
+                                </Typography>
+                       </Button>
               </Grid>
             </div>
             <div>

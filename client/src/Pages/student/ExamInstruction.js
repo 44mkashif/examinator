@@ -26,12 +26,22 @@ const useStyles = makeStyles((theme) => ({
         textAlign: 'center',
         color: theme.palette.text.secondary,
     },
+    margin: {
+        marginTop: 20
+    },
+    container: {
+        paddingTop: theme.spacing(8),
+
+    },
+    button: {
+        borderRadius: 100,
+    }
 }));
 
 const defaultProps = {
     bgcolor: 'background.paper',
-    m: 1,
-    style: { width: '60rem', height: '1rem' },
+    
+    style: { width: '100%' , height: '1rem' },
     borderColor: 'text.primary',
 };
 
@@ -51,11 +61,11 @@ export default function Exam() {
         <React.Fragment>
             <AppBar />
             <div className={classes.root}>
-                <Grid container spacing={3}>
-                    <Grid item xs={9}>
+                <Grid container spacing={5} justify="center" alignItems="center" className={classes.container}>
+                    <Grid item md={8}>
                         <Paper className={classes.paper}>
                             <div>
-                                <Typography variant="h1" component="h2" gutterBottom>
+                                <Typography variant="h2" component="h2" gutterBottom justify= 'center'>
                                     Exam Name
                                 </Typography>
                                 <Box borderTop={1} {...defaultProps} />
@@ -112,15 +122,16 @@ export default function Exam() {
                                 }
                                 label=" Pledge: I promise to answer myself without help from anyone."
                             />
-
                         </Paper>
-
-                        <Button 
-                        variant="contained" 
-                        color="primary"
-                        component={Link} to="./Exam">
-                        Start Now!
-                        </Button>
+                        <Grid item align="center" className={classes.margin}>
+                            <Button className={classes.button}
+                            variant="contained" 
+                            color="primary"
+                            component={Link} to="./Exam">
+                            Start Now!
+                            </Button>
+                        </Grid>
+                        
                         
                     </Grid>
                 </Grid>

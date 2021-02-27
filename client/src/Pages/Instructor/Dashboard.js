@@ -16,9 +16,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import logoImg from './../../assets/navbar-2.png';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import Button from '@material-ui/core/Button';
-
 import { Link } from 'react-router-dom';
-
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 

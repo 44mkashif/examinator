@@ -15,7 +15,6 @@ import courseImage from './../../assets/course.jpg';
 import Toolbar from '@material-ui/core/Toolbar';
 import logoImg from './../../assets/logo-dark.png';
 import { Link } from 'react-router-dom';
-import AddCircleIcon from '@material-ui/icons/AddCircle';
 import Button from '@material-ui/core/Button';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
@@ -127,22 +126,15 @@ export default function Dashboard() {
           <Grid container spacing={2} justify='space-between' alignItems='center'>
             <div>
               <Grid container>
-                      <Button component={Link} to="/student/dashboard">
-                                <img src={logoImg} alt="logo" style={{ width: 40, marginRight: 10 }} />
-                                <Typography className={classes.whiteColor}>
-                                    Examinator
+                <Button component={Link} to="/student/dashboard">
+                  <img src={logoImg} alt="logo" style={{ width: 40, marginRight: 10 }} />
+                  <Typography className={classes.whiteColor}>
+                    Examinator
                                 </Typography>
-                       </Button>
+                </Button>
               </Grid>
             </div>
             <div>
-
-              <Button raised className={classes.button}>
-                <AddCircleIcon className={classes.extendedIcon} />
-                <Typography className={classes.buttonText}>
-                  Enroll Course
-                  </Typography>
-              </Button>
               <Button raised className={classes.button}>
                 <ExitToAppIcon className={classes.extendedIcon} />
                 <Typography className={classes.buttonText}>

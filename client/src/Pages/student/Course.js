@@ -79,7 +79,7 @@ export default function Course() {
                         {exams.map((exam) => (
                             <div key={exam} className={classes.card}>
                                 <ButtonBase
-                                    onClick={event => { navigateTo('../student/course/exam') }}
+                                    onClick={event => { navigateTo('../student/course/ExamInstruction') }}
                                     >
                                     <Card className={classes.card}>
                                         <CardContent className={classes.cardContent}>

@@ -282,7 +282,7 @@ export default function Course() {
                                     color="primary" 
                                     style={{width:'48%'}} 
                                     className={classes.button}  
-                                    onClick={event => { navigateTo('../instructor/course/paper') }}
+                                    onClick={event => { navigateTo('../instructor/course/Paper') }}
                                 >
                                     Save
                                 </Button>    

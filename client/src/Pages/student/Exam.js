@@ -37,7 +37,7 @@ export default function AutoGrid() {
     <React.Fragment>
       <AppBar />
       <div className={classes.root}>
-        <Grid container spacing={3}>
+        <Grid container spacing={0}>
           <Grid item xs={9}>
             {questions}
           </Grid>

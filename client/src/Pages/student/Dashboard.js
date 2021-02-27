@@ -78,6 +78,9 @@ const useStyles = makeStyles((theme) => ({
   extendedIcon: {
     color: theme.palette.primary.contrastText,
     marginRight: 5
+  },
+  whiteColor: {
+    color: theme.palette.primary.contrastText
   }
 }));
 
@@ -126,7 +129,7 @@ export default function Dashboard() {
               <Grid container>
                       <Button component={Link} to="/student/dashboard">
                                 <img src={logoImg} alt="logo" style={{ width: 40, marginRight: 10 }} />
-                                <Typography variant="h6" color="inherit" noWrap>
+                                <Typography className={classes.whiteColor}>
                                     Examinator
                                 </Typography>
                        </Button>

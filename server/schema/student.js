@@ -31,7 +31,7 @@ let studentSchema = new mongoose.Schema(
     }
 );
 
-studentSchema.index({email: 1}, {unique: true});
+studentSchema.index({ email: 1 }, { unique: true });
 let Student = mongoose.model('Student', studentSchema);
 
 module.exports = { Student }

@@ -61,7 +61,7 @@ class AuthController {
                     return res.status(401).send({success: false, msg: 'Incorrect Password'})
                 }
             } else {
-                return res.status(401).send({success: false, msg: 'Instructor does not exist'})
+                return res.status(401).send({success: false, msg: 'Student does not exist'})
             }
         } catch (error) {
             console.log(error)

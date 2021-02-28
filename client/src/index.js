@@ -17,7 +17,9 @@ import InstructorDashboard from './Pages/Instructor/Dashboard';
 import InstructorCourse from './Pages/Instructor/Course';
 import InstructorSchedule from './Pages/Instructor/Schedule';
 import InstructorPaper from './Pages/Instructor/Paper';
-import InstructorExam from './Pages/Instructor/Exam'
+import InstructorExam from './Pages/Instructor/Exam';
+
+import Test from './Pages/TestPage';
 
 
 

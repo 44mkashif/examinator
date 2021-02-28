@@ -8,16 +8,15 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import Link from '@material-ui/core/Link';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import { useHistory } from 'react-router-dom';
 import AppBar from '@material-ui/core/AppBar';
 import courseImage from './../../assets/course.jpg';
 import Toolbar from '@material-ui/core/Toolbar';
 import logoImg from './../../assets/logo-dark.png';
-
-import AddCircleIcon from '@material-ui/icons/AddCircle';
+import { Link } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 
 function Copyright() {
@@ -78,6 +77,9 @@ const useStyles = makeStyles((theme) => ({
   extendedIcon: {
     color: theme.palette.primary.contrastText,
     marginRight: 5
+  },
+  whiteColor: {
+    color: theme.palette.primary.contrastText
   }
 }));
 
@@ -102,9 +104,7 @@ export default function Dashboard() {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
 
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
-  };
+
 
   //Routing Functions
   const history = useHistory();
@@ -126,31 +126,25 @@ export default function Dashboard() {
           <Grid container spacing={2} justify='space-between' alignItems='center'>
             <div>
               <Grid container>
-                <img src={logoImg} alt="logo" className={classes.logoImg} />
-                <Typography variant="h6" color="inherit" noWrap>
-                  Examinator
-                  </Typography>
+                <Button component={Link} to="/student/dashboard">
+                  <img src={logoImg} alt="logo" style={{ width: 40, marginRight: 10 }} />
+                  <Typography className={classes.whiteColor}>
+                    Examinator
+                                </Typography>
+                </Button>
               </Grid>
             </div>
             <div>
-
               <Button raised className={classes.button}>
-                <AddCircleIcon className={classes.extendedIcon} />
+                <ExitToAppIcon className={classes.extendedIcon} />
                 <Typography className={classes.buttonText}>
-                  Enroll Course
+                  Log Out
                   </Typography>
               </Button>
             </div>
           </Grid>
         </Toolbar>
       </AppBar>
-
-      {/* <div>
-        <Fab variant="extended" onClick={addCourse} color="primary" aria-label="add" className={classes.margin} >
-          <AddCircleIcon className={classes.extendedIcon} />
-          Add Course
-        </Fab>
-      </div> */}
       <main>
         <Container className={classes.cardGrid}>
           <Grid container spacing={2} justify="center">
@@ -163,7 +157,7 @@ export default function Dashboard() {
                   <Card className={classes.card}>
                     <CardHeader
                       avatar={
-                        <Avatar aria-label="recipe" className={classes.avatar}>
+                        <Avatar className={classes.avatar}>
                           {courseCodes[index][0] + courseCodes[index][1]}
                         </Avatar>
                       }

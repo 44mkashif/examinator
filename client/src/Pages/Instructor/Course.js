@@ -97,6 +97,13 @@ const useStyles = makeStyles((theme) => ({
     margin: {
         marginLeft: 10,
         paddingTop: 10
+    },
+    cardMargin: {
+        marginLeft: 50,
+        paddingTop: 20
+    },
+    content: {
+        fullWidth: 100,
     }
 
 }));
@@ -151,10 +158,12 @@ export default function Course() {
                     <Grid container spacing={4} justify="center">
                         {exams.map((exam) => (
                             <div key={exam} className={classes.card}>
-                                <ButtonBase
-                                    onClick={event => { navigateTo('../instructor/course/exam') }}
-                                >
+                                
+                                
                                     <Card className={classes.card}>
+                                    <ButtonBase className={classes.cardMargin}   
+                                        onClick={event => { navigateTo('../instructor/course/exam') }}
+                                    >
                                         <CardContent className={classes.cardContent}>
                                                 <Typography gutterBottom variant="h5" component="h2">
                                                     {exam}
@@ -172,6 +181,8 @@ export default function Course() {
                                                     </Typography>
                                                 </Grid> 
                                             </CardContent>
+
+                                            </ButtonBase>
                                             <CardActions>
                                                 <Grid container spacing={2} 
                                                 justify='space-between' 
@@ -186,7 +197,7 @@ export default function Course() {
                                                 </Grid>
                                             </CardActions>
                                     </Card>
-                                </ButtonBase>
+                                
                             </div>
                         ))}
                     </Grid>

@@ -17,6 +17,7 @@ const useStyles = makeStyles((theme) => ({
         padding: theme.spacing(2),
         textAlign: 'center',
         color: theme.palette.text.secondary,
+        userSelect: 'none'
     },
     text: {
         userSelect: 'none'
@@ -26,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function Question() {
+export default function Question(props) {
     const classes = useStyles();
 
     const [value, setValue] = React.useState('');
@@ -42,20 +43,20 @@ export default function Question() {
             <Paper className={classes.paper}>
                 <FormControl component="fieldset">
                     <FormLabel component="legend">
-                        What is the best case time complexity of deleting a node in a Singly Linked list?
+                        {props.question}
                     </FormLabel>
-                    <RadioGroup aria-label="gender" name="gender1" value={value} onChange={handleChange}>
-                        <FormControlLabel value="female" control={<Radio />} label="Female" />
-                        <FormControlLabel value="male" control={<Radio />} label="Male" />
-                        <FormControlLabel value="O(logn)" control={<Radio />} label="O (nlogn)" />
-                        <FormControlLabel value="O(1)" control={<Radio />} label="O (1)" />
+                    <RadioGroup aria-label="answer" name="answer1" value={value} onChange={handleChange}>
+                        <FormControlLabel value={props.qNo + "1"} control={<Radio />} label="1" />
+                        <FormControlLabel value={props.qNo + "2"} control={<Radio />} label="2" />
+                        <FormControlLabel value={props.qNo + "3"} control={<Radio />} label="3" />
+                        <FormControlLabel value={props.qNo + "4"} control={<Radio />} label="4" />
                     </RadioGroup>
                 </FormControl>
-                <Grid container justify="center" >
+                {/* <Grid container justify="center" >
                     <Button variant="contained" color="primary" className={classes.button} >
                         Save & Next
                     </Button>
-                </Grid>
+                </Grid> */}
             </Paper>
         </div>
     )

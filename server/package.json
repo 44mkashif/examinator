@@ -5,8 +5,8 @@
   "main": "server.js",
   "scripts": {
     "client-install": "cd ../client && npm install",
-    "start": "node bin/www.js",
-    "server": "nodemon bin/www.js",
+    "start": "node bin/server.js",
+    "server": "nodemon bin/server.js",
     "client": "cd ../client && npm start",
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },

@@ -11,6 +11,14 @@ const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
     },
+    margin: {
+        marginTop: '30px',
+        
+    },
+    button:{
+        borderRadius: 100,
+        marginButtom: '30px'
+    }
     }));
 
 var questionNum = 5;
@@ -28,18 +36,23 @@ export default function SimplePaper() {
         <React.Fragment>
             <AppBar/>
             <div className={classes.root}>
-                <Grid container spacing={3} justify="center">
-                    <Grid item xs={8}>
+                <Grid container justify="center">
+                    <Grid item >
                         {questions}
                     </Grid>
+                
                 </Grid>
                 
-                <div >
-                <Button variant="contained" color="primary" 
+                <Grid container justify="center" className={classes.margin} >
+                    <Button 
+                        variant="contained" color="primary" 
+                        className={classes.button}
+                        style={{width:'20   %'}} 
                         component={Link} to="/Instructor/dashboard">
-                Save
-                </Button>
-                </div>
+                        Save
+                    </Button>
+                </Grid>
+
             </div>
             
         </React.Fragment>

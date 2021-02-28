@@ -13,6 +13,8 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import bgImage from './../../assets/studentLogin.jpg';
 
+import AuthService from './../../services/AuthService';
+
 
 function Copyright() {
   return (
@@ -81,6 +83,21 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+var body = {}
+
+const studentLogin = (e) => {
+  e.preventDefault();
+  AuthService.studentLogin(body);
+}
+
+const onEmailChange = (e) => {
+  body[e.target.name] = e.target.value;
+}
+
+const onPasswordChange = (e) => {
+  body[e.target.name] = e.target.value;
+}
+
 export default function Login() {
   const classes = useStyles();
 
@@ -96,7 +113,7 @@ export default function Login() {
           <Typography component="h1" variant="h5">
             Student Sign In
           </Typography>
-          <form className={classes.form} noValidate>
+          <form className={classes.form} noValidate onSubmit={studentLogin}>
             <TextField
               className={classes.textField}
               variant="outlined"
@@ -108,6 +125,7 @@ export default function Login() {
               name="email"
               autoComplete="email"
               autoFocus
+              onChange={onEmailChange}
             />
             <TextField
               className={classes.textField}
@@ -120,6 +138,7 @@ export default function Login() {
               type="password"
               id="password"
               autoComplete="current-password"
+              onChange={onPasswordChange}
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}

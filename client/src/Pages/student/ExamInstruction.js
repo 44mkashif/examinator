@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
     },
     olHeading: {
         paddingLeft: "40px"
-    }
+    } 
 }));
 
 const defaultProps = {

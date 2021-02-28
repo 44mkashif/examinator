@@ -1,7 +1,7 @@
 'use strict'
 
 const express = require('express');
-const { StudentController } = require('../controllers/instructor/StudentController');
+const { StudentController } = require('../controllers/StudentController');
 
 const router = express.Router();
 

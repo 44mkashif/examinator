@@ -1,6 +1,6 @@
 'use strict'
 
-const { Instructor } = require('../../schema/instructor');
+const { Instructor } = require('../schema/instructor');
 const bcrypt = require('bcrypt');
 
 class InstructorController {

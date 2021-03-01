@@ -13,7 +13,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import bgImage from './../../assets/studentLogin.jpg';
 
-import AuthService from './../../services/AuthService';
+import AuthService from '../../services/AuthService';
 
 
 function Copyright() {

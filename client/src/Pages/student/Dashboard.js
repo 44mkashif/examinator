@@ -19,7 +19,6 @@ import Button from '@material-ui/core/Button';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import AuthService from '../../services/AuthService';
 
-
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -135,7 +134,7 @@ export default function Dashboard() {
                   <img src={logoImg} alt="logo" style={{ width: 40, marginRight: 10 }} />
                   <Typography className={classes.whiteColor}>
                     Examinator
-                                </Typography>
+                  </Typography>
                 </Button>
               </Grid>
             </div>
@@ -144,7 +143,7 @@ export default function Dashboard() {
                 <ExitToAppIcon className={classes.extendedIcon} />
                 <Typography className={classes.buttonText}>
                   Log Out
-                  </Typography>
+                </Typography>
               </Button>
             </div>
           </Grid>

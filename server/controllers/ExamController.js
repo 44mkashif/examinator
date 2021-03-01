@@ -88,7 +88,6 @@ class ExamController {
             if(!checkExam) {
                 return res.status(401).send({success: false, msg: 'Exam does not exist!'});
             } else {
-                let courseId = req.body.courseId;
                 let duration = req.body.duration;
                 let startTime = Date(req.body.startTime);
                 let endTime = Date(req.body.endTime);
@@ -96,7 +95,6 @@ class ExamController {
                 
                 await Exam.findOneAndUpdate({ courseId: req.body.courseId }, {
                     $set: {
-                        courseId: mongoose.Types.ObjectId(courseId),
                         duration: duration,
                         startTime: startTime,
                         endTime: endTime,

@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
         marginTop: 20,
         marginBottom: 20,
     },
-    button:{
+    button: {
         borderRadius: 100,
         marginButtom: '30px',
         width: "50%"
@@ -48,7 +48,7 @@ export default function SimplePaper() {
                     <Button 
                         variant="contained" color="primary" 
                         className={classes.button}
-                        style={{width:'20   %'}} 
+                        style={{width:'20%'}} 
                         component={Link} to="/Instructor/dashboard">
                         Save
                     </Button>

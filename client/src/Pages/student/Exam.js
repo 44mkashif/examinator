@@ -48,11 +48,13 @@ export default function AutoGrid() {
       <AppBar />
       <div className={classes.root}>
         <Grid container spacing={0}>
-          <Grid item xs={9} justify="center" alignItems="center">
+          <Grid item xs={9} style={{paddingTop: 40}} >
             {questions[qNo ? qNo : 0]}
-            <Button variant="contained" color="primary" className={classes.button} onClick={handleChange}>
+            <Grid container justify="center" style={{paddingTop: 40}}>
+              <Button variant="contained" color="primary" className={classes.button} onClick={handleChange}>
               Save &amp; Next
             </Button>
+            </Grid> 
           </Grid>
           <Grid item justify="center" xs>
             <Paper className={classes.paper}>

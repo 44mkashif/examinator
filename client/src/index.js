@@ -6,11 +6,11 @@ import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import 'fontsource-roboto';
 
 
-import StudentLogin from './Pages/Student/Login';
-import StudentDashboard from './Pages/Student/Dashboard';
-import StudentCourse from './Pages/Student/Course';
-import StudentExam from './Pages/Student/Exam';
-import StudentPaper from './Pages/Student/Paper';
+import StudentLogin from './Pages/student/Login';
+import StudentDashboard from './Pages/student/Dashboard';
+import StudentCourse from './Pages/student/Course';
+import StudentExam from './Pages/student/Exam';
+import StudentPaper from './Pages/student/Paper';
 
 import InstructorLogin from './Pages/Instructor/Login';
 import InstructorDashboard from './Pages/Instructor/Dashboard';

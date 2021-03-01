@@ -53,17 +53,15 @@ const useStyles = makeStyles((theme) => ({
     button: {
         borderRadius: 100,
         padding: 10
+        
       },
-    extendedIcon: {
-        color: theme.palette.primary.contrastText,
-        marginRight: 5
-    },
     cardGrid: {
         paddingTop: theme.spacing(8),
         paddingBottom: theme.spacing(8),
     },
     buttonText: {
         color: theme.palette.primary.contrastText,
+        paddingLeft: 10
     },
     logoImg: {
         width: 40,
@@ -104,6 +102,10 @@ const useStyles = makeStyles((theme) => ({
     },
     content: {
         fullWidth: 100,
+    },
+    scheduleClass: {
+        color: theme.palette.secondary.dark,
+        marginRight: 5
     }
 
 }));
@@ -144,8 +146,8 @@ export default function Course() {
                         </div>
                         <div>
                             <Button raised className={classes.button} onClick={handleOpenMenu}>
-                                <AccessTimeIcon className={classes.extendedIcon} />
-                                <Typography className={classes.buttonText}>
+                                <AccessTimeIcon className={classes.scheduleIcon} />
+                                <Typography className={classes.buttonText} >
                                 Schedule Exam
                                 </Typography>
                             </Button>

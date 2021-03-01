@@ -5,12 +5,12 @@ import App from './App';
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import 'fontsource-roboto';
 
-
 import StudentLogin from './Pages/Student/Login';
 import StudentDashboard from './Pages/Student/Dashboard';
 import StudentCourse from './Pages/Student/Course';
 import StudentExam from './Pages/Student/Exam';
 import StudentPaper from './Pages/Student/Paper';
+import StudentExamInstruction from './Pages/Student/ExamInstruction';
 
 import InstructorLogin from './Pages/Instructor/Login';
 import InstructorDashboard from './Pages/Instructor/Dashboard';
@@ -20,8 +20,6 @@ import InstructorPaper from './Pages/Instructor/Paper';
 import InstructorExam from './Pages/Instructor/Exam';
 
 import Test from './Pages/TestPage';
-
-
 
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { GuardProvider, GuardedRoute } from 'react-router-guards'
@@ -96,7 +94,7 @@ ReactDOM.render(
           <GuardedRoute path="/Student/Course" exact component={StudentCourse} meta={{ auth: true, role: 'student' }} />
           <GuardedRoute path="/Student/Course/Exam" exact component={StudentExam} meta={{ auth: true, role: 'student' }} />
           <GuardedRoute path="/Student/Course/Paper" exact component={StudentPaper} meta={{ auth: true, role: 'student' }} />
-
+          <GuardedRoute path="/Student/Course/ExamInstruction" exact component={StudentExamInstruction} meta={{ auth: true, role: 'student' }} />
 
           <GuardedRoute path="/Instructor/Login" exact component={InstructorLogin} />
           <GuardedRoute path="/Instructor/Dashboard" exact component={InstructorDashboard} meta={{ auth: true, role: 'instructor' }} />

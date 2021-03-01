@@ -218,7 +218,7 @@ export default function Course() {
                     <Fade in={openMenu}>
                     <div className={classes.paper}>
                         <h2 id="transition-modal-title">Schedule Exam</h2>
-                        <form className={classes.form} noValidate>
+                        <form className={classes.form} noValidate> 
                             <TextField
                                 className={classes.textField}
                                 variant="outlined"
@@ -230,18 +230,38 @@ export default function Course() {
                                 autoComplete="off"
                                 autoFocus
                             />
-                            <TextField
-                                className={classes.textField}
-                                variant="outlined"
-                                margin="normal"
-                                required
-                                fullWidth
-                                id="standard-basic"  
-                                label="No of Questions"
-                                type='number'
-                                autoComplete="off"
-                            />
                         </form>
+                        <Grid container justify='center' alignItems='center'>
+                            <Grid item xs={6} style={{paddingRight: 10}}>
+                                <form className={classes.form} noValidate> 
+                                    <TextField
+                                        className={classes.textField}
+                                        variant="outlined"
+                                        margin="normal"
+                                        required
+                                        fullWidth
+                                        id="standard-basic"  
+                                        label="No of Questions"
+                                        type='number'
+                                        autoComplete="off"
+                                    />    
+                                </form>
+                            </Grid>
+                            <Grid item xs={6} style={{paddingLeft: 10}}>
+                                <form className={classes.form} noValidate> 
+                                    <TextField
+                                        className={classes.textField}
+                                        variant="outlined"
+                                        margin="normal"
+                                        required
+                                        fullWidth
+                                        id="standard-basic"
+                                        label="Duration"
+                                        autoComplete="off"
+                                    />
+                                </form>
+                            </Grid>    
+                        </Grid>
                         <MuiPickersUtilsProvider utils={DateFnsUtils}>
                             <Grid container justify='space-between' alignItems='center'>
                                 <div style={{paddingRight: 10}}>

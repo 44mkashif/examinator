@@ -12,12 +12,13 @@ const useStyles = makeStyles((theme) => ({
         flexGrow: 1,
     },
     margin: {
-        marginTop: '30px',
-        
+        marginTop: 20,
+        marginBottom: 20,
     },
     button:{
         borderRadius: 100,
-        marginButtom: '30px'
+        marginButtom: '30px',
+        width: "50%"
     }
     }));
 

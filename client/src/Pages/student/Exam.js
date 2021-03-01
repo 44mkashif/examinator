@@ -19,6 +19,9 @@ const useStyles = makeStyles((theme) => ({
   },
   person: {
     width: "100%"
+  },
+  button: {
+    borderRadius: 100,
   }
 }));
 
@@ -26,7 +29,7 @@ var questionNum = 5;
 
 var questions = [];
 for (var i = 0; i < questionNum; i++) {
-  questions.push(<Question question={"Question "+i} qNo={i}/>);
+  questions.push(<Question question={"Question " + i} qNo={i} />);
 }
 var temp = 0;
 export default function AutoGrid() {
@@ -45,7 +48,7 @@ export default function AutoGrid() {
       <AppBar />
       <div className={classes.root}>
         <Grid container spacing={0}>
-          <Grid item xs={9}>
+          <Grid item xs={9} justify="center" alignItems="center">
             {questions[qNo ? qNo : 0]}
             <Button variant="contained" color="primary" className={classes.button} onClick={handleChange}>
               Save &amp; Next

@@ -18,7 +18,7 @@ import AddCircleIcon from '@material-ui/icons/AddCircle';
 import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-
+import AuthService from './../../services/AuthService';
 
 function Copyright() {
   return (
@@ -94,6 +94,11 @@ var addCourse = () => {
   console.log('course pushed' + courses)
 }
 
+const studentLogout = (e) => {
+  e.preventDefault();
+  AuthService.logout();
+}
+
 // this.state = {
 //   courses: ['item']
 // }
@@ -143,11 +148,11 @@ export default function Dashboard() {
                   Add Course
                   </Typography>
               </Button>
-              <Button raised className={classes.button}>
+              <Button raised className={classes.button} onClick={studentLogout}>
                 <ExitToAppIcon className={classes.extendedIcon} />
                 <Typography className={classes.buttonText}>
                   Log Out
-                  </Typography>
+                </Typography>
               </Button>
             </div>
           </Grid>

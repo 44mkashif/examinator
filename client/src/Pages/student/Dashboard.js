@@ -17,7 +17,7 @@ import logoImg from './../../assets/logo-dark.png';
 import { Link } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-
+import AuthService from './../../services/AuthService';
 
 function Copyright() {
   return (
@@ -93,6 +93,11 @@ var joinCourse = () => {
   console.log('course pushed' + courses)
 }
 
+const studentLogout = (e) => {
+  e.preventDefault();
+  AuthService.logout();
+}
+
 // this.state = {
 //   courses: ['item']
 // }
@@ -130,16 +135,16 @@ export default function Dashboard() {
                   <img src={logoImg} alt="logo" style={{ width: 40, marginRight: 10 }} />
                   <Typography className={classes.whiteColor}>
                     Examinator
-                                </Typography>
+                  </Typography>
                 </Button>
               </Grid>
             </div>
             <div>
-              <Button raised className={classes.button}>
+              <Button raised className={classes.button} onClick={studentLogout}>
                 <ExitToAppIcon className={classes.extendedIcon} />
                 <Typography className={classes.buttonText}>
                   Log Out
-                  </Typography>
+                </Typography>
               </Button>
             </div>
           </Grid>

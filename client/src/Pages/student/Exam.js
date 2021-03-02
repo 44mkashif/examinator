@@ -6,6 +6,7 @@ import Question from './Components/Question';
 import AppBar from './Components/AppBar';
 import personImg from './../../assets/person.png';
 import Button from '@material-ui/core/Button';
+import Timer from './Components/Timer';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -46,6 +47,7 @@ export default function AutoGrid() {
   return (
     <React.Fragment>
       <AppBar />
+      <Timer/>
       <div className={classes.root}>
         <Grid container spacing={0}>
           <Grid item xs={9} style={{paddingTop: 40}} >

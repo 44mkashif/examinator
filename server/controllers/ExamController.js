@@ -85,7 +85,7 @@ class ExamController {
     //Instructor update exam and questions
     static async updateExam(req, res) {
         try {
-            let checkExam = await Exam.findOne({ name: req.body.name });
+            let checkExam = await Exam.findOne({ name: req.query.name });
             if (!checkExam) {
                 return res.status(401).send({ success: false, msg: 'Exam does not exist!' });
             } else {
@@ -94,7 +94,7 @@ class ExamController {
                 let startTime = Date(req.body.startTime);
                 let totalMarks = req.body.totalMarks;
 
-                await Exam.findOneAndUpdate({ name: req.body.name }, {
+                await Exam.findOneAndUpdate({ name: req.query.name }, {
                     $set: {
                         name: name,
                         duration: duration,

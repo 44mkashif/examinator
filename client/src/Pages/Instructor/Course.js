@@ -5,7 +5,7 @@ import Container from '@material-ui/core/Container';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
-import ButtonBase from '@material-ui/core/ButtonBase'; 
+import ButtonBase from '@material-ui/core/ButtonBase';
 import { useHistory } from 'react-router-dom';
 import logoImg from './../../assets/navbar-2.png';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -27,8 +27,7 @@ import {
     KeyboardTimePicker,
     KeyboardDatePicker,
 } from '@material-ui/pickers';
-
-
+import ExamService from '../../services/ExamService';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -53,8 +52,8 @@ const useStyles = makeStyles((theme) => ({
     button: {
         borderRadius: 100,
         padding: 10
-        
-      },
+
+    },
     cardGrid: {
         paddingTop: theme.spacing(8),
         paddingBottom: theme.spacing(8),
@@ -67,7 +66,7 @@ const useStyles = makeStyles((theme) => ({
         width: 40,
         marginRight: 10
     },
-    datePicker:{
+    datePicker: {
         borderRadius: 100
     },
     card: {
@@ -75,7 +74,7 @@ const useStyles = makeStyles((theme) => ({
         margin: theme.spacing(1, 3, 2),
         // display: 'flex',
         // flexDirection: 'column',
-      },
+    },
     editClass: {
         color: theme.palette.secondary.dark
     },
@@ -84,8 +83,8 @@ const useStyles = makeStyles((theme) => ({
     },
     textField: {
         [`& fieldset`]: {
-          borderRadius: 100,
-          borderWidth: '2px'
+            borderRadius: 100,
+            borderWidth: '2px'
         }
     },
     iconClass: {
@@ -129,10 +128,14 @@ export default function Course() {
         setSelectedDate(date);
     };
 
-
+    const courseId = "603ea3fd60c6ed3f3880dff4"; //TODO: current course id
+    const authToken = localStorage.getItem('auth-token');
+    ExamService.getExams(courseId, authToken).then((examsFromDb) => {
+        console.log(examsFromDb);
+    })
 
     return (
-        <React.Fragment>   
+        <React.Fragment>
             <AppBar position="relative">
                 <Toolbar>
                     <Grid container spacing={2} justify='space-between' alignItems='center'>
@@ -140,7 +143,7 @@ export default function Course() {
                             <Grid container>
                                 <img src={logoImg} alt="logo" className={classes.logoImg} />
                                 <Typography variant="h6" color="inherit" noWrap>
-                                Introduction to Data Science
+                                    Introduction to Data Science
                                 </Typography>
                             </Grid>
                         </div>
@@ -148,7 +151,7 @@ export default function Course() {
                             <Button raised className={classes.button} onClick={handleOpenMenu}>
                                 <AccessTimeIcon className={classes.scheduleIcon} />
                                 <Typography className={classes.buttonText} >
-                                Schedule Exam
+                                    Schedule Exam
                                 </Typography>
                             </Button>
                         </div>
@@ -160,67 +163,67 @@ export default function Course() {
                     <Grid container spacing={4} justify="center">
                         {exams.map((exam) => (
                             <div key={exam} className={classes.card}>
-                                
-                                
-                                    <Card className={classes.card}>
-                                    <ButtonBase className={classes.cardMargin}   
+
+
+                                <Card className={classes.card}>
+                                    <ButtonBase className={classes.cardMargin}
                                         onClick={event => { navigateTo('../instructor/course/exam') }}
                                     >
                                         <CardContent className={classes.cardContent}>
-                                                <Typography gutterBottom variant="h5" component="h2">
-                                                    {exam}
-                                                </Typography>
-                                                <Grid container justify="center">
-                                                    <DateRangeIcon className={classes.iconClass}/>
-                                                    <Typography className={classes.margin}>
-                                                        12 Jan, 2021
+                                            <Typography gutterBottom variant="h5" component="h2">
+                                                {exam}
+                                            </Typography>
+                                            <Grid container justify="center">
+                                                <DateRangeIcon className={classes.iconClass} />
+                                                <Typography className={classes.margin}>
+                                                    12 Jan, 2021
                                                     </Typography>
-                                                </Grid>
-                                                <Grid container justify="center">
-                                                    <AccessTimeIcon className={classes.iconClass}/>
-                                                    <Typography className={classes.margin}>
-                                                        10:00 PM
+                                            </Grid>
+                                            <Grid container justify="center">
+                                                <AccessTimeIcon className={classes.iconClass} />
+                                                <Typography className={classes.margin}>
+                                                    10:00 PM
                                                     </Typography>
-                                                </Grid> 
-                                            </CardContent>
+                                            </Grid>
+                                        </CardContent>
 
-                                            </ButtonBase>
-                                            <CardActions>
-                                                <Grid container spacing={2} 
-                                                justify='space-between' 
-                                                alignItems='center'
-                                                >
-                                                    <IconButton className={classes.editClass}>
-                                                        <EditIcon/>
-                                                    </IconButton>
-                                                    <IconButton className={classes.deleteClass}>
-                                                        <DeleteIcon/>
-                                                    </IconButton>
-                                                </Grid>
-                                            </CardActions>
-                                    </Card>
-                                
+                                    </ButtonBase>
+                                    <CardActions>
+                                        <Grid container spacing={2}
+                                            justify='space-between'
+                                            alignItems='center'
+                                        >
+                                            <IconButton className={classes.editClass}>
+                                                <EditIcon />
+                                            </IconButton>
+                                            <IconButton className={classes.deleteClass}>
+                                                <DeleteIcon />
+                                            </IconButton>
+                                        </Grid>
+                                    </CardActions>
+                                </Card>
+
                             </div>
                         ))}
                     </Grid>
                 </Container>
-                </div>
-                <Modal
-                    aria-labelledby="transition-modal-title"
-                    aria-describedby="transition-modal-description"
-                    className={classes.modal}
-                    open={openMenu}
-                    onClose={handleCloseMenu}
-                    closeAfterTransition
-                    BackdropComponent={Backdrop}
-                    BackdropProps={{
-                        timeout: 500,
-                    }}
-                    >
-                    <Fade in={openMenu}>
+            </div>
+            <Modal
+                aria-labelledby="transition-modal-title"
+                aria-describedby="transition-modal-description"
+                className={classes.modal}
+                open={openMenu}
+                onClose={handleCloseMenu}
+                closeAfterTransition
+                BackdropComponent={Backdrop}
+                BackdropProps={{
+                    timeout: 500,
+                }}
+            >
+                <Fade in={openMenu}>
                     <div className={classes.paper}>
                         <h2 id="transition-modal-title">Schedule Exam</h2>
-                        <form className={classes.form} noValidate> 
+                        <form className={classes.form} noValidate>
                             <TextField
                                 className={classes.textField}
                                 variant="outlined"
@@ -234,23 +237,23 @@ export default function Course() {
                             />
                         </form>
                         <Grid container justify='center' alignItems='center'>
-                            <Grid item xs={6} style={{paddingRight: 10}}>
-                                <form className={classes.form} noValidate> 
+                            <Grid item xs={6} style={{ paddingRight: 10 }}>
+                                <form className={classes.form} noValidate>
                                     <TextField
                                         className={classes.textField}
                                         variant="outlined"
                                         margin="normal"
                                         required
                                         fullWidth
-                                        id="standard-basic"  
+                                        id="standard-basic"
                                         label="No of Questions"
                                         type='number'
                                         autoComplete="off"
-                                    />    
+                                    />
                                 </form>
                             </Grid>
-                            <Grid item xs={6} style={{paddingLeft: 10}}>
-                                <form className={classes.form} noValidate> 
+                            <Grid item xs={6} style={{ paddingLeft: 10 }}>
+                                <form className={classes.form} noValidate>
                                     <TextField
                                         className={classes.textField}
                                         variant="outlined"
@@ -262,68 +265,68 @@ export default function Course() {
                                         autoComplete="off"
                                     />
                                 </form>
-                            </Grid>    
+                            </Grid>
                         </Grid>
                         <MuiPickersUtilsProvider utils={DateFnsUtils}>
                             <Grid container justify='space-between' alignItems='center'>
-                                <div style={{paddingRight: 10}}>
-                                   <KeyboardDatePicker
-                                    margin="normal"
-                                    id="date-picker-dialog"
-                                    label="Exam Date"
-                                    format="MM/dd/yyyy"
-                                    value={selectedDate}
-                                    className={classes.textField}
-                                    inputVariant="outlined"
-                                    onChange={handleDateChange}
-                                    KeyboardButtonProps={{
-                                        'aria-label': 'change date',
-                                    }}
-                                    /> 
-                                </div>
-                                <div style={{paddingLeft: 10}}>
-                                    <KeyboardTimePicker
-                                    margin="normal"
-                                    id="time-picker"
-                                    label="Exam Time"
-                                    value={selectedDate}
-                                    inputVariant="outlined"
-                                    className={classes.textField}
-                                    onChange={handleDateChange}
-                                    KeyboardButtonProps={{
-                                        'aria-label': 'change time',
-                                    }}
+                                <div style={{ paddingRight: 10 }}>
+                                    <KeyboardDatePicker
+                                        margin="normal"
+                                        id="date-picker-dialog"
+                                        label="Exam Date"
+                                        format="MM/dd/yyyy"
+                                        value={selectedDate}
+                                        className={classes.textField}
+                                        inputVariant="outlined"
+                                        onChange={handleDateChange}
+                                        KeyboardButtonProps={{
+                                            'aria-label': 'change date',
+                                        }}
                                     />
                                 </div>
-                                
-                                
+                                <div style={{ paddingLeft: 10 }}>
+                                    <KeyboardTimePicker
+                                        margin="normal"
+                                        id="time-picker"
+                                        label="Exam Time"
+                                        value={selectedDate}
+                                        inputVariant="outlined"
+                                        className={classes.textField}
+                                        onChange={handleDateChange}
+                                        KeyboardButtonProps={{
+                                            'aria-label': 'change time',
+                                        }}
+                                    />
+                                </div>
+
+
                             </Grid>
                         </MuiPickersUtilsProvider>
-                        <br/>
+                        <br />
                         <Grid container spacing={2} justify='space-between' alignItems='center'>
-                                <Button 
-                                    variant="contained" 
-                                    color="secondary.dark" 
-                                    className={classes.button} 
-                                    style={{width:'48%'}} 
-                                    onClick={handleCloseMenu}
-                                >
-                                    Close
+                            <Button
+                                variant="contained"
+                                color="secondary.dark"
+                                className={classes.button}
+                                style={{ width: '48%' }}
+                                onClick={handleCloseMenu}
+                            >
+                                Close
                                 </Button>
-                                <Button 
-                                    variant="contained" 
-                                    color="primary" 
-                                    style={{width:'48%'}} 
-                                    className={classes.button}  
-                                    onClick={event => { navigateTo('../instructor/course/Paper') }}
-                                >
-                                    Save
-                                </Button>    
-                        </Grid>                    
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                style={{ width: '48%' }}
+                                className={classes.button}
+                                onClick={event => { navigateTo('../instructor/course/Paper') }}
+                            >
+                                Save
+                                </Button>
+                        </Grid>
                     </div>
-                    </Fade>
-                </Modal>      
+                </Fade>
+            </Modal>
         </React.Fragment>
-          
+
     );
 }

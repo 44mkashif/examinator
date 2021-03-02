@@ -117,20 +117,20 @@ export default function Login() {
           <Typography component="h1" variant="h5">
             Instructor Sign In
             </Typography>
-        <form className={classes.form} noValidate onSubmit={instructorLogin}>
-          <TextField
-            className={classes.textField}
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
-            autoFocus
-            onChange={onEmailChange}
-          />
+          <form className={classes.form} noValidate onSubmit={instructorLogin}>
+            <TextField
+              className={classes.textField}
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Email Address"
+              name="email"
+              autoComplete="email"
+              autoFocus
+              onChange={onEmailChange}
+            />
             <TextField
               className={classes.textField}
               variant="outlined"

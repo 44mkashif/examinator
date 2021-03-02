@@ -4,6 +4,10 @@ const mongoose = require('mongoose');
 
 let examSchema = new mongoose.Schema(
     {
+        name: {
+            type: String,
+            required: true
+        },
         courseId: {
             type: mongoose.Types.ObjectId,
             required: true,
@@ -17,10 +21,10 @@ let examSchema = new mongoose.Schema(
             type: Date,
             required: true
         },
-        startTime: {
-            type: Date,
-            required: true
-        },
+        // endTime: {
+        //     type: Date,
+        //     required: true
+        // },
         totalMarks: {
             type: Number,
             required: true
@@ -30,7 +34,7 @@ let examSchema = new mongoose.Schema(
         timestamps: true
     }
 );
-examSchema.index({courseId: 1}, {unique: true});
+examSchema.index({ courseId: 1 }, { unique: true });
 let Exam = mongoose.model('Exam', examSchema);
 
 module.exports = { Exam }

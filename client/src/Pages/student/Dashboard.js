@@ -18,6 +18,8 @@ import { Link } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import AuthService from '../../services/AuthService';
+import Divider from '@material-ui/core/Divider';
+
 
 function Copyright() {
   return (
@@ -151,9 +153,9 @@ export default function Dashboard() {
       </AppBar>
       <main>
         <Container className={classes.cardGrid}>
+          
           <Grid container spacing={2} justify="center">
             {courses.map((course, index) => (
-
               <div key={course} className={classes.card}>
                 <ButtonBase
                   onClick={event => { navigateTo('../student/course?id=1') }}
@@ -173,6 +175,35 @@ export default function Dashboard() {
                     />
                   </Card>
                 </ButtonBase>
+              </div>
+            ))}
+          </Grid>
+
+
+            <br/>
+            <Divider variant="middle" />
+            <br/>
+
+            
+          <Grid container spacing={3} justify="center">
+            {courses.map((course, index) => (
+
+              <div key={course} className={classes.card}>
+                <Card className={classes.card}>
+                  <CardHeader
+                    avatar={
+                      <Avatar className={classes.avatar}>
+                        {courseCodes[index][0] + courseCodes[index][1]}
+                      </Avatar>
+                    }
+                    title={course}
+                    subheader={courseCodes[index]}
+                  />
+                  <CardMedia
+                    className={classes.cardMedia}
+                  />
+                </Card>
+
               </div>
             ))}
           </Grid>

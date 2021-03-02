@@ -20,6 +20,7 @@
     "react-router-guards": "^1.0.2",
     "react-schedule-meeting": "^0.2.1",
     "react-scripts": "4.0.2",
+    "socket.io-client": "^3.1.2",
     "web-vitals": "^1.1.0"
   },
   "scripts": {

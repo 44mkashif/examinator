@@ -19,6 +19,7 @@ import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import AuthService from '../../services/AuthService';
+import CourseService from '../../services/CourseService';
 
 
 
@@ -90,7 +91,6 @@ const useStyles = makeStyles((theme) => ({
 var courses = ['Devops', 'Data Structures', 'Data Science', 'Robotic Vision', 'Web Engineering', 'Block Chain'];
 var courseCodes = ['CS453', 'CS112', 'CE432', 'DS456', 'CE446', 'CS321'];
 
-
 var addCourse = () => {
   courses.push("Kiwi");
   console.log('course pushed' + courses)
@@ -124,6 +124,12 @@ export default function Dashboard() {
 
 
   //Popper Idhr tk he
+
+  const instructorId = localStorage.getItem('instructorId');
+  const authToken = localStorage.getItem('auth-token');
+  CourseService.getCourses(instructorId, authToken).then((coursesFromDb) => {
+    console.log(coursesFromDb);
+  })
 
   return (
 

@@ -9,45 +9,47 @@ class ExamController {
 
 
     //Instructor Create Exam
-    static async addExam(req, res){
+    static async addExam(req, res) {
         try {
-            let checkExam = await Exam.findOne({courseId: req.body.courseId});
-            if(checkExam) {
-                return res.status(401).send({success: false, msg: 'Exam Already Exits'});
+            let checkExam = await Exam.findOne({ courseId: req.body.courseId });
+            if (checkExam) {
+                return res.status(401).send({ success: false, msg: 'Exam Already Exits' });
             } else {
+                let name = req.body.name;
                 let courseId = req.body.courseId;
                 let duration = req.body.duration;
                 let startTime = Date(req.body.startTime);
-                let endTime = Date(req.body.endTime);
+                // let endTime = Date(req.body.endTime);
                 let totalMarks = req.body.totalMarks;
-                
+
                 let exam = new Exam({
+                    name: name,
                     courseId: mongoose.Types.ObjectId(courseId),
                     duration: duration,
                     startTime: startTime,
-                    endTime: endTime,
+                    // endTime: endTime,
                     totalMarks: totalMarks
                 });
                 await exam.save();
-                let examStored = await Exam.findOne({courseId: courseId}); 
+                let examStored = await Exam.findOne({ courseId: courseId });
                 var questions = [];
-                req.body.questions.forEach((question)=>{
+                req.body.questions.forEach((question) => {
                     questions.push({
                         statement: question.statement,
-                        options: question.options, 
+                        options: question.options,
                         correctOption: question.correctOption,
                         marks: question.marks,
                         examId: mongoose.Types.ObjectId(examStored._id)
                     })
                 })
                 await Question.insertMany(questions);
-                return res.status(200).send({success: true, msg: 'Exam Added Successfuly', exam: await Exam.findOne({courseId: courseId})});
+                return res.status(200).send({ success: true, msg: 'Exam Added Successfuly', exam: await Exam.findOne({ courseId: courseId }) });
             }
-            
+
 
         } catch (error) {
             console.log(error)
-            return res.status(400).send({success: false, msg: error});
+            return res.status(400).send({ success: false, msg: error });
         }
     }
 
@@ -56,8 +58,8 @@ class ExamController {
         try {
             let exam = await Exam.aggregate([
                 {
-                    $match: { 
-                        courseId: mongoose.Types.ObjectId(req.query.courseId) 
+                    $match: {
+                        courseId: mongoose.Types.ObjectId(req.query.courseId)
                     }
                 },
                 {
@@ -69,76 +71,78 @@ class ExamController {
                     }
                 }
             ]);
-            if(exam[0]) {
-                return res.status(200).send({success: true, msg: 'Exam Fetched Successfuly', exam: exam[0]});
+            if (exam[0]) {
+                return res.status(200).send({ success: true, msg: 'Exam Fetched Successfuly', exam: exam[0] });
             } else {
-                return res.status(401).send({success: false, msg: 'Exam does not exist!'})
+                return res.status(401).send({ success: false, msg: 'Exam does not exist!' })
             }
 
         } catch (error) {
             console.log(error)
-            return res.status(400).send({success: false, msg: error});
+            return res.status(400).send({ success: false, msg: error });
         }
     }
 
     //Instructor update exam and questions
-    static async updateExam(req, res){
+    static async updateExam(req, res) {
         try {
-            let checkExam = await Exam.findOne({courseId: req.body.courseId});
-            if(!checkExam) {
-                return res.status(401).send({success: false, msg: 'Exam does not exist!'});
+            let checkExam = await Exam.findOne({ courseId: req.body.courseId });
+            if (!checkExam) {
+                return res.status(401).send({ success: false, msg: 'Exam does not exist!' });
             } else {
+                let name = req.body.name;
                 let duration = req.body.duration;
                 let startTime = Date(req.body.startTime);
-                let endTime = Date(req.body.endTime);
+                // let endTime = Date(req.body.endTime);
                 let totalMarks = req.body.totalMarks;
-                
+
                 await Exam.findOneAndUpdate({ courseId: req.body.courseId }, {
                     $set: {
+                        name: name,
                         duration: duration,
                         startTime: startTime,
-                        endTime: endTime,
+                        // endTime: endTime,
                         totalMarks: totalMarks
                     }
                 });
-                await Question.deleteMany({examId: checkExam._id})
+                await Question.deleteMany({ examId: checkExam._id })
                 var questions = [];
-                req.body.questions.forEach((question)=>{
+                req.body.questions.forEach((question) => {
                     questions.push({
                         statement: question.statement,
-                        options: question.options, 
+                        options: question.options,
                         correctOption: question.correctOption,
                         marks: question.marks,
                         examId: mongoose.Types.ObjectId(checkExam._id)
                     })
                 })
                 await Question.insertMany(questions);
-                return res.status(200).send({success: true, msg: 'Exam Updated Successfuly', exam: await Exam.findOne({courseId: courseId})});
+                return res.status(200).send({ success: true, msg: 'Exam Updated Successfuly', exam: await Exam.findOne({ courseId: courseId }) });
             }
-            
+
 
         } catch (error) {
             console.log(error)
-            return res.status(400).send({success: false, msg: error});
+            return res.status(400).send({ success: false, msg: error });
         }
     }
 
     //Instructor delete exams and questions
     static async deleteExam(req, res) {
         try {
-            let checkExam = await Exam.findOne({courseId: req.query.courseId});
-            if(checkExam) {
+            let checkExam = await Exam.findOne({ courseId: req.query.courseId });
+            if (checkExam) {
                 let examId = checkExam._id;
-                await Exam.deleteOne({courseId: req.query.courseId});
-                await Question.deleteMany({examId: examId});
-                return res.status(200).send({success: true, msg: 'Exam Deleted Successfuly'});
+                await Exam.deleteOne({ courseId: req.query.courseId });
+                await Question.deleteMany({ examId: examId });
+                return res.status(200).send({ success: true, msg: 'Exam Deleted Successfuly' });
             } else {
-                return res.status(401).send({success: false, msg: 'Exam does not exist!'})
+                return res.status(401).send({ success: false, msg: 'Exam does not exist!' })
             }
 
         } catch (error) {
             console.log(error)
-            return res.status(400).send({success: false, msg: error});
+            return res.status(400).send({ success: false, msg: error });
         }
     }
 }

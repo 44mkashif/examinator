@@ -12,6 +12,8 @@ import Toolbar from '@material-ui/core/Toolbar';
 import AppBar from '@material-ui/core/AppBar';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import DateRangeIcon from '@material-ui/icons/DateRange';
+import Divider from '@material-ui/core/Divider';
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -75,6 +77,14 @@ export default function Course() {
 
             <div className={classes.root}>
                 <Container className={classes.cardGrid} >
+
+                    <Typography>
+                        Scheduled Exams
+                    </Typography>   
+                    <br />
+                    <Divider variant="middle" />
+                    <br />
+
                     <Grid container spacing={4} justify="center">
                         {exams.map((exam) => (
                             <div key={exam} className={classes.card}>
@@ -106,6 +116,47 @@ export default function Course() {
                         ))}
 
                     </Grid>
+
+                    <Typography>
+                        Previous Exams
+                    </Typography>
+
+                    <br />
+                    <Divider variant="middle" />
+                    <br />
+
+                    <Grid container spacing={4} justify="center">
+                        {exams.map((exam) => (
+                            <div key={exam} className={classes.card}>
+                                <ButtonBase
+                                    onClick={event => { navigateTo('../student/course/ExamInstruction') }}
+                                >
+                                    <Card className={classes.card}>
+                                        <CardContent className={classes.cardContent}>
+                                            <Typography gutterBottom variant="h5" component="h2">
+                                                {exam}
+                                            </Typography>
+                                            <Grid container align='left'>
+                                                <DateRangeIcon
+                                                    className={classes.iconClass} />
+                                                <Typography className={classes.margin}>
+                                                    12 Jan, 2021
+                                                </Typography>
+                                            </Grid>
+                                            <Grid container align='left' >
+                                                <AccessTimeIcon className={classes.iconClass} />
+                                                <Typography className={classes.margin}>
+                                                    10:00 PM
+                                                </Typography>
+                                            </Grid>
+                                        </CardContent>
+                                    </Card>
+                                </ButtonBase>
+                            </div>
+                        ))}
+
+                    </Grid>
+
                 </Container>
             </div>
 

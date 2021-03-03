@@ -7,8 +7,9 @@ import AppBar from './Components/AppBar';
 import personImg from './../../assets/person.png';
 import Button from '@material-ui/core/Button';
 import Timer from './Components/Timer';
-
+import io from 'socket.io-client';
 import { useHistory } from 'react-router-dom';
+<script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -42,6 +43,25 @@ for (var i = 0; i < questionNum; i++) {
 }
 var temp = 0;
 export default function AutoGrid() {
+
+  const videoRef = React.useRef(null);
+
+  React.useEffect(()=>{
+
+    const socket = io("http://127.0.0.1:4001");
+
+    navigator.mediaDevices.getUserMedia({
+      audio: false,
+      video: true
+    }).then((stream)=>{
+      let loaclVideo = videoRef.current;
+      loaclVideo.srcObject = stream;
+      loaclVideo.play();
+      console.log('Local Video Streaming....')
+    })
+
+  }, []);
+
   const classes = useStyles();
   const [qNo, setQNo] = React.useState('');
   const [activebutton, setButton] = React.useState(true);
@@ -83,10 +103,8 @@ export default function AutoGrid() {
                </Button>
             </Grid> 
           </Grid>
-          <Grid item justify="center" xs>
-            <Paper className={classes.paper}>
-              <img className={classes.person} src={personImg} alt="" />
-            </Paper>
+          <Grid container justify="center" xs>
+            <video width="250" ref={videoRef}></video>
           </Grid>
         </Grid>
       </div>

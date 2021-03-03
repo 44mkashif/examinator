@@ -7,6 +7,7 @@ import AppBar from './Components/AppBar';
 import personImg from './../../assets/person.png';
 import Button from '@material-ui/core/Button';
 import Timer from './Components/Timer';
+import io from 'socket.io-client';
 
 const useStyles = makeStyles((theme) => ({
   root: {

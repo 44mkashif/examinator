@@ -3,7 +3,8 @@
 const { Exam } = require('../schema/exam');
 const { Question } = require('../schema/question');
 
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
+const moment = require('moment');
 
 class ExamController {
 
@@ -11,15 +12,14 @@ class ExamController {
     //Instructor Create Exam
     static async addExam(req, res) {
         try {
-            let checkExam = await Exam.findOne({ courseId: req.body.courseId });
+            let checkExam = await Exam.findOne({ name: req.body.name });
             if (checkExam) {
                 return res.status(401).send({ success: false, msg: 'Exam Already Exits' });
             } else {
                 let name = req.body.name;
                 let courseId = req.body.courseId;
                 let duration = req.body.duration;
-                let startTime = Date(req.body.startTime);
-                // let endTime = Date(req.body.endTime);
+                let startTime = moment(req.body.startTime);
                 let totalMarks = req.body.totalMarks;
 
                 let exam = new Exam({
@@ -27,11 +27,10 @@ class ExamController {
                     courseId: mongoose.Types.ObjectId(courseId),
                     duration: duration,
                     startTime: startTime,
-                    // endTime: endTime,
                     totalMarks: totalMarks
                 });
                 await exam.save();
-                let examStored = await Exam.findOne({ courseId: courseId });
+                let examStored = await Exam.findOne({ name: name });
                 var questions = [];
                 req.body.questions.forEach((question) => {
                     questions.push({
@@ -71,8 +70,8 @@ class ExamController {
                     }
                 }
             ]);
-            if (exam[0]) {
-                return res.status(200).send({ success: true, msg: 'Exam Fetched Successfuly', exam: exam[0] });
+            if (exam) {
+                return res.status(200).send({ success: true, msg: 'Exam Fetched Successfuly', exams: exam });
             } else {
                 return res.status(401).send({ success: false, msg: 'Exam does not exist!' })
             }
@@ -86,22 +85,20 @@ class ExamController {
     //Instructor update exam and questions
     static async updateExam(req, res) {
         try {
-            let checkExam = await Exam.findOne({ courseId: req.body.courseId });
+            let checkExam = await Exam.findOne({ name: req.query.name });
             if (!checkExam) {
                 return res.status(401).send({ success: false, msg: 'Exam does not exist!' });
             } else {
                 let name = req.body.name;
                 let duration = req.body.duration;
                 let startTime = Date(req.body.startTime);
-                // let endTime = Date(req.body.endTime);
                 let totalMarks = req.body.totalMarks;
 
-                await Exam.findOneAndUpdate({ courseId: req.body.courseId }, {
+                await Exam.findOneAndUpdate({ name: req.query.name }, {
                     $set: {
                         name: name,
                         duration: duration,
                         startTime: startTime,
-                        // endTime: endTime,
                         totalMarks: totalMarks
                     }
                 });
@@ -130,10 +127,10 @@ class ExamController {
     //Instructor delete exams and questions
     static async deleteExam(req, res) {
         try {
-            let checkExam = await Exam.findOne({ courseId: req.query.courseId });
+            let checkExam = await Exam.findOne({ name: req.query.name });
             if (checkExam) {
                 let examId = checkExam._id;
-                await Exam.deleteOne({ courseId: req.query.courseId });
+                await Exam.deleteOne({ _id: examId });
                 await Question.deleteMany({ examId: examId });
                 return res.status(200).send({ success: true, msg: 'Exam Deleted Successfuly' });
             } else {

@@ -128,7 +128,7 @@ export default function Course() {
         setSelectedDate(date);
     };
 
-    const courseId = "603ea3fd60c6ed3f3880dff4"; //TODO: current course id
+    const courseId = "603ea3d760c6ed3f3880dff3"; //TODO: current course id
     const authToken = localStorage.getItem('auth-token');
     ExamService.getExams(courseId, authToken).then((examsFromDb) => {
         console.log(examsFromDb);

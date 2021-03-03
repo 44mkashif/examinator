@@ -172,7 +172,36 @@ export default function Dashboard() {
               </div>
             ))}
           </Grid>
+            <br/>
+            <Divider variant="middle" />
+            <br/>
 
+            <Typography>
+            Results for Previous Exams
+            </Typography>
+
+          <Grid container spacing={3} justify="center">
+            {courses.map((course, index) => (
+
+              <div key={course} className={classes.card}>
+                <Card className={classes.card}>
+                  <CardHeader
+                    avatar={
+                      <Avatar className={classes.avatar}>
+                        {courseCodes[index][0] + courseCodes[index][1]}
+                      </Avatar>
+                    }
+                    title={course}
+                    subheader={courseCodes[index]}
+                  />
+                  <CardMedia
+                    className={classes.cardMedia}
+                  />
+                </Card>
+
+              </div>
+            ))}
+          </Grid>
         </Container>
       </main>
       {/* Footer */}

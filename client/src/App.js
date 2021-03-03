@@ -2,7 +2,6 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
-import './App.css';
 import { Link } from 'react-router-dom';
 import bgImage from './assets/cover.png';
 import logo from './assets/logo-dark.png';
@@ -18,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
   },
   leftContainer: {
     height: '100vh',
-    // marginTop: '50vh'
+    
   },
   rightContainer: {
     height: '100vh'

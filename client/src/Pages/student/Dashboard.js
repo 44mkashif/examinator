@@ -178,7 +178,10 @@ export default function Dashboard() {
             <Divider variant="middle" />
             <br/>
 
-            
+            <Typography>
+            Results for Previous Exams
+            </Typography>
+
           <Grid container spacing={3} justify="center">
             {courses.map((course, index) => (
 

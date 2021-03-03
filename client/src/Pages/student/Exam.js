@@ -42,6 +42,13 @@ for (var i = 0; i < questionNum; i++) {
   questions.push(<Question question={"Question " + i + ": " + ques[i]} qNo={i} />);
 }
 var temp = 0;
+var isCreator = false;
+var isAnswered = false;
+var localStream;
+var remoteStream;
+var examRoom = 'foo';
+var peerConnection;
+
 export default function AutoGrid() {
 
   const videoRef = React.useRef(null);
@@ -49,16 +56,95 @@ export default function AutoGrid() {
   React.useEffect(()=>{
 
     const socket = io("http://127.0.0.1:4001");
+    var videoDivision = document.querySelector('.videos');
+    
+    if(examRoom != '') {
+      socket.emit('join', examRoom);
+    }
+
+    socket.on('message', (message) => {
+      if (message.type == 'offer' && !isAnswered) {
+        console.log('student getting offer');
+        peerConnection.setRemoteDescription(new RTCSessionDescription(message));
+        doAnswer();
+      } else if (message.type == 'candidate') {
+          console.log('student getting candidate info');
+          let candidate = new RTCIceCandidate({
+            sdpMLineIndex: message.label,
+            candidate: message.candidate
+          });
+          peerConnection.addIceCandidate(candidate);
+      }
+    })
 
     navigator.mediaDevices.getUserMedia({
       audio: false,
       video: true
     }).then((stream)=>{
-      let loaclVideo = videoRef.current;
-      loaclVideo.srcObject = stream;
-      loaclVideo.play();
+      let localVideo = videoRef.current;
+      localVideo.srcObject = stream;
+      localStream = stream;
+      localVideo.play();
       console.log('Local Video Streaming....')
+      
+      createPeerConnection();
+      socket.emit('message', 'got stream', examRoom);
+      
+    }).catch((error) => {
+      console.log(error)
     })
+
+    function createPeerConnection() {
+      try {
+        console.log('student creting peer connection');
+        peerConnection = new RTCPeerConnection(null);
+        peerConnection.onicecandidate = handleIceCandidate;
+        peerConnection.onaddstream = handleRemoteStreamAdded;
+        peerConnection.onremovestream = handleRemoteStreamRemoved;
+        peerConnection.addStream(localStream);
+      } catch (error) {
+        console.log(error);
+        return;
+      }
+    }
+
+    function handleIceCandidate (e) {
+      console.log('student sending candidate info');
+      if(e.candidate) {
+        let message = {
+          type: 'candidate',
+          label: e.candidate.sdpMLineIndex,
+          id: e.candidate.sdpMid,
+          candidate: e.candidate.candidate
+        };
+        socket.emit('message', message, examRoom);
+      }
+    }
+
+    function handleRemoteStreamAdded (e) {
+      console.log('student stream received')
+      remoteStream = e.stream;
+      let remoteVideo = document.createElement('video');
+      remoteVideo.srcObject = remoteStream;
+      remoteVideo.autoplay = true;
+      remoteVideo.width = 250;
+      videoDivision.appendChild(remoteVideo);
+    }
+
+    function handleRemoteStreamRemoved (e) {
+      
+    }
+
+    function doAnswer() {
+      console.log('student answering to offer');
+      peerConnection.createAnswer().then((sessionDescription) => {
+        peerConnection.setLocalDescription(sessionDescription);
+        isAnswered = true;
+        socket.emit('message', sessionDescription, examRoom);
+      }, (error) => {
+          console.log(error);
+      })
+    }
 
   }, []);
 
@@ -104,7 +190,9 @@ export default function AutoGrid() {
             </Grid> 
           </Grid>
           <Grid container justify="center" xs>
-            <video width="250" ref={videoRef}></video>
+            <div className="videos">
+              <video width="250" ref={videoRef}></video>
+            </div>
           </Grid>
         </Grid>
       </div>

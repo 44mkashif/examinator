@@ -90,11 +90,6 @@ var courses = ['Devops', 'Data Structures', 'Data Science', 'Robotic Vision', 'W
 var courseCodes = ['CS453', 'CS112', 'CE432', 'DS456', 'CE446', 'CS321'];
 
 
-var joinCourse = () => {
-  courses.push("Kiwi");
-  console.log('course pushed' + courses)
-}
-
 var logout = () => {
   AuthService.logout();
 }
@@ -108,7 +103,6 @@ var logout = () => {
 // }
 export default function Dashboard() {
   const classes = useStyles();
-  const [expanded, setExpanded] = React.useState(false);
 
 
 

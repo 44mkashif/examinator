@@ -109,7 +109,7 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-var exams = ['Midterm Exam', 'Final Term'];
+const examData = [];
 
 export default function Course() {
 
@@ -127,6 +127,20 @@ export default function Course() {
     const handleDateChange = (date) => {
         setSelectedDate(date);
     };
+    const [examName, setExamName] = React.useState('');
+    const [qNo, setqNo] = React.useState(0);
+    const [duration, setDuration] = React.useState(0);
+
+    const onChangeExamName = (e) => {
+        setExamName(e.target.value);
+    }
+
+    const onChangeDuration = (e) => {
+        setDuration(e.target.value);
+    }
+    const onChangeQNo = (e) => {
+        setqNo(e.target.value);
+    }
 
     const courseId = "603ea3d760c6ed3f3880dff3"; //TODO: current course id
     const authToken = localStorage.getItem('auth-token');
@@ -161,10 +175,8 @@ export default function Course() {
             <div className={classes.root}>
                 <Container className={classes.cardGrid}>
                     <Grid container spacing={4} justify="center">
-                        {exams.map((exam) => (
+                        {/* {exams.map((exam) => (
                             <div key={exam} className={classes.card}>
-
-
                                 <Card className={classes.card}>
                                     <ButtonBase className={classes.cardMargin}
                                         onClick={event => { navigateTo('../instructor/course/exam') }}
@@ -172,6 +184,51 @@ export default function Course() {
                                         <CardContent className={classes.cardContent}>
                                             <Typography gutterBottom variant="h5" component="h2">
                                                 {exam}
+                                            </Typography>
+                                            <Grid container justify="center">
+                                                <DateRangeIcon className={classes.iconClass} />
+                                                <Typography className={classes.margin}>
+                                                    12 Jan, 2021
+                                                    </Typography>
+                                            </Grid>
+                                            <Grid container justify="center">
+                                                <AccessTimeIcon className={classes.iconClass} />
+                                                <Typography className={classes.margin}>
+                                                    10:00 PM
+                                                    </Typography>
+                                            </Grid>
+                                        </CardContent>
+
+                                    </ButtonBase>
+                                    <CardActions>
+                                        <Grid container spacing={2}
+                                            justify='space-between'
+                                            alignItems='center'
+                                        >
+                                            <IconButton className={classes.editClass}>
+                                                <EditIcon />
+                                            </IconButton>
+                                            <IconButton className={classes.deleteClass}>
+                                                <DeleteIcon />
+                                            </IconButton>
+                                        </Grid>
+                                    </CardActions>
+                                </Card>
+
+                            </div>
+                        ))} */}
+                        {examData.map((exam, i) => (
+                            <div key={i} className={classes.card}>
+                                <Card className={classes.card}>
+                                    <ButtonBase className={classes.cardMargin}
+                                        onClick={event => { navigateTo('../instructor/course/exam') }}
+                                    >
+                                        <CardContent className={classes.cardContent}>
+                                            <Typography gutterBottom variant="h5" component="h2">
+                                                {exam.examName}
+                                            </Typography>
+                                            <Typography gutterBottom variant="h5" component="h2">
+                                                {exam.duration}
                                             </Typography>
                                             <Grid container justify="center">
                                                 <DateRangeIcon className={classes.iconClass} />
@@ -234,6 +291,8 @@ export default function Course() {
                                 label="Exam Name"
                                 autoComplete="off"
                                 autoFocus
+                                value={examName}
+                                onChange={onChangeExamName}
                             />
                         </form>
                         <Grid container justify='center' alignItems='center'>
@@ -249,6 +308,8 @@ export default function Course() {
                                         label="No of Questions"
                                         type='number'
                                         autoComplete="off"
+                                        value={qNo}
+                                        onChange={onChangeQNo}
                                     />
                                 </form>
                             </Grid>
@@ -263,6 +324,8 @@ export default function Course() {
                                         id="standard-basic"
                                         label="Duration"
                                         autoComplete="off"
+                                        value={duration}
+                                        onChange={onChangeDuration}
                                     />
                                 </form>
                             </Grid>
@@ -318,7 +381,15 @@ export default function Course() {
                                 color="primary"
                                 style={{ width: '48%' }}
                                 className={classes.button}
-                                onClick={event => { navigateTo('../instructor/course/Paper') }}
+                                onClick={event => {
+                                    examData.push({
+                                        examName,
+                                        questionNo: qNo,
+                                        duration,
+                                    })
+                                    console.log(examData);
+                                    navigateTo('../instructor/course/Paper')
+                                }}
                             >
                                 Save
                                 </Button>

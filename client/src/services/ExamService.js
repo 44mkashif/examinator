@@ -12,7 +12,7 @@ class ExamService extends Component {
             });
             if (res.data.success) {
                 console.log(res.data);
-                return res.data.exam;
+                return res.data.exams;
             } else {
                 console.log(res.data.msg);
             }

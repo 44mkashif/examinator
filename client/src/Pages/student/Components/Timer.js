@@ -28,7 +28,7 @@ const getTimeDays = (time) => (time / daySeconds) | 0;
 
 export default function App() {
     const stratTime = Date.now() / 1000; // use UNIX timestamp in seconds
-    const endTime = stratTime + 243248; // use UNIX timestamp in seconds
+    const endTime = stratTime + 10000; // use UNIX timestamp in seconds
 
     const remainingTime = endTime - stratTime;
     const days = Math.ceil(remainingTime / daySeconds);
@@ -36,16 +36,6 @@ export default function App() {
 
     return (
         <div className="App">
-            <CountdownCircleTimer
-                {...timerProps}
-                colors={[["#7E2E84"]]}
-                duration={daysDuration}
-                initialRemainingTime={remainingTime}
-            >
-                {({ elapsedTime }) =>
-                    renderTime("days", getTimeDays(daysDuration - elapsedTime))
-                }
-            </CountdownCircleTimer>
             <CountdownCircleTimer
                 {...timerProps}
                 colors={[["#D14081"]]}

@@ -66,16 +66,19 @@ export default function AutoGrid() {
   return (
     <React.Fragment>
       <AppBar />
-      <Timer/>
+      
       <div className={classes.root}>
+        
         <Grid container spacing={0}>
+          
           <Grid item xs={9} style={{paddingTop: 40}} >
+            <Timer />
             {questions[qNo ? qNo : 0]}
             <Grid container justify="center" style={{paddingTop: 40}}>
               <Button variant="contained" color="primary" className={classes.button} onClick={handleChange} >
               Save &amp; Next
             </Button>
-              <Button variant="contained" disabled={activebutton} onClick={event => { navigateTo('../') }}>
+              <Button variant="contained" disabled={activebutton} onClick={event => { navigateTo('./ExamComplete') }}>
                 Submit
                </Button>
             </Grid> 

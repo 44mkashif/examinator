@@ -14,7 +14,6 @@ import AppBar from '@material-ui/core/AppBar';
 import courseImage from './../../assets/course.jpg';
 import Toolbar from '@material-ui/core/Toolbar';
 import logoImg from './../../assets/navbar-2.png';
-import AddCircleIcon from '@material-ui/icons/AddCircle';
 import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
@@ -91,11 +90,6 @@ const useStyles = makeStyles((theme) => ({
 var courses = ['Devops', 'Data Structures', 'Data Science', 'Robotic Vision', 'Web Engineering', 'Block Chain'];
 var courseCodes = ['CS453', 'CS112', 'CE432', 'DS456', 'CE446', 'CS321'];
 
-var addCourse = () => {
-  courses.push("Kiwi");
-  console.log('course pushed' + courses)
-}
-
 var logout = () => {
   AuthService.logout();
 }
@@ -109,11 +103,7 @@ var logout = () => {
 // }
 export default function Dashboard() {
   const classes = useStyles();
-  const [expanded, setExpanded] = React.useState(false);
 
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
-  };
 
   //Routing Functions
   const history = useHistory();
@@ -149,12 +139,6 @@ export default function Dashboard() {
             </div>
             <div>
 
-              <Button raised className={classes.button}>
-                <AddCircleIcon className={classes.extendedIcon} />
-                <Typography className={classes.buttonText}>
-                  Add Course
-                  </Typography>
-              </Button>
               <Button raised className={classes.button} onClick={logout}>
                 <ExitToAppIcon className={classes.extendedIcon} />
                 <Typography className={classes.buttonText}>

@@ -7,7 +7,8 @@ import AppBar from './Components/AppBar';
 import personImg from './../../assets/person.png';
 import Button from '@material-ui/core/Button';
 import Timer from './Components/Timer';
-import io from 'socket.io-client';
+
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,21 +30,38 @@ const useStyles = makeStyles((theme) => ({
 
 var questionNum = 5;
 
+var ques = [ "A linear collection of data elements where the linear node is given by means of pointer is called?",
+ "In linked list each node contains a minimum of two fields. One field is data field to store the data second field is?",
+  "What would be the asymptotic time complexity to add a node at the end of singly linked list, if the pointer is initially pointing to the head of the list?",
+   "The concatenation of two lists can be performed in O(1) time. Which of the following variation of the linked list can be used?",
+    "What would be the asymptotic time complexity to insert an element at the front of the linked list (head is known)" ];
+
 var questions = [];
 for (var i = 0; i < questionNum; i++) {
-  questions.push(<Question question={"Question " + i} qNo={i} />);
+  questions.push(<Question question={"Question " + i + ": " + ques[i]} qNo={i} />);
 }
 var temp = 0;
 export default function AutoGrid() {
   const classes = useStyles();
   const [qNo, setQNo] = React.useState('');
+  const [activebutton, setButton] = React.useState(true);
+
+  const history = useHistory();
+  const navigateTo = (path) => history.push(path);
+
 
   const handleChange = () => {
     // currentQues.pop();
     console.log(questions);
+
+    if (qNo >= questions.length-1 || qNo === undefined) {
+      setButton(false);
+    }
     console.log(temp);
     setQNo(++temp);
   };
+
+
 
   return (
     <React.Fragment>
@@ -54,9 +72,12 @@ export default function AutoGrid() {
           <Grid item xs={9} style={{paddingTop: 40}} >
             {questions[qNo ? qNo : 0]}
             <Grid container justify="center" style={{paddingTop: 40}}>
-              <Button variant="contained" color="primary" className={classes.button} onClick={handleChange}>
+              <Button variant="contained" color="primary" className={classes.button} onClick={handleChange} >
               Save &amp; Next
             </Button>
+              <Button variant="contained" disabled={activebutton} onClick={event => { navigateTo('../') }}>
+                Submit
+               </Button>
             </Grid> 
           </Grid>
           <Grid item justify="center" xs>

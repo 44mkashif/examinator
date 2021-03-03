@@ -11,11 +11,11 @@ import StudentCourse from './Pages/Student/Course';
 import StudentExam from './Pages/Student/Exam';
 import StudentPaper from './Pages/Student/Paper';
 import StudentExamInstruction from './Pages/Student/ExamInstruction';
+import StudentExamComplete from './Pages/Student/ExamComplete';
 
 import InstructorLogin from './Pages/Instructor/Login';
 import InstructorDashboard from './Pages/Instructor/Dashboard';
 import InstructorCourse from './Pages/Instructor/Course';
-import InstructorSchedule from './Pages/Instructor/Schedule';
 import InstructorPaper from './Pages/Instructor/Paper';
 import InstructorExam from './Pages/Instructor/Exam';
 
@@ -52,29 +52,29 @@ const theme = createMuiTheme({
 const authGuard = (to, from, next) => {
   if (localStorage.getItem('auth-token')) {
     if (to.meta.auth) {
-      if (localStorage.getItem('role') == 'student' && to.meta.role == 'student') {
+      if (localStorage.getItem('role') === 'student' && to.meta.role === 'student') {
         next();
-      } else if (localStorage.getItem('role') == 'instructor' && to.meta.role == 'instructor') {
+      } else if (localStorage.getItem('role') === 'instructor' && to.meta.role === 'instructor') {
         next();
       } else {
-        if (localStorage.getItem('role') == 'student') {
+        if (localStorage.getItem('role') === 'student') {
           next.redirect('/student/dashboard')
-        } else if (localStorage.getItem('role') == 'instructor') {
+        } else if (localStorage.getItem('role') === 'instructor') {
           next.redirect('/instructor/dashboard')
         }
       }
     } else {
-      if (localStorage.getItem('role') == 'student') {
+      if (localStorage.getItem('role') === 'student') {
         next.redirect('/student/dashboard')
-      } else if (localStorage.getItem('role') == 'instructor') {
+      } else if (localStorage.getItem('role') === 'instructor') {
         next.redirect('/instructor/dashboard')
       }
     }
   } else {
     if (to.meta.auth) {
-      if (to.meta.role == 'student') {
+      if (to.meta.role === 'student') {
         next.redirect('/Student/Login')
-      } else if (to.meta.role == 'instructor') {
+      } else if (to.meta.role === 'instructor') {
         next.redirect('/Instructor/Login')
       }
     } else {
@@ -95,12 +95,12 @@ ReactDOM.render(
           <GuardedRoute path="/Student/Course/Exam" exact component={StudentExam} meta={{ auth: true, role: 'student' }} />
           <GuardedRoute path="/Student/Course/Paper" exact component={StudentPaper} meta={{ auth: true, role: 'student' }} />
           <GuardedRoute path="/Student/Course/ExamInstruction" exact component={StudentExamInstruction} meta={{ auth: true, role: 'student' }} />
+          <GuardedRoute path="/Student/Course/ExamComplete" exact component={StudentExamComplete} meta={{ auth: true, role: 'student' }} />
           <Route path="/test" exact component={Test} />
 
           <GuardedRoute path="/Instructor/Login" exact component={InstructorLogin} />
           <GuardedRoute path="/Instructor/Dashboard" exact component={InstructorDashboard} meta={{ auth: true, role: 'instructor' }} />
           <GuardedRoute path="/Instructor/Course" exact component={InstructorCourse} meta={{ auth: true, role: 'instructor' }} />
-          <GuardedRoute path="/Instructor/Course/Schedule" exact component={InstructorSchedule} meta={{ auth: true, role: 'instructor' }} />
           <GuardedRoute path="/Instructor/Course/Paper" exact component={InstructorPaper} meta={{ auth: true, role: 'instructor' }} />
           <GuardedRoute path="/Instructor/Course/Exam" exact component={InstructorExam} meta={{ auth: true, role: 'instructor' }} />
 

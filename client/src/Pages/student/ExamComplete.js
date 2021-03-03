@@ -1,7 +1,6 @@
 import React from 'react';
-import AppBar from './Student/Components/AppBar';
+import AppBar from './Components/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -19,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function Testpage() {
+export default function StudentExamComplete() {
 
     const classes = useStyles();
 

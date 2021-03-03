@@ -12,8 +12,9 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import bgImage from './../../assets/studentLogin.jpg';
-
 import AuthService from '../../services/AuthService';
+import { useState } from 'react';
+import { Alert, AlertTitle } from '@material-ui/lab';
 
 
 function Copyright() {
@@ -83,23 +84,28 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-var body = {}
-
-const studentLogin = (e) => {
-  e.preventDefault();
-  AuthService.studentLogin(body);
-}
-
-const onEmailChange = (e) => {
-  body[e.target.name] = e.target.value;
-}
-
-const onPasswordChange = (e) => {
-  body[e.target.name] = e.target.value;
-}
 
 export default function Login() {
+  
   const classes = useStyles();
+  const [errorMessage, setErrorMessage] = React.useState("");
+
+  var body = {}
+
+  const studentLogin = async (e) => {
+    e.preventDefault();
+    const error = await AuthService.studentLogin(body);
+    setErrorMessage(error);
+  }
+
+  const onEmailChange = (e) => {
+    body[e.target.name] = e.target.value;
+  }
+
+  const onPasswordChange = (e) => {
+    body[e.target.name] = e.target.value;
+  }
+
 
   return (
     <Grid container component="main" className={classes.root}>
@@ -165,6 +171,14 @@ export default function Login() {
                 </Link>
               </Grid>
             </Grid>
+            {errorMessage &&
+              <Box mt={5}>
+                <Alert severity="error">
+                  <AlertTitle>Error</AlertTitle>
+                  {errorMessage}
+                </Alert>
+              </Box>
+            }
             <Box mt={5}>
               <Copyright />
             </Box>

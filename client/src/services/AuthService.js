@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import axios from 'axios'
+import axios from 'axios';
+
 
 class AuthService extends Component {
-
+  
   static async studentLogin(body) {
     try {
+      
       const res = await axios.post('http://localhost:4000/api/login-student', body);
       if(res.data.success){
         localStorage.setItem('studentId', res.data.student._id);
@@ -12,15 +14,15 @@ class AuthService extends Component {
         localStorage.setItem('auth-token', res.data.token);
         localStorage.setItem('role', 'student');
         window.location.href='/student/dashboard';        
-      } else {
-        console.log(res.data.msg);
       }
     } catch (error) {
-      console.log(error)
+      console.log(error.response.data.msg);
+      return error.response.data.msg;
     }
   }
 
   static async instructorLogin(body) {
+    
     try {
       const res = await axios.post('http://localhost:4000/api/login-instructor', body);
       if(res.data.success){
@@ -29,11 +31,10 @@ class AuthService extends Component {
         localStorage.setItem('auth-token', res.data.token);
         localStorage.setItem('role', 'instructor');
         window.location.href='/instructor/dashboard';    
-      } else {
-        console.log(res.data.msg);
-      }
+      } 
     } catch (error) {
-      console.log(error)
+      console.log(error.response.data.msg);
+      return error.response.data.msg;
     }
   }
 

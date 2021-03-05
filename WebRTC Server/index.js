@@ -19,7 +19,7 @@ var creators = {};
 io.on("connection", (socket) => {
   
     socket.on('message', (message, room) => {
-        console.log('message received on server...');
+        console.log('message received on server...'+message);
         if(socket.id != creators[room]) {
             console.log('message sending to instructor');
             io.to(creators[room]).emit('message', message, socket.id);

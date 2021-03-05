@@ -42,12 +42,26 @@ for (var i = 0; i < questionNum; i++) {
   questions.push(<Question question={"Question " + i + ": " + ques[i]} qNo={i} />);
 }
 var temp = 0;
-var isCreator = false;
+
 var isAnswered = false;
 var localStream;
 var remoteStream;
 var examRoom = 'foo';
 var peerConnection;
+
+const socket = io("http://127.0.0.1:4001");
+
+window.onbeforeunload = ()=>{
+  socket.emit('message', 'close', examRoom);
+};
+
+window.onfocus = ()=>{
+  socket.emit('message', 'focus', examRoom);
+};
+
+window.onblur = ()=>{
+  socket.emit('message', 'blur', examRoom);
+};
 
 export default function AutoGrid() {
 
@@ -56,7 +70,7 @@ export default function AutoGrid() {
   React.useEffect(()=>{
 
     const socket = io("http://127.0.0.1:4001");
-    var videoDivision = document.querySelector('.videos');
+    var videoDivision = document.querySelector('.videos');   
     
     if(examRoom != '') {
       socket.emit('join', examRoom);
@@ -74,6 +88,8 @@ export default function AutoGrid() {
             candidate: message.candidate
           });
           peerConnection.addIceCandidate(candidate);
+      } else if (message == 'close'){
+        handleRemoteHangup();
       }
     })
 
@@ -93,6 +109,10 @@ export default function AutoGrid() {
     }).catch((error) => {
       console.log(error)
     })
+
+    window.onbeforeunload = function() {
+      socket.emit('message', 'close', examRoom);
+    }
 
     function createPeerConnection() {
       try {
@@ -131,6 +151,7 @@ export default function AutoGrid() {
       videoDivision.appendChild(remoteVideo);
     }
 
+
     function handleRemoteStreamRemoved (e) {
       
     }
@@ -145,6 +166,24 @@ export default function AutoGrid() {
           console.log(error);
       })
     }
+
+    function hangup() {
+      console.log('Hanging up.');
+      stop();
+      socket.emit('message', 'close', examRoom);
+    }
+    
+    function handleRemoteHangup() {
+      console.log('Session terminated.');
+      stop();
+    }
+
+    function stop() {
+      peerConnection.close();
+      peerConnection = null;
+    }
+
+    
 
   }, []);
 
@@ -166,7 +205,6 @@ export default function AutoGrid() {
     console.log(temp);
     setQNo(++temp);
   };
-
 
 
   return (

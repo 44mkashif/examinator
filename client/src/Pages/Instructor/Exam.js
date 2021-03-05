@@ -2,43 +2,49 @@ import React from 'react';
 import AppBar from './Components/AppBar';
 import Grid from '@material-ui/core/Grid';
 import io from 'socket.io-client';
+import { useParams } from 'react-router-dom';
 <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
 
 var isCreator = false;
-var isAnswered = false;
 var localStream;
 var remoteStream;
 var examRoom = 'foo';
 var peerConnections = {};
-
+var remoteId;
 
 export default function Exam() {
-
+  const q = useParams();
+  console.log(q.room);
     const videoRef = React.useRef(null);
 
     React.useEffect(()=>{
 
         const socket = io("http://127.0.0.1:4001");
         var videoDivision = document.querySelector('#videos');
+        
         if(examRoom != '') {
-        socket.emit('create', examRoom);
+          socket.emit('create', examRoom);
         }
 
         socket.on('message', (message, remoteClientId) => {
-        if(message == 'got stream' && isCreator) {
-            console.log('instructor getting client signal');
-            createPeerConnection(remoteClientId);
-            doCall(remoteClientId);
-        } else if (message.type == 'answer' && isCreator) {
-            peerConnections[remoteClientId].setRemoteDescription(new RTCSessionDescription(message));
-        } else if (message.type == 'candidate') {
-            console.log('instructor getting candidate info');
-            let candidate = new RTCIceCandidate({
-                sdpMLineIndex: message.label,
-                candidate: message.candidate
-            });
-            peerConnections[remoteClientId].addIceCandidate(candidate);
-        }
+          if(message == 'got stream' && isCreator) {
+              console.log('instructor getting client signal');
+              createPeerConnection(remoteClientId);
+              doCall(remoteClientId);
+          } else if (message.type == 'answer' && isCreator) {
+              peerConnections[remoteClientId].setRemoteDescription(new RTCSessionDescription(message));
+              remoteId = remoteClientId;
+          } else if (message.type == 'candidate') {
+              console.log('instructor getting candidate info');
+              let candidate = new RTCIceCandidate({
+                  sdpMLineIndex: message.label,
+                  candidate: message.candidate
+              });
+              peerConnections[remoteClientId].addIceCandidate(candidate);
+          } else if (message == 'close'){
+              console.log('remote stream closed...');
+              handleRemoteHangup(remoteClientId);
+          }
         })
 
         socket.on('created', () => {
@@ -56,7 +62,7 @@ export default function Exam() {
             localVideo.play();
             console.log('Local Video Streaming....')
 
-            socket.emit('message', 'got stream', examRoom)
+            // socket.emit('message', 'got stream', examRoom)
         })
 
         function createPeerConnection(remoteClientId) {
@@ -91,11 +97,13 @@ export default function Exam() {
             let remoteVideo = document.createElement('video');
             remoteVideo.srcObject = remoteStream;
             remoteVideo.autoplay = true;
+            remoteVideo.id = remoteId;
             remoteVideo.width = 250;
             videoDivision.appendChild(remoteVideo);
           }
           function handleRemoteStreamRemoved (e) {
-            
+            console.log('stream removed')
+            socket.emit('dis');
           }
 
           function doCall(remoteClientId) {
@@ -106,6 +114,24 @@ export default function Exam() {
               }, (error) => {
                   console.log(error);
               })
+          }
+
+          function hangup(remoteClientId) {
+            console.log('Hanging up.');
+            stop(remoteClientId);
+            socket.emit('message', 'close', examRoom);
+          }
+          
+          function handleRemoteHangup(remoteClientId) {
+            console.log('Session terminated.');
+            document.getElementById(remoteClientId).remove();
+            stop(remoteClientId)
+          }
+
+          function stop(remoteClientId) {
+            peerConnections[remoteClientId].close();
+            peerConnections[remoteClientId] = null;
+                
           }
         
     }, [])

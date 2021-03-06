@@ -55,22 +55,25 @@ window.onbeforeunload = ()=>{
   socket.emit('message', 'close', examRoom);
 };
 
-window.onfocus = ()=>{
-  socket.emit('message', 'focus', examRoom);
-};
 
-window.onblur = ()=>{
-  socket.emit('message', 'blur', examRoom);
-};
 
 export default function AutoGrid() {
 
   const videoRef = React.useRef(null);
+  const remoteVideoRef = React.useRef(null);
 
   React.useEffect(()=>{
 
     const socket = io("http://127.0.0.1:4001");
-    var videoDivision = document.querySelector('.videos');   
+    var videoDivision = document.querySelector('.videos');
+    
+    window.onfocus = ()=>{
+      socket.emit('message', 'focus', examRoom);
+    };
+    
+    window.onblur = ()=>{
+      socket.emit('message', 'blur', examRoom);
+    };
     
     if(examRoom != '') {
       socket.emit('join', examRoom);
@@ -90,6 +93,14 @@ export default function AutoGrid() {
           peerConnection.addIceCandidate(candidate);
       } else if (message == 'close'){
         handleRemoteHangup();
+      } else if (message.type == 'on/off') {
+        if(message.toggleState.checked) {
+          console.log('retain')
+          document.getElementById('remoteVideo').hidden = false;
+        } else {
+          console.log('remove')
+          document.getElementById('remoteVideo').hidden = true;
+        }
       }
     })
 
@@ -143,12 +154,16 @@ export default function AutoGrid() {
 
     function handleRemoteStreamAdded (e) {
       console.log('student stream received')
-      remoteStream = e.stream;
-      let remoteVideo = document.createElement('video');
-      remoteVideo.srcObject = remoteStream;
-      remoteVideo.autoplay = true;
-      remoteVideo.width = 250;
-      videoDivision.appendChild(remoteVideo);
+      let remoteVideo = remoteVideoRef.current;
+      remoteVideo.srcObject = e.stream;
+      remoteVideo.play();
+
+      // remoteStream = e.stream;
+      // let remoteVideo = document.createElement('video');
+      // remoteVideo.srcObject = remoteStream;
+      // remoteVideo.autoplay = true;
+      // remoteVideo.width = 250;
+      // videoDivision.appendChild(remoteVideo);
     }
 
 
@@ -169,8 +184,6 @@ export default function AutoGrid() {
 
     function hangup() {
       console.log('Hanging up.');
-      stop();
-      socket.emit('message', 'close', examRoom);
     }
     
     function handleRemoteHangup() {
@@ -230,6 +243,7 @@ export default function AutoGrid() {
           <Grid container justify="center" xs>
             <div className="videos">
               <video width="250" ref={videoRef}></video>
+              <video id="remoteVideo" width="250" ref={remoteVideoRef}></video>
             </div>
           </Grid>
         </Grid>

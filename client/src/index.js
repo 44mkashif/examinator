@@ -102,7 +102,7 @@ ReactDOM.render(
           <GuardedRoute path="/Instructor/Dashboard" exact component={InstructorDashboard} meta={{ auth: true, role: 'instructor' }} />
           <GuardedRoute path="/Instructor/Course" exact component={InstructorCourse} meta={{ auth: true, role: 'instructor' }} />
           <GuardedRoute path="/Instructor/Course/Paper" exact component={InstructorPaper} meta={{ auth: true, role: 'instructor' }} />
-          <GuardedRoute path="/Instructor/Course/Exam/:room" exact component={InstructorExam} meta={{ auth: true, role: 'instructor' }} />
+          <GuardedRoute path="/Instructor/Course/Exam" exact component={InstructorExam} meta={{ auth: true, role: 'instructor' }} />
 
         </Switch>
       </GuardProvider>

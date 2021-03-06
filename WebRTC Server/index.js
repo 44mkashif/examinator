@@ -29,7 +29,14 @@ io.on("connection", (socket) => {
         }
     });
 
+    socket.on('on/off stream', (message, room) => {
+        socket.to(room).emit('message', message);
+    })
+
     socket.on('create', (room) => {
+        var clientsInRoom = io.sockets.adapter.rooms[room];
+        var numClients = clientsInRoom ? Object.keys(clientsInRoom.sockets).length : 0;
+        console.log('no of clients: ' + numClients);
         console.log('intructor creating room: ' + room);
         socket.join(room);
         creators[room] = socket.id;

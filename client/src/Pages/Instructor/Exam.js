@@ -3,6 +3,7 @@ import AppBar from './Components/AppBar';
 import Grid from '@material-ui/core/Grid';
 import io from 'socket.io-client';
 import { useParams } from 'react-router-dom';
+import Switch from '@material-ui/core/Switch';
 <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
 
 var isCreator = false;
@@ -13,9 +14,18 @@ var peerConnections = {};
 var remoteId;
 
 export default function Exam() {
-  const q = useParams();
-  console.log(q.room);
+  // const q = useParams();
+  // console.log(q.room);
     const videoRef = React.useRef(null);
+    const [msg, setmsg] = React.useState('');
+    const [toggleState, settoggleState] = React.useState({
+      checked: true,
+    });
+
+    React.useEffect(()=>{
+      const socket = io("http://127.0.0.1:4001");
+      socket.emit('on/off stream', {type: 'on/off', toggleState: toggleState}, examRoom);
+    }, [toggleState])
 
     React.useEffect(()=>{
 
@@ -44,7 +54,12 @@ export default function Exam() {
           } else if (message == 'close'){
               console.log('remote stream closed...');
               handleRemoteHangup(remoteClientId);
+          } else if (message == 'blur') {
+            setmsg(remoteClientId + ' has changed tab');
+          } else if (message == 'focus') {
+            setmsg('');
           }
+
         })
 
         socket.on('created', () => {
@@ -102,8 +117,7 @@ export default function Exam() {
             videoDivision.appendChild(remoteVideo);
           }
           function handleRemoteStreamRemoved (e) {
-            console.log('stream removed')
-            socket.emit('dis');
+            
           }
 
           function doCall(remoteClientId) {
@@ -118,14 +132,12 @@ export default function Exam() {
 
           function hangup(remoteClientId) {
             console.log('Hanging up.');
-            stop(remoteClientId);
-            socket.emit('message', 'close', examRoom);
           }
           
           function handleRemoteHangup(remoteClientId) {
             console.log('Session terminated.');
             document.getElementById(remoteClientId).remove();
-            stop(remoteClientId)
+            stop(remoteClientId);
           }
 
           function stop(remoteClientId) {
@@ -133,8 +145,9 @@ export default function Exam() {
             peerConnections[remoteClientId] = null;
                 
           }
-        
+
     }, [])
+    
 
     return(
         <React.Fragment>
@@ -143,6 +156,13 @@ export default function Exam() {
             <div id="videos">
               <video width="250" ref={videoRef}></video>
             </div>
+            <Switch
+              checked={toggleState.checked}
+              onChange={(e)=>{settoggleState({ checked: e.target.checked });}}
+              name="checked"
+              inputProps={{ 'aria-label': 'secondary checkbox' }}
+            />
+            {msg}
             </Grid>
         </React.Fragment>
     )

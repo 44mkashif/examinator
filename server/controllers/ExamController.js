@@ -53,6 +53,7 @@ class ExamController {
     }
 
     //Instructor Get Exam of specific course by its id
+    //Throw Random questions from pool
     static async getExam(req, res) {
         try {
             let exam = await Exam.aggregate([
@@ -67,6 +68,26 @@ class ExamController {
                         localField: "_id",
                         foreignField: "examId",
                         as: "question"
+                    }
+                },
+                {
+                    $unwind: {
+                        path: "$question",
+                        preserveNullAndEmptyArrays: true
+                    }
+                },
+                {
+                    $sample: {size: 2}
+                },
+                {
+                    $group: {
+                        _id: "$_id",
+                        name: {$first: "$name"},
+                        courseId: {$first: "$courseId"},
+                        duration: {$first: "$duration"},
+                        startTime: {$first: "$startTime"},
+                        totalMarks: {$first: "$totalMarks"},
+                        question: {$push: "$question"},
                     }
                 }
             ]);

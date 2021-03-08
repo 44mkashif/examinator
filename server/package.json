@@ -8,7 +8,8 @@
     "start": "node bin/server.js",
     "server": "nodemon bin/server.js",
     "client": "cd ../client && npm start",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "webrtc": "cd ../WebRTC Server && nodemon",
+    "dev": "concurrently \"npm run server\" \"npm run client\" \" npm run webrtc\""
   },
   "keywords": [],
   "author": "",

@@ -21,7 +21,7 @@ class ExamController {
                 let duration = req.body.duration;
                 let startTime = new Date(req.body.startTime);
                 let totalMarks = req.body.totalMarks;
-                
+
                 let exam = new Exam({
                     name: name,
                     courseId: mongoose.Types.ObjectId(courseId),
@@ -99,17 +99,17 @@ class ExamController {
                     }
                 },
                 {
-                    $sample: {size: 2}
+                    $sample: { size: 2 }
                 },
                 {
                     $group: {
                         _id: "$_id",
-                        name: {$first: "$name"},
-                        courseId: {$first: "$courseId"},
-                        duration: {$first: "$duration"},
-                        startTime: {$first: "$startTime"},
-                        totalMarks: {$first: "$totalMarks"},
-                        question: {$push: "$question"},
+                        name: { $first: "$name" },
+                        courseId: { $first: "$courseId" },
+                        duration: { $first: "$duration" },
+                        startTime: { $first: "$startTime" },
+                        totalMarks: { $first: "$totalMarks" },
+                        question: { $push: "$question" },
                     }
                 }
             ]);

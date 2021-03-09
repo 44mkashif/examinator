@@ -121,7 +121,7 @@ function App() {
             </Grid>
           </Grid>
         </Grid>
-        <Box display={{ xs: 'none', sm: 'block' }}>
+        <Box display={{ xs: 'none', sm: 'none', md: 'block' }}>
           <Grid item xs={12} sm={5} container alignItems="center" className={classes.rightContainer}>
             <img className={classes.cover} src={bgImage} alt="" />
           </Grid>

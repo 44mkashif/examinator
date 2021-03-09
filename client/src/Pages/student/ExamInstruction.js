@@ -52,8 +52,11 @@ export default function Exam() {
 
     const [checked, setChecked] = React.useState(false);
 
+    const [activebutton, setButton] = React.useState(true);
+
     const handleChange = (event) => {
         setChecked(event.target.checked);
+        setButton(!event.target.checked);
     };
 
     return (
@@ -128,7 +131,9 @@ export default function Exam() {
                             <Button className={classes.button}
                                 variant="contained"
                                 color="primary"
-                                component={Link} to="./Exam">
+                                component={Link} to="./Exam"
+                                disabled={activebutton}>
+                                    
                                 Start Now!
                             </Button>
                         </Grid>

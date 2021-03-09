@@ -44,7 +44,7 @@ export default function Question(props) {
                         {props.question}
                     </FormLabel>
                     <RadioGroup aria-label="answer" name="answer1" value={value} onChange={handleChange}>
-                        <FormControlLabel value={props.qNo + "1"} control={<Radio />} label="1" />
+                        <FormControlLabel value={props.qNo + "1"} control={<Radio />} label="1"/>
                         <FormControlLabel value={props.qNo + "2"} control={<Radio />} label="2" />
                         <FormControlLabel value={props.qNo + "3"} control={<Radio />} label="3" />
                         <FormControlLabel value={props.qNo + "4"} control={<Radio />} label="4" />

@@ -8,7 +8,15 @@ import personImg from './../../assets/person.png';
 import Button from '@material-ui/core/Button';
 import Timer from './Components/Timer';
 import io from 'socket.io-client';
+<<<<<<< HEAD
+import { useHistory } from 'react-router-dom';
+
+import Box from '@material-ui/core/Box';
+import { Alert, AlertTitle } from '@material-ui/lab';
+
+=======
 import { useHistory, useParams } from 'react-router-dom';
+>>>>>>> 456b0e81e598c8823001604139b5429fe88144e0
 <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
 
 const useStyles = makeStyles((theme) => ({
@@ -233,9 +241,17 @@ export default function AutoGrid() {
           <Grid item xs={9} style={{paddingTop: 40}} >
             <Timer />
             {questions[qNo ? qNo : 0]}
+
+              <Box mt={5} hidden = {activebutton}>
+                <Alert severity="success">
+                  <AlertTitle>Thank You</AlertTitle>
+                  Your Exam is Finished. Press Submit to Proceed.
+                </Alert>
+              </Box>
+              
             <Grid container spacing={2} justify="center" style={{paddingTop: 40}}>
               <Grid item>
-                <Button variant="contained" color="primary" className={classes.button} onClick={handleChange} >
+                <Button variant="contained" color="primary" className={classes.button} onClick={handleChange} disabled={!activebutton} >
                   Save &amp; Next
                 </Button>
               </Grid>

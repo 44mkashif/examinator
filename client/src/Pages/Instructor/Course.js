@@ -119,8 +119,11 @@ export default function Course() {
 
     const [loading, setLoading] = React.useState(false);
 
+
     ExamService.getExams(courseId, authToken).then((examsFromDb) => {
         console.log(examsFromDb);
+
+        examData = [];
 
         examsFromDb.forEach((e) => {
             examData.push(e);

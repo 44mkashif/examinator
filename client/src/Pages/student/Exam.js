@@ -68,11 +68,11 @@ export default function AutoGrid() {
     var videoDivision = document.querySelector('.videos');
     
     window.onfocus = ()=>{
-      socket.emit('message', 'focus', examRoom);
+      socket.emit('message', {type: 'focus'}, examRoom);
     };
     
     window.onblur = ()=>{
-      socket.emit('message', 'blur', examRoom);
+      socket.emit('message', {type: 'blur', name: localStorage.getItem('studentName')}, examRoom);
     };
     
     if(examRoom != '') {

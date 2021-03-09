@@ -54,9 +54,9 @@ export default function Exam() {
           } else if (message == 'close'){
               console.log('remote stream closed...');
               handleRemoteHangup(remoteClientId);
-          } else if (message == 'blur') {
-            setmsg(remoteClientId + ' has changed tab');
-          } else if (message == 'focus') {
+          } else if (message.type == 'blur') {
+            setmsg(message.name + ' has changed tab');
+          } else if (message.type == 'focus') {
             setmsg('');
           }
 

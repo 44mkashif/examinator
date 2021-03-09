@@ -4,12 +4,12 @@ const { Exam } = require('../schema/exam');
 const { Question } = require('../schema/question');
 
 const mongoose = require('mongoose');
-const moment = require('moment');
 
 class ExamController {
 
 
     //Instructor Create Exam
+    //startTime Fromat "2021-04-01T05:30:00Z"
     static async addExam(req, res) {
         try {
             let checkExam = await Exam.findOne({ name: req.body.name });
@@ -19,9 +19,9 @@ class ExamController {
                 let name = req.body.name;
                 let courseId = req.body.courseId;
                 let duration = req.body.duration;
-                let startTime = moment(req.body.startTime);
+                let startTime = new Date(req.body.startTime);
                 let totalMarks = req.body.totalMarks;
-
+                
                 let exam = new Exam({
                     name: name,
                     courseId: mongoose.Types.ObjectId(courseId),
@@ -42,7 +42,7 @@ class ExamController {
                     })
                 })
                 await Question.insertMany(questions);
-                return res.status(200).send({ success: true, msg: 'Exam Added Successfuly', exam: await Exam.findOne({ courseId: courseId }) });
+                return res.status(200).send({ success: true, msg: 'Exam Added Successfuly', exam: await Exam.findOne({ name: name }) });
             }
 
 
@@ -52,14 +52,36 @@ class ExamController {
         }
     }
 
-    //Instructor Get Exam of specific course by its id
+    //Get all exams of a course by courseId
+    static async getExams(req, res) {
+        try {
+            let exams = await Exam.aggregate([
+                {
+                    $match: {
+                        courseId: mongoose.Types.ObjectId(req.query.courseId)
+                    }
+                }
+            ]);
+            if (exams) {
+                return res.status(200).send({ success: true, msg: 'Exams Fetched Successfuly', exams: exams });
+            } else {
+                return res.status(401).send({ success: false, msg: 'Exam does not exist!' })
+            }
+
+        } catch (error) {
+            console.log(error)
+            return res.status(400).send({ success: false, msg: error });
+        }
+    }
+
+    //Instructor Get specific Exam by its name
     //Throw Random questions from pool
     static async getExam(req, res) {
         try {
             let exam = await Exam.aggregate([
                 {
                     $match: {
-                        courseId: mongoose.Types.ObjectId(req.query.courseId)
+                        name: req.query.name
                     }
                 },
                 {
@@ -92,7 +114,7 @@ class ExamController {
                 }
             ]);
             if (exam) {
-                return res.status(200).send({ success: true, msg: 'Exam Fetched Successfuly', exams: exam });
+                return res.status(200).send({ success: true, msg: 'Exam Fetched Successfuly', exam: exam });
             } else {
                 return res.status(401).send({ success: false, msg: 'Exam does not exist!' })
             }
@@ -112,7 +134,7 @@ class ExamController {
             } else {
                 let name = req.body.name;
                 let duration = req.body.duration;
-                let startTime = Date(req.body.startTime);
+                let startTime = new Date(req.body.startTime);
                 let totalMarks = req.body.totalMarks;
 
                 await Exam.findOneAndUpdate({ name: req.query.name }, {

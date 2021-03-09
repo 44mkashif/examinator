@@ -14,6 +14,7 @@ router.delete('/deleteStudent', StudentController.deleteStudent);
 //Exam CRUD APIs
 router.post('/exam', ExamController.addExam);
 router.get('/exam', ExamController.getExam);
+router.get('/exams', ExamController.getExams);
 router.put('/exam', ExamController.updateExam);
 router.delete('/exam', ExamController.deleteExam);
 

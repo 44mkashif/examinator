@@ -8,15 +8,11 @@ import personImg from './../../assets/person.png';
 import Button from '@material-ui/core/Button';
 import Timer from './Components/Timer';
 import io from 'socket.io-client';
-<<<<<<< HEAD
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 
 import Box from '@material-ui/core/Box';
 import { Alert, AlertTitle } from '@material-ui/lab';
 
-=======
-import { useHistory, useParams } from 'react-router-dom';
->>>>>>> 456b0e81e598c8823001604139b5429fe88144e0
 <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
 
 const useStyles = makeStyles((theme) => ({
@@ -41,11 +37,11 @@ const useStyles = makeStyles((theme) => ({
 
 var questionNum = 5;
 
-var ques = [ "A linear collection of data elements where the linear node is given by means of pointer is called?",
- "In linked list each node contains a minimum of two fields. One field is data field to store the data second field is?",
+var ques = ["A linear collection of data elements where the linear node is given by means of pointer is called?",
+  "In linked list each node contains a minimum of two fields. One field is data field to store the data second field is?",
   "What would be the asymptotic time complexity to add a node at the end of singly linked list, if the pointer is initially pointing to the head of the list?",
-   "The concatenation of two lists can be performed in O(1) time. Which of the following variation of the linked list can be used?",
-    "What would be the asymptotic time complexity to insert an element at the front of the linked list (head is known)" ];
+  "The concatenation of two lists can be performed in O(1) time. Which of the following variation of the linked list can be used?",
+  "What would be the asymptotic time complexity to insert an element at the front of the linked list (head is known)"];
 
 var questions = [];
 for (var i = 0; i < questionNum; i++) {
@@ -61,7 +57,7 @@ var peerConnection;
 
 const socket = io("http://127.0.0.1:4001");
 
-window.onbeforeunload = ()=>{
+window.onbeforeunload = () => {
   socket.emit('message', 'close', examRoom);
 };
 
@@ -73,20 +69,20 @@ export default function AutoGrid() {
   const remoteVideoRef = React.useRef(null);
   examRoom = useParams().exam;
 
-  React.useEffect(()=>{
+  React.useEffect(() => {
 
     const socket = io("http://127.0.0.1:4001");
     var videoDivision = document.querySelector('.videos');
-    
-    window.onfocus = ()=>{
-      socket.emit('message', {type: 'focus'}, examRoom);
+
+    window.onfocus = () => {
+      socket.emit('message', { type: 'focus' }, examRoom);
     };
-    
-    window.onblur = ()=>{
-      socket.emit('message', {type: 'blur', name: localStorage.getItem('studentName')}, examRoom);
+
+    window.onblur = () => {
+      socket.emit('message', { type: 'blur', name: localStorage.getItem('studentName') }, examRoom);
     };
-    
-    if(examRoom != '') {
+
+    if (examRoom != '') {
       socket.emit('join', examRoom);
     }
 
@@ -96,16 +92,16 @@ export default function AutoGrid() {
         peerConnection.setRemoteDescription(new RTCSessionDescription(message));
         doAnswer();
       } else if (message.type == 'candidate') {
-          console.log('student getting candidate info');
-          let candidate = new RTCIceCandidate({
-            sdpMLineIndex: message.label,
-            candidate: message.candidate
-          });
-          peerConnection.addIceCandidate(candidate);
-      } else if (message == 'close'){
+        console.log('student getting candidate info');
+        let candidate = new RTCIceCandidate({
+          sdpMLineIndex: message.label,
+          candidate: message.candidate
+        });
+        peerConnection.addIceCandidate(candidate);
+      } else if (message == 'close') {
         handleRemoteHangup();
       } else if (message.type == 'on/off') {
-        if(message.toggleState.checked) {
+        if (message.toggleState.checked) {
           console.log('retain')
           document.getElementById('remoteVideo').hidden = false;
         } else {
@@ -118,21 +114,21 @@ export default function AutoGrid() {
     navigator.mediaDevices.getUserMedia({
       audio: false,
       video: true
-    }).then((stream)=>{
+    }).then((stream) => {
       let localVideo = videoRef.current;
       localVideo.srcObject = stream;
       localStream = stream;
       localVideo.play();
       console.log('Local Video Streaming....')
-      
+
       createPeerConnection();
       socket.emit('message', 'got stream', examRoom);
-      
+
     }).catch((error) => {
       console.log(error)
     })
 
-    window.onbeforeunload = function() {
+    window.onbeforeunload = function () {
       socket.emit('message', 'close', examRoom);
     }
 
@@ -150,9 +146,9 @@ export default function AutoGrid() {
       }
     }
 
-    function handleIceCandidate (e) {
+    function handleIceCandidate(e) {
       console.log('student sending candidate info');
-      if(e.candidate) {
+      if (e.candidate) {
         let message = {
           type: 'candidate',
           label: e.candidate.sdpMLineIndex,
@@ -163,7 +159,7 @@ export default function AutoGrid() {
       }
     }
 
-    function handleRemoteStreamAdded (e) {
+    function handleRemoteStreamAdded(e) {
       console.log('student stream received')
       let remoteVideo = remoteVideoRef.current;
       remoteVideo.srcObject = e.stream;
@@ -178,8 +174,8 @@ export default function AutoGrid() {
     }
 
 
-    function handleRemoteStreamRemoved (e) {
-      
+    function handleRemoteStreamRemoved(e) {
+
     }
 
     function doAnswer() {
@@ -189,14 +185,14 @@ export default function AutoGrid() {
         isAnswered = true;
         socket.emit('message', sessionDescription, examRoom);
       }, (error) => {
-          console.log(error);
+        console.log(error);
       })
     }
 
     function hangup() {
       console.log('Hanging up.');
     }
-    
+
     function handleRemoteHangup() {
       console.log('Session terminated.');
       stop();
@@ -207,7 +203,7 @@ export default function AutoGrid() {
       peerConnection = null;
     }
 
-    
+
 
   }, []);
 
@@ -223,10 +219,10 @@ export default function AutoGrid() {
     // currentQues.pop();
     console.log(questions);
 
-    if (qNo >= questions.length-1 || qNo === undefined) {
+    if (qNo >= questions.length - 1 || qNo === undefined) {
       setButton(false);
     }
-    
+
     console.log(temp);
     setQNo(++temp);
   };
@@ -235,34 +231,35 @@ export default function AutoGrid() {
   return (
     <React.Fragment>
       <AppBar />
-      
-      <div className={classes.root}>  
-        <Grid container spacing={3}>  
-          <Grid item xs={9} style={{paddingTop: 40}} >
+
+      <div className={classes.root}>
+        <Grid container spacing={3}>
+          <Grid item xs={9} style={{ paddingTop: 40 }} >
             <Timer />
             {questions[qNo ? qNo : 0]}
 
-              <Box mt={5} hidden = {activebutton}>
-                <Alert severity="success">
-                  <AlertTitle>Thank You</AlertTitle>
+            <Box mt={5} hidden={activebutton}>
+              <Alert severity="success">
+                <AlertTitle>Thank You</AlertTitle>
                   Your Exam is Finished. Press Submit to Proceed.
                 </Alert>
-              </Box>
-              
-            <Grid container spacing={2} justify="center" style={{paddingTop: 40}}>
+            </Box>
+
+            <Grid container spacing={2} justify="center" style={{ paddingTop: 40 }}>
               <Grid item>
                 <Button variant="contained" color="primary" className={classes.button} onClick={handleChange} disabled={!activebutton} >
                   Save &amp; Next
                 </Button>
               </Grid>
               <Grid item>
-                <Button variant="contained" color="secondary" className={classes.button} disabled={activebutton} onClick={event => { navigateTo('./ExamComplete') }}>
+                <Button variant="contained" color="secondary" className={classes.button}
+                  disabled={activebutton} onClick={event => { navigateTo('../ExamComplete') }}>
                   Submit
                 </Button>
               </Grid>
-            </Grid> 
+            </Grid>
           </Grid>
-          <Grid container justify="right" xs style={{paddingTop: 40}}>
+          <Grid container justify="right" xs style={{ paddingTop: 40 }}>
             <div className="videos">
               <video width="350" ref={videoRef}></video>
               <video id="remoteVideo" width="350" ref={remoteVideoRef}></video>

@@ -52,14 +52,36 @@ class ExamController {
         }
     }
 
-    //Instructor Get Exam of specific course by its id
+    //Get all exams of a course by courseId
+    static async getExams(req, res) {
+        try {
+            let exams = await Exam.aggregate([
+                {
+                    $match: {
+                        courseId: mongoose.Types.ObjectId(req.query.courseId)
+                    }
+                }
+            ]);
+            if (exams) {
+                return res.status(200).send({ success: true, msg: 'Exams Fetched Successfuly', exams: exams });
+            } else {
+                return res.status(401).send({ success: false, msg: 'Exam does not exist!' })
+            }
+
+        } catch (error) {
+            console.log(error)
+            return res.status(400).send({ success: false, msg: error });
+        }
+    }
+
+    //Instructor Get specific Exam by its name
     //Throw Random questions from pool
     static async getExam(req, res) {
         try {
             let exam = await Exam.aggregate([
                 {
                     $match: {
-                        courseId: mongoose.Types.ObjectId(req.query.courseId)
+                        name: req.query.name
                     }
                 },
                 {
@@ -92,7 +114,7 @@ class ExamController {
                 }
             ]);
             if (exam) {
-                return res.status(200).send({ success: true, msg: 'Exam Fetched Successfuly', exams: exam });
+                return res.status(200).send({ success: true, msg: 'Exam Fetched Successfuly', exam: exam });
             } else {
                 return res.status(401).send({ success: false, msg: 'Exam does not exist!' })
             }

@@ -8,11 +8,15 @@ import personImg from './../../assets/person.png';
 import Button from '@material-ui/core/Button';
 import Timer from './Components/Timer';
 import io from 'socket.io-client';
+<<<<<<< HEAD
 import { useHistory } from 'react-router-dom';
 
 import Box from '@material-ui/core/Box';
 import { Alert, AlertTitle } from '@material-ui/lab';
 
+=======
+import { useHistory, useParams } from 'react-router-dom';
+>>>>>>> 456b0e81e598c8823001604139b5429fe88144e0
 <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
 
 const useStyles = makeStyles((theme) => ({
@@ -52,7 +56,7 @@ var temp = 0;
 var isAnswered = false;
 var localStream;
 var remoteStream;
-var examRoom = 'foo';
+var examRoom;
 var peerConnection;
 
 const socket = io("http://127.0.0.1:4001");
@@ -67,6 +71,7 @@ export default function AutoGrid() {
 
   const videoRef = React.useRef(null);
   const remoteVideoRef = React.useRef(null);
+  examRoom = useParams().exam;
 
   React.useEffect(()=>{
 
@@ -74,11 +79,11 @@ export default function AutoGrid() {
     var videoDivision = document.querySelector('.videos');
     
     window.onfocus = ()=>{
-      socket.emit('message', 'focus', examRoom);
+      socket.emit('message', {type: 'focus'}, examRoom);
     };
     
     window.onblur = ()=>{
-      socket.emit('message', 'blur', examRoom);
+      socket.emit('message', {type: 'blur', name: localStorage.getItem('studentName')}, examRoom);
     };
     
     if(examRoom != '') {

@@ -49,6 +49,12 @@ const useStyles = makeStyles((theme) => ({
     // backgroundColor: theme.palette.primary.main,
     transform: 'scale(2,2) translateX(-100px)',
   },
+  mobile: {
+    margin: theme.spacing(8, 4),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
   paper: {
     margin: theme.spacing(8, 4),
     display: 'flex',
@@ -88,10 +94,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Login() {
-  
+
   const classes = useStyles();
   const [errorMessage, setErrorMessage] = React.useState("");
-  
+  const [isMobile, setIsMobile] = React.useState(window.innerWidth < 1200);
+
   var body = {}
 
   const instructorLogin = async (e) => {
@@ -108,12 +115,20 @@ export default function Login() {
   const onPasswordChange = (e) => {
     body[e.target.name] = e.target.value;
   }
-  
+
+  React.useEffect(() => {
+    window.addEventListener("resize", () => {
+      const ismobile = window.innerWidth < 1200;
+      if (ismobile !== isMobile) setIsMobile(ismobile);
+    }, false);
+  }, [isMobile]);
+
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
-      <Grid item xs={12} sm={8} md={5} component={Paper} container alignItems="center" justify="center" elevation={6} square className={classes.round}>
-        <div className={classes.paper}>
+      <Grid item xs={12} sm={8} md={5} component={Paper} container alignItems="center"
+        justify="center" elevation={6} square className={`${!isMobile ? classes.round : ""}`}>
+        <div className={`${!isMobile ? classes.paper : classes.mobile}`}>
           <div>
             <img className={classes.logo} src={logo} alt="" />
           </div>
@@ -161,16 +176,16 @@ export default function Login() {
               Sign In
               </Button>
             <Grid container>
-              <Grid item xs>
+              {/* <Grid item xs>
                 <Link href="#" variant="body2">
                   Forgot password?
                   </Link>
-              </Grid>
-              <Grid item>
+              </Grid> */}
+              {/* <Grid item>
                 <Link href="#" variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Link>
-              </Grid>
+              </Grid> */}
             </Grid>
             {errorMessage &&
               <Box mt={5}>

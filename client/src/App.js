@@ -1,3 +1,4 @@
+import React from 'react';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
@@ -5,7 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
 import bgImage from './assets/cover.png';
 import logo from './assets/logo-dark.png';
-
+import Box from '@material-ui/core/Box';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -17,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
   },
   leftContainer: {
     height: '100vh',
-    
+
   },
   rightContainer: {
     height: '100vh'
@@ -34,6 +35,9 @@ const useStyles = makeStyles((theme) => ({
     borderBottomRightRadius: 500,
     backgroundColor: theme.palette.primary.main,
     transform: 'scale(2,2) translateX(-200px)',
+  },
+  mobile: {
+    backgroundColor: theme.palette.primary.main,
   },
   paper: {
     margin: theme.spacing(0, 4),
@@ -63,6 +67,14 @@ const useStyles = makeStyles((theme) => ({
 function App() {
 
   const classes = useStyles();
+  const [isMobile, setIsMobile] = React.useState(window.innerWidth < 1200);
+
+  React.useEffect(() => {
+    window.addEventListener("resize", () => {
+      const ismobile = window.innerWidth < 1200;
+      if (ismobile !== isMobile) setIsMobile(ismobile);
+    }, false);
+  }, [isMobile]);
 
   return (
     <div className="App">
@@ -70,8 +82,8 @@ function App() {
         <Grid xs={12} sm={7} className={classes.leftContainer}>
           <Grid container justify="left" className={classes.root}>
             {/* <CssBaseline /> */}
-            <Grid item elevation={6} className={classes.round}>
-              <div className={classes.paper}>
+            <Grid item elevation={6} className={`${!isMobile ? classes.round : classes.mobile}`}>
+              <div className={`${!isMobile ? classes.paper : ""}`}>
                 <Grid container justify="center" className={classes.text}>
                   <div>
                     <img className={classes.logo} src={logo} alt="" />
@@ -109,9 +121,11 @@ function App() {
             </Grid>
           </Grid>
         </Grid>
-        <Grid item xs={12} sm={5} container alignItems="center" className={classes.rightContainer}>
-          <img className={classes.cover} src={bgImage} alt="" />
-        </Grid>
+        <Box display={{ xs: 'none', sm: 'none', md: 'block' }}>
+          <Grid item xs={12} sm={5} container alignItems="center" className={classes.rightContainer}>
+            <img className={classes.cover} src={bgImage} alt="" />
+          </Grid>
+        </Box>
       </Grid>
     </div>
 

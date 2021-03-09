@@ -215,6 +215,7 @@ export default function AutoGrid() {
     if (qNo >= questions.length-1 || qNo === undefined) {
       setButton(false);
     }
+    
     console.log(temp);
     setQNo(++temp);
   };

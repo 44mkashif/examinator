@@ -305,7 +305,7 @@ export default function Course() {
                 <Fade in={openMenu}>
                     <div className={classes.paper}>
                         <h2 id="transition-modal-title">Schedule Exam</h2>
-                        <form className={classes.form} noValidate>
+                        <form className={classes.form}>
                             <TextField
                                 className={classes.textField}
                                 variant="outlined"
@@ -319,10 +319,8 @@ export default function Course() {
                                 value={name}
                                 onChange={onChangeExamName}
                             />
-                        </form>
                         <Grid container justify='center' alignItems='center'>
                             <Grid item xs={6} style={{ paddingRight: 10 }}>
-                                <form className={classes.form} noValidate>
                                     <TextField
                                         className={classes.textField}
                                         variant="outlined"
@@ -336,10 +334,8 @@ export default function Course() {
                                         value={qNo}
                                         onChange={onChangeQNo}
                                     />
-                                </form>
                             </Grid>
                             <Grid item xs={6} style={{ paddingLeft: 10 }}>
-                                <form className={classes.form} noValidate>
                                     <TextField
                                         className={classes.textField}
                                         variant="outlined"
@@ -352,7 +348,6 @@ export default function Course() {
                                         value={duration}
                                         onChange={onChangeDuration}
                                     />
-                                </form>
                             </Grid>
                         </Grid>
                         <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -419,6 +414,8 @@ export default function Course() {
                                 Save
                                 </Button>
                         </Grid>
+                        </form>
+
                     </div>
                 </Fade>
             </Modal>

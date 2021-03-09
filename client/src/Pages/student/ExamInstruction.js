@@ -55,8 +55,11 @@ export default function Exam() {
 
     const [checked, setChecked] = React.useState(false);
 
+    const [activebutton, setButton] = React.useState(true);
+
     const handleChange = (event) => {
         setChecked(event.target.checked);
+        setButton(!event.target.checked);
     };
 
     return (
@@ -131,7 +134,13 @@ export default function Exam() {
                             <Button className={classes.button}
                                 variant="contained"
                                 color="primary"
+<<<<<<< HEAD
+                                component={Link} to="./Exam"
+                                disabled={activebutton}>
+                                    
+=======
                                 onClick={event => { navigateTo('/student/course/exam/' + examRoom) }}>
+>>>>>>> 456b0e81e598c8823001604139b5429fe88144e0
                                 Start Now!
                             </Button>
                         </Grid>

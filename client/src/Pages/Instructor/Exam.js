@@ -9,13 +9,12 @@ import Switch from '@material-ui/core/Switch';
 var isCreator = false;
 var localStream;
 var remoteStream;
-var examRoom = 'foo';
+var examRoom;
 var peerConnections = {};
 var remoteId;
 
 export default function Exam() {
-  // const q = useParams();
-  // console.log(q.room);
+    const examRoom = useParams().exam;
     const videoRef = React.useRef(null);
     const [msg, setmsg] = React.useState('');
     const [toggleState, settoggleState] = React.useState({

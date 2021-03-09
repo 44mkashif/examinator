@@ -17,7 +17,7 @@ var peerConnections = {};
 var remoteId;
 
 export default function Exam() {
-    const examRoom = useParams().exam;
+    examRoom = useParams().exam;
     const videoRef = React.useRef(null);
     const [msg, setmsg] = React.useState('');
     const [toggleState, settoggleState] = React.useState({

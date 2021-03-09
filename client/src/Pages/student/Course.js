@@ -150,11 +150,18 @@ export default function Course() {
                     <br />
 
                     <Grid container spacing={4} justify="center">
+<<<<<<< HEAD
                         {examData.map((exam, i) => (
                             <div key={i} className={classes.card}>
                                 <Card className={classes.card} elevation="7">
                                     <ButtonBase className={classes.cardMargin}
                                         onClick={event => { navigateTo('../student/course/ExamInstruction') }}
+=======
+                        {exams.map((exam) => (
+                            <div key={exam} className={classes.card}>
+                                <ButtonBase
+                                    onClick={event => { navigateTo('../student/course/ExamInstruction/' + exam) }}
+>>>>>>> 456b0e81e598c8823001604139b5429fe88144e0
                                     >
                                         <CardContent className={classes.cardContent}>
                                             <Typography gutterBottom variant="h5" component="h2">

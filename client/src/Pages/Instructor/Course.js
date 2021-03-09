@@ -242,13 +242,16 @@ export default function Course() {
                         {examData.map((exam, i) => (
                             <div key={i} className={classes.card}>
                                 <Card className={classes.card} elevation="7">
-                                    <ButtonBase className={classes.cardMargin}
+                                <Grid container justify="center">
+                                    <ButtonBase 
                                         onClick={event => { navigateTo('../instructor/course/exam') }}
                                     >
-                                        <CardContent className={classes.cardContent}>
-                                            <Typography gutterBottom variant="h5" component="h2">
-                                                {exam.name}
-                                            </Typography>
+                                        <CardContent className={classes.cardContent} justify="center">
+                                            <Grid container justify="center">
+                                                <Typography gutterBottom variant="h5" component="h2">
+                                                    {exam.name}
+                                                </Typography>
+                                            </Grid>
                                             <Grid container justify="center">
                                                 <TimerIcon className={classes.iconClass} />
                                                 <Typography className={classes.margin}>
@@ -268,8 +271,9 @@ export default function Course() {
                                                     </Typography>
                                             </Grid>
                                         </CardContent>
-
                                     </ButtonBase>
+                                </Grid>
+                                    
                                     <CardActions>
                                         <Grid container spacing={2}
                                             justify='space-between'

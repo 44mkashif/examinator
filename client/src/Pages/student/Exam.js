@@ -8,7 +8,7 @@ import personImg from './../../assets/person.png';
 import Button from '@material-ui/core/Button';
 import Timer from './Components/Timer';
 import io from 'socket.io-client';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
 
 const useStyles = makeStyles((theme) => ({
@@ -48,7 +48,7 @@ var temp = 0;
 var isAnswered = false;
 var localStream;
 var remoteStream;
-var examRoom = 'foo';
+var examRoom;
 var peerConnection;
 
 const socket = io("http://127.0.0.1:4001");
@@ -63,6 +63,7 @@ export default function AutoGrid() {
 
   const videoRef = React.useRef(null);
   const remoteVideoRef = React.useRef(null);
+  examRoom = useParams().exam;
 
   React.useEffect(()=>{
 

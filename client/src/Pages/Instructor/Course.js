@@ -10,6 +10,7 @@ import { useHistory } from 'react-router-dom';
 import logoImg from './../../assets/navbar-2.png';
 import Toolbar from '@material-ui/core/Toolbar';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
+import TimerIcon from '@material-ui/icons/Timer';
 import Button from '@material-ui/core/Button';
 import AppBar from '@material-ui/core/AppBar';
 import Fade from '@material-ui/core/Fade';
@@ -114,32 +115,28 @@ var examData = [];
 const courseId = "603ea3d760c6ed3f3880dff3"; //TODO: current course id
 const authToken = localStorage.getItem('auth-token');
 
-
-
-
-
 export default function Course() {
 
     const [loading, setLoading] = React.useState(false);
 
     ExamService.getExams(courseId, authToken).then((examsFromDb) => {
         console.log(examsFromDb);
-        
+
         examsFromDb.forEach((e) => {
             examData.push(e);
         })
         setLoading(true);
-        
+
     })
 
     const history = useHistory();
     const navigateTo = (path) => history.push(path);
     const classes = useStyles();
     const [openMenu, setOpenMenu] = React.useState(false);
-    
 
-    
-    
+
+
+
     const handleOpenMenu = () => {
         setOpenMenu(true);
     };
@@ -165,9 +162,9 @@ export default function Course() {
         setqNo(e.target.value);
     }
 
-    
 
-    
+
+
 
     return (
         <React.Fragment>
@@ -238,10 +235,10 @@ export default function Course() {
 
                             </div>
                         ))} */}
-                        
+
                         {examData.map((exam, i) => (
                             <div key={i} className={classes.card}>
-                                <Card className={classes.card}>
+                                <Card className={classes.card} elevation="7">
                                     <ButtonBase className={classes.cardMargin}
                                         onClick={event => { navigateTo('../instructor/course/exam') }}
                                     >
@@ -249,14 +246,17 @@ export default function Course() {
                                             <Typography gutterBottom variant="h5" component="h2">
                                                 {exam.name}
                                             </Typography>
-                                            <Typography gutterBottom variant="h5" component="h2">
-                                                {exam.duration}
-                                            </Typography>
+                                            <Grid container justify="center">
+                                                <TimerIcon className={classes.iconClass} />
+                                                <Typography className={classes.margin}>
+                                                    Duration: {exam.duration} hrs
+                                                </Typography>
+                                            </Grid>
                                             <Grid container justify="center">
                                                 <DateRangeIcon className={classes.iconClass} />
                                                 <Typography className={classes.margin}>
                                                     12 Jan, 2021
-                                                    </Typography>
+                                                </Typography>
                                             </Grid>
                                             <Grid container justify="center">
                                                 <AccessTimeIcon className={classes.iconClass} />

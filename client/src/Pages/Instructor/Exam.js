@@ -12,13 +12,12 @@ import Typography from '@material-ui/core/Typography';
 var isCreator = false;
 var localStream;
 var remoteStream;
-var examRoom = 'foo';
+var examRoom;
 var peerConnections = {};
 var remoteId;
 
 export default function Exam() {
-  // const q = useParams();
-  // console.log(q.room);
+    examRoom = useParams().exam;
     const videoRef = React.useRef(null);
     const [msg, setmsg] = React.useState('');
     const [toggleState, settoggleState] = React.useState({
@@ -57,9 +56,9 @@ export default function Exam() {
           } else if (message == 'close'){
               console.log('remote stream closed...');
               handleRemoteHangup(remoteClientId);
-          } else if (message == 'blur') {
-            setmsg(remoteClientId + ' has changed tab');
-          } else if (message == 'focus') {
+          } else if (message.type == 'blur') {
+            setmsg(message.name + ' has changed tab');
+          } else if (message.type == 'focus') {
             setmsg('');
           }
 

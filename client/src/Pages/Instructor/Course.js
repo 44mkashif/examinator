@@ -255,62 +255,13 @@ export default function Course() {
                         ))}
                     </Grid>
 
-                    <Typography>
+                     <Typography>
                         Previous Exams
                     </Typography>
 
                     <br />
                     <Divider variant="middle" />
                     <br />
-
-                    <Grid container spacing={4} justify="center">
-                        {examData.map((exam, i) => (
-                            <div key={i} className={classes.card}>
-                                <Card className={classes.card} elevation="7">
-                                <Grid container justify="center">
-                                    <ButtonBase 
-                                        onClick={event => { navigateTo('../instructor/course/exam') }}
-                                    >
-                                        <CardContent className={classes.cardContent} justify="center">
-                                            <Grid container justify="center">
-                                                <Typography gutterBottom variant="h5" component="h2">
-                                                    {exam.name}
-                                                </Typography>
-                                            </Grid>
-                                            <Grid container justify="center">
-                                                <TimerIcon className={classes.iconClass} />
-                                                <Typography className={classes.margin}>
-                                                    Duration: {exam.duration} hrs
-                                                </Typography>
-                                            </Grid>
-                                            <Grid container justify="center">
-                                                <DateRangeIcon className={classes.iconClass} />
-                                                <Typography className={classes.margin}>
-                                                    12 Jan, 2021
-                                                </Typography>
-                                            </Grid>
-                                        </CardContent>
-                                    </ButtonBase>
-                                </Grid>
-                                    
-                                    <CardActions>
-                                        <Grid container spacing={2}
-                                            justify='space-between'
-                                            alignItems='center'
-                                        >
-                                            <IconButton className={classes.editClass}>
-                                                <EditIcon />
-                                            </IconButton>
-                                            <IconButton className={classes.deleteClass}>
-                                                <DeleteIcon />
-                                            </IconButton>
-                                        </Grid>
-                                    </CardActions>
-                                </Card>
-
-                            </div>
-                        ))}
-                    </Grid>
 
                 </Container>
             </div>
@@ -329,7 +280,7 @@ export default function Course() {
                 <Fade in={openMenu}>
                     <div className={classes.paper}>
                         <h2 id="transition-modal-title">Schedule Exam</h2>
-                        <form className={classes.form} noValidate>
+                        <form className={classes.form}>
                             <TextField
                                 className={classes.textField}
                                 variant="outlined"
@@ -343,10 +294,8 @@ export default function Course() {
                                 value={name}
                                 onChange={onChangeExamName}
                             />
-                        </form>
                         <Grid container justify='center' alignItems='center'>
                             <Grid item xs={6} style={{ paddingRight: 10 }}>
-                                <form className={classes.form} noValidate>
                                     <TextField
                                         className={classes.textField}
                                         variant="outlined"
@@ -360,10 +309,8 @@ export default function Course() {
                                         value={qNo}
                                         onChange={onChangeQNo}
                                     />
-                                </form>
                             </Grid>
                             <Grid item xs={6} style={{ paddingLeft: 10 }}>
-                                <form className={classes.form} noValidate>
                                     <TextField
                                         className={classes.textField}
                                         variant="outlined"
@@ -376,7 +323,6 @@ export default function Course() {
                                         value={duration}
                                         onChange={onChangeDuration}
                                     />
-                                </form>
                             </Grid>
                         </Grid>
                         <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -443,6 +389,8 @@ export default function Course() {
                                 Save
                                 </Button>
                         </Grid>
+                        </form>
+
                     </div>
                 </Fade>
             </Modal>

@@ -87,8 +87,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-var courses = ['Devops', 'Data Structures', 'Data Science', 'Robotic Vision', 'Web Engineering', 'Block Chain'];
-var courseCodes = ['CS453', 'CS112', 'CE432', 'DS456', 'CE446', 'CS321'];
+var courseData = [];
 
 var logout = () => {
   AuthService.logout();
@@ -101,9 +100,24 @@ var logout = () => {
 //   const newItem = 'And Another Course';
 //   this.setstate({ items: [...this.state.items, newItem] })
 // }
+
+const instructorId = localStorage.getItem('instructorId');
+const authToken = localStorage.getItem('auth-token');
+
 export default function Dashboard() {
   const classes = useStyles();
+  const [loading, setLoading] = React.useState(false);
 
+  CourseService.getCourses(instructorId, authToken).then((coursesFromDb) => {
+    console.log(coursesFromDb);
+
+    courseData = [];
+
+    coursesFromDb.forEach((c) => {
+      courseData.push(c);
+    })
+    setLoading(true);
+  })
 
   //Routing Functions
   const history = useHistory();
@@ -115,11 +129,8 @@ export default function Dashboard() {
 
   //Popper Idhr tk he
 
-  const instructorId = localStorage.getItem('instructorId');
-  const authToken = localStorage.getItem('auth-token');
-  CourseService.getCourses(instructorId, authToken).then((coursesFromDb) => {
-    console.log(coursesFromDb);
-  })
+ 
+  
 
   return (
 
@@ -159,8 +170,8 @@ export default function Dashboard() {
       <main>
         <Container className={classes.cardGrid}>
           <Grid container spacing={2} justify="center">
-            {courses.map((course, index) => (
-              <div key={course} className={classes.card}>
+            {courseData.map((course, c) => (
+              <div key={c} className={classes.card}>
                 <ButtonBase
                   onClick={event => { navigateTo('../instructor/course?id=1') }}
                 >
@@ -168,11 +179,11 @@ export default function Dashboard() {
                     <CardHeader
                       avatar={
                         <Avatar className={classes.avatar}>
-                          {courseCodes[index][0] + courseCodes[index][1]}
+                          
                         </Avatar>
                       }
-                      title={course}
-                      subheader={courseCodes[index]}
+                      title={course.courseName}
+                      subheader={course.courseCode}
                     />
                     <CardMedia
                       className={classes.cardMedia}

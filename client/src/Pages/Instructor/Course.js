@@ -29,6 +29,7 @@ import {
     KeyboardDatePicker,
 } from '@material-ui/pickers';
 import ExamService from '../../services/ExamService';
+import Divider from '@material-ui/core/Divider';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -195,50 +196,15 @@ export default function Course() {
             </AppBar>
             <div className={classes.root}>
                 <Container className={classes.cardGrid}>
+
+                    <Typography>
+                        Scheduled Exams
+                    </Typography>
+                    <br />
+                    <Divider variant="middle" />
+                    <br />
+
                     <Grid container spacing={4} justify="center">
-                        {/* {exams.map((exam) => (
-                            <div key={exam} className={classes.card}>
-                                <Card className={classes.card}>
-                                    <ButtonBase className={classes.cardMargin}
-                                        onClick={event => { navigateTo('../instructor/course/exam') }}
-                                    >
-                                        <CardContent className={classes.cardContent}>
-                                            <Typography gutterBottom variant="h5" component="h2">
-                                                {exam}
-                                            </Typography>
-                                            <Grid container justify="center">
-                                                <DateRangeIcon className={classes.iconClass} />
-                                                <Typography className={classes.margin}>
-                                                    12 Jan, 2021
-                                                    </Typography>
-                                            </Grid>
-                                            <Grid container justify="center">
-                                                <AccessTimeIcon className={classes.iconClass} />
-                                                <Typography className={classes.margin}>
-                                                    10:00 PM
-                                                    </Typography>
-                                            </Grid>
-                                        </CardContent>
-
-                                    </ButtonBase>
-                                    <CardActions>
-                                        <Grid container spacing={2}
-                                            justify='space-between'
-                                            alignItems='center'
-                                        >
-                                            <IconButton className={classes.editClass}>
-                                                <EditIcon />
-                                            </IconButton>
-                                            <IconButton className={classes.deleteClass}>
-                                                <DeleteIcon />
-                                            </IconButton>
-                                        </Grid>
-                                    </CardActions>
-                                </Card>
-
-                            </div>
-                        ))} */}
-
                         {examData.map((exam, i) => (
                             <div key={i} className={classes.card}>
                                 <Card className={classes.card} elevation="7">
@@ -288,6 +254,60 @@ export default function Course() {
                             </div>
                         ))}
                     </Grid>
+
+                    <Typography>
+                        Previous Exams
+                    </Typography>
+
+                    <br />
+                    <Divider variant="middle" />
+                    <br />
+
+                    <Grid container spacing={4} justify="center">
+                        {examData.map((exam, i) => (
+                            <div key={i} className={classes.card}>
+                                <Card className={classes.card} elevation="7">
+                                    <ButtonBase className={classes.cardMargin}
+                                        onClick={event => { navigateTo('../instructor/course/exam') }}
+                                    >
+                                        <CardContent className={classes.cardContent}>
+                                            <Typography gutterBottom variant="h5" component="h2">
+                                                {exam.name}
+                                            </Typography>
+                                            <Grid container justify="center">
+                                                <TimerIcon className={classes.iconClass} />
+                                                <Typography className={classes.margin}>
+                                                    Duration: {exam.duration} hrs
+                                                </Typography>
+                                            </Grid>
+                                            <Grid container justify="center">
+                                                <DateRangeIcon className={classes.iconClass} />
+                                                <Typography className={classes.margin}>
+                                                    12 Jan, 2021
+                                                </Typography>
+                                            </Grid>
+                                        </CardContent>
+
+                                    </ButtonBase>
+                                    <CardActions>
+                                        <Grid container spacing={2}
+                                            justify='space-between'
+                                            alignItems='center'
+                                        >
+                                            <IconButton className={classes.editClass}>
+                                                <EditIcon />
+                                            </IconButton>
+                                            <IconButton className={classes.deleteClass}>
+                                                <DeleteIcon />
+                                            </IconButton>
+                                        </Grid>
+                                    </CardActions>
+                                </Card>
+
+                            </div>
+                        ))}
+                    </Grid>
+
                 </Container>
             </div>
             <Modal

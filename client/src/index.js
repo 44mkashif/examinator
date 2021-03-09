@@ -9,7 +9,6 @@ import StudentLogin from './Pages/Student/Login';
 import StudentDashboard from './Pages/Student/Dashboard';
 import StudentCourse from './Pages/Student/Course';
 import StudentExam from './Pages/Student/Exam';
-import StudentPaper from './Pages/Student/Paper';
 import StudentExamInstruction from './Pages/Student/ExamInstruction';
 import StudentExamComplete from './Pages/Student/ExamComplete';
 
@@ -92,9 +91,8 @@ ReactDOM.render(
           <GuardedRoute path="/Student/Login" exact component={StudentLogin} />
           <GuardedRoute path="/Student/Dashboard" exact component={StudentDashboard} meta={{ auth: true, role: 'student' }} />
           <GuardedRoute path="/Student/Course" exact component={StudentCourse} meta={{ auth: true, role: 'student' }} />
-          <GuardedRoute path="/Student/Course/Exam" exact component={StudentExam} meta={{ auth: true, role: 'student' }} />
-          <GuardedRoute path="/Student/Course/Paper" exact component={StudentPaper} meta={{ auth: true, role: 'student' }} />
-          <GuardedRoute path="/Student/Course/ExamInstruction" exact component={StudentExamInstruction} meta={{ auth: true, role: 'student' }} />
+          <GuardedRoute path="/Student/Course/Exam/:exam" exact component={StudentExam} meta={{ auth: true, role: 'student' }} />
+          <GuardedRoute path="/Student/Course/ExamInstruction/:exam" exact component={StudentExamInstruction} meta={{ auth: true, role: 'student' }} />
           <GuardedRoute path="/Student/Course/ExamComplete" exact component={StudentExamComplete} meta={{ auth: true, role: 'student' }} />
           <Route path="/test" exact component={Test} />
 
@@ -102,7 +100,7 @@ ReactDOM.render(
           <GuardedRoute path="/Instructor/Dashboard" exact component={InstructorDashboard} meta={{ auth: true, role: 'instructor' }} />
           <GuardedRoute path="/Instructor/Course" exact component={InstructorCourse} meta={{ auth: true, role: 'instructor' }} />
           <GuardedRoute path="/Instructor/Course/Paper" exact component={InstructorPaper} meta={{ auth: true, role: 'instructor' }} />
-          <GuardedRoute path="/Instructor/Course/Exam" exact component={InstructorExam} meta={{ auth: true, role: 'instructor' }} />
+          <GuardedRoute path="/Instructor/Course/Exam/:exam" exact component={InstructorExam} meta={{ auth: true, role: 'instructor' }} />
 
         </Switch>
       </GuardProvider>

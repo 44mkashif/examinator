@@ -6,6 +6,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import { Typography } from '@material-ui/core';
 import Submitted from '../../assets/Submitted.png';
+import Button from '@material-ui/core/Button';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -47,6 +49,15 @@ export default function StudentExamComplete() {
                                         Your Submission cannot be previewed at this Time
                                 </Typography>
                             </Grid>
+                        <Grid xs={12}>
+                            <Button className={classes.button}
+                                variant="contained"
+                                color="primary"
+                                component={Link} to="../Dashboard">
+                                Return to Dashboard
+                            </Button>
+                        </Grid>
+                            
                     </Grid>
                     </div>
             </Container>

@@ -18,7 +18,7 @@ import { Link } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import AuthService from '../../services/AuthService';
-import Divider from '@material-ui/core/Divider';
+import CourseService from '../../services/CourseService';
 
 
 function Copyright() {
@@ -85,14 +85,14 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-
-var courses = ['Devops', 'Data Structures', 'Data Science', 'Robotic Vision', 'Web Engineering', 'Block Chain'];
-var courseCodes = ['CS453', 'CS112', 'CE432', 'DS456', 'CE446', 'CS321'];
-
+var courseData = [];
 
 var logout = () => {
   AuthService.logout();
 }
+
+const instructorId = '603c093af7679f2738b69f29' ;
+const authToken = localStorage.getItem('auth-token');
 
 // this.state = {
 //   courses: ['item']
@@ -103,6 +103,19 @@ var logout = () => {
 // }
 export default function Dashboard() {
   const classes = useStyles();
+
+  const [loading, setLoading] = React.useState(false);
+
+  CourseService.getCourses(instructorId, authToken).then((coursesFromDb) => {
+    console.log(coursesFromDb);
+
+    courseData = [];
+
+    coursesFromDb.forEach((c) => {
+      courseData.push(c);
+    })
+    setLoading(true);
+  })
 
 
 
@@ -149,8 +162,8 @@ export default function Dashboard() {
         <Container className={classes.cardGrid}>
           
           <Grid container spacing={2} justify="center">
-            {courses.map((course, index) => (
-              <div key={course} className={classes.card}>
+            {courseData.map((course, c) => (
+              <div key={c} className={classes.card}>
                 <ButtonBase
                   onClick={event => { navigateTo('../student/course?id=1') }}
                 >
@@ -158,47 +171,17 @@ export default function Dashboard() {
                     <CardHeader
                       avatar={
                         <Avatar className={classes.avatar}>
-                          {courseCodes[index][0] + courseCodes[index][1]}
+                          
                         </Avatar>
                       }
-                      title={course}
-                      subheader={courseCodes[index]}
+                      title={course.courseName}
+                      subheader={course.courseCode}
                     />
                     <CardMedia
                       className={classes.cardMedia}
                     />
                   </Card>
                 </ButtonBase>
-              </div>
-            ))}
-          </Grid>
-            <br/>
-            <Divider variant="middle" />
-            <br/>
-
-            <Typography>
-            Results for Previous Exams
-            </Typography>
-
-          <Grid container spacing={3} justify="center">
-            {courses.map((course, index) => (
-
-              <div key={course} className={classes.card}>
-                <Card className={classes.card}>
-                  <CardHeader
-                    avatar={
-                      <Avatar className={classes.avatar}>
-                        {courseCodes[index][0] + courseCodes[index][1]}
-                      </Avatar>
-                    }
-                    title={course}
-                    subheader={courseCodes[index]}
-                  />
-                  <CardMedia
-                    className={classes.cardMedia}
-                  />
-                </Card>
-
               </div>
             ))}
           </Grid>

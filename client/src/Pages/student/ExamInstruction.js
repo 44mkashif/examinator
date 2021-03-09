@@ -7,7 +7,7 @@ import Box from '@material-ui/core/Box';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Button from '@material-ui/core/Button';
-import { Link } from 'react-router-dom';
+import { Link, useParams, useHistory } from 'react-router-dom';
 
 
 
@@ -49,11 +49,17 @@ const defaultProps = {
 export default function Exam() {
 
     const classes = useStyles();
+    const examRoom = useParams().exam;
+    const history = useHistory();
+    const navigateTo = (path) => history.push(path);
 
     const [checked, setChecked] = React.useState(false);
 
+    const [activebutton, setButton] = React.useState(true);
+
     const handleChange = (event) => {
         setChecked(event.target.checked);
+        setButton(!event.target.checked);
     };
 
     return (
@@ -128,7 +134,13 @@ export default function Exam() {
                             <Button className={classes.button}
                                 variant="contained"
                                 color="primary"
-                                component={Link} to="./Exam">
+<<<<<<< HEAD
+                                component={Link} to="./Exam"
+                                disabled={activebutton}>
+                                    
+=======
+                                onClick={event => { navigateTo('/student/course/exam/' + examRoom) }}>
+>>>>>>> 456b0e81e598c8823001604139b5429fe88144e0
                                 Start Now!
                             </Button>
                         </Grid>

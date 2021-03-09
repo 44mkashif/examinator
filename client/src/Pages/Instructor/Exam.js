@@ -4,18 +4,20 @@ import Grid from '@material-ui/core/Grid';
 import io from 'socket.io-client';
 import { useParams } from 'react-router-dom';
 import Switch from '@material-ui/core/Switch';
+import { Alert, AlertTitle } from '@material-ui/lab';
+import Box from '@material-ui/core/Box';
+import Typography from '@material-ui/core/Typography';
 <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
 
 var isCreator = false;
 var localStream;
 var remoteStream;
-var examRoom = 'foo';
+var examRoom;
 var peerConnections = {};
 var remoteId;
 
 export default function Exam() {
-  // const q = useParams();
-  // console.log(q.room);
+    examRoom = useParams().exam;
     const videoRef = React.useRef(null);
     const [msg, setmsg] = React.useState('');
     const [toggleState, settoggleState] = React.useState({
@@ -54,9 +56,9 @@ export default function Exam() {
           } else if (message == 'close'){
               console.log('remote stream closed...');
               handleRemoteHangup(remoteClientId);
-          } else if (message == 'blur') {
-            setmsg(remoteClientId + ' has changed tab');
-          } else if (message == 'focus') {
+          } else if (message.type == 'blur') {
+            setmsg(message.name + ' has changed tab');
+          } else if (message.type == 'focus') {
             setmsg('');
           }
 
@@ -152,17 +154,34 @@ export default function Exam() {
     return(
         <React.Fragment>
             <AppBar/>
-            <Grid container justify="start" xs>
-            <div id="videos">
-              <video width="250" ref={videoRef}></video>
-            </div>
-            <Switch
-              checked={toggleState.checked}
-              onChange={(e)=>{settoggleState({ checked: e.target.checked });}}
-              name="checked"
-              inputProps={{ 'aria-label': 'secondary checkbox' }}
-            />
-            {msg}
+            <Grid container justify="start" xs style={{paddingTop: 20, paddingLeft: 20, paddingRight: 20}} >
+              <div id="videos" >
+                <video width="250" ref={videoRef}></video>
+              </div>
+              <Grid container style={{paddingLeft: 90}}>
+                <Typography>
+                    Camera
+                </Typography>
+              </Grid>
+              <Grid container style={{paddingLeft: 90}}>
+                <Switch
+                checked={toggleState.checked}
+                onChange={(e)=>{settoggleState({ checked: e.target.checked });}}
+                name="checked"
+                inputProps={{ 'aria-label': 'secondary checkbox' }}
+                />
+              </Grid>
+              <Grid container justify="start" xs style={{paddingLeft: 10}} >
+              {msg &&
+                <Box mt={5}>
+                  <Alert severity="error">
+                    <AlertTitle>Alert</AlertTitle>
+                    {msg}
+                  </Alert>
+                </Box>
+              }
+              </Grid>
+            
             </Grid>
         </React.Fragment>
     )

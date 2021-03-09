@@ -8,7 +8,15 @@ import personImg from './../../assets/person.png';
 import Button from '@material-ui/core/Button';
 import Timer from './Components/Timer';
 import io from 'socket.io-client';
+<<<<<<< HEAD
 import { useHistory } from 'react-router-dom';
+
+import Box from '@material-ui/core/Box';
+import { Alert, AlertTitle } from '@material-ui/lab';
+
+=======
+import { useHistory, useParams } from 'react-router-dom';
+>>>>>>> 456b0e81e598c8823001604139b5429fe88144e0
 <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
 
 const useStyles = makeStyles((theme) => ({
@@ -26,6 +34,8 @@ const useStyles = makeStyles((theme) => ({
   },
   button: {
     borderRadius: 100,
+    width: "150px",
+
   }
 }));
 
@@ -46,7 +56,7 @@ var temp = 0;
 var isAnswered = false;
 var localStream;
 var remoteStream;
-var examRoom = 'foo';
+var examRoom;
 var peerConnection;
 
 const socket = io("http://127.0.0.1:4001");
@@ -61,6 +71,7 @@ export default function AutoGrid() {
 
   const videoRef = React.useRef(null);
   const remoteVideoRef = React.useRef(null);
+  examRoom = useParams().exam;
 
   React.useEffect(()=>{
 
@@ -68,11 +79,11 @@ export default function AutoGrid() {
     var videoDivision = document.querySelector('.videos');
     
     window.onfocus = ()=>{
-      socket.emit('message', 'focus', examRoom);
+      socket.emit('message', {type: 'focus'}, examRoom);
     };
     
     window.onblur = ()=>{
-      socket.emit('message', 'blur', examRoom);
+      socket.emit('message', {type: 'blur', name: localStorage.getItem('studentName')}, examRoom);
     };
     
     if(examRoom != '') {
@@ -215,6 +226,7 @@ export default function AutoGrid() {
     if (qNo >= questions.length-1 || qNo === undefined) {
       setButton(false);
     }
+    
     console.log(temp);
     setQNo(++temp);
   };
@@ -224,26 +236,36 @@ export default function AutoGrid() {
     <React.Fragment>
       <AppBar />
       
-      <div className={classes.root}>
-        
-        <Grid container spacing={0}>
-          
+      <div className={classes.root}>  
+        <Grid container spacing={3}>  
           <Grid item xs={9} style={{paddingTop: 40}} >
             <Timer />
             {questions[qNo ? qNo : 0]}
-            <Grid container justify="center" style={{paddingTop: 40}}>
-              <Button variant="contained" color="primary" className={classes.button} onClick={handleChange} >
-              Save &amp; Next
-            </Button>
-              <Button variant="contained" disabled={activebutton} onClick={event => { navigateTo('./ExamComplete') }}>
-                Submit
-               </Button>
+
+              <Box mt={5} hidden = {activebutton}>
+                <Alert severity="success">
+                  <AlertTitle>Thank You</AlertTitle>
+                  Your Exam is Finished. Press Submit to Proceed.
+                </Alert>
+              </Box>
+              
+            <Grid container spacing={2} justify="center" style={{paddingTop: 40}}>
+              <Grid item>
+                <Button variant="contained" color="primary" className={classes.button} onClick={handleChange} disabled={!activebutton} >
+                  Save &amp; Next
+                </Button>
+              </Grid>
+              <Grid item>
+                <Button variant="contained" color="secondary" className={classes.button} disabled={activebutton} onClick={event => { navigateTo('./ExamComplete') }}>
+                  Submit
+                </Button>
+              </Grid>
             </Grid> 
           </Grid>
-          <Grid container justify="center" xs>
+          <Grid container justify="right" xs style={{paddingTop: 40}}>
             <div className="videos">
-              <video width="250" ref={videoRef}></video>
-              <video id="remoteVideo" width="250" ref={remoteVideoRef}></video>
+              <video width="350" ref={videoRef}></video>
+              <video id="remoteVideo" width="350" ref={remoteVideoRef}></video>
             </div>
           </Grid>
         </Grid>

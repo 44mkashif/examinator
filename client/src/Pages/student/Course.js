@@ -154,7 +154,7 @@ export default function Course() {
                             <div key={i} className={classes.card}>
                                 <Card className={classes.card} elevation="7">
                                     <ButtonBase className={classes.cardMargin}
-                                        onClick={event => { navigateTo(`../student/course/ExamInstruction/:${exam._id}`) }}
+                                        onClick={event => { navigateTo(`../student/course/ExamInstruction/${exam._id}`) }}
                                     >
                                         <CardContent className={classes.cardContent}>
                                             <Typography gutterBottom variant="h5" component="h2">

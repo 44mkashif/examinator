@@ -5,7 +5,7 @@ class ExamService extends Component {
 
     static async getExams(courseId, authToken) {
         try {
-            const res = await axios.get(`http://localhost:4000/api/instructor/exam?courseId=${courseId}`, {
+            const res = await axios.get(`http://localhost:4000/api/instructor/exams?courseId=${courseId}`, {
                 headers: {
                     'auth-token': authToken
                 },

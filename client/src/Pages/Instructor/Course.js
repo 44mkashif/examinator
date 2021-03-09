@@ -243,7 +243,7 @@ export default function Course() {
                             <div key={i} className={classes.card}>
                                 <Card className={classes.card} elevation="7">
                                     <ButtonBase className={classes.cardMargin}
-                                        onClick={event => { navigateTo('../instructor/course/exam/' + exam.name) }}
+                                        onClick={event => { navigateTo(`../instructor/course/exam/:${exam._id}`) }}
                                     >
                                         <CardContent className={classes.cardContent}>
                                             <Typography gutterBottom variant="h5" component="h2">
@@ -319,8 +319,8 @@ export default function Course() {
                                 value={name}
                                 onChange={onChangeExamName}
                             />
-                        <Grid container justify='center' alignItems='center'>
-                            <Grid item xs={6} style={{ paddingRight: 10 }}>
+                            <Grid container justify='center' alignItems='center'>
+                                <Grid item xs={6} style={{ paddingRight: 10 }}>
                                     <TextField
                                         className={classes.textField}
                                         variant="outlined"
@@ -334,8 +334,8 @@ export default function Course() {
                                         value={qNo}
                                         onChange={onChangeQNo}
                                     />
-                            </Grid>
-                            <Grid item xs={6} style={{ paddingLeft: 10 }}>
+                                </Grid>
+                                <Grid item xs={6} style={{ paddingLeft: 10 }}>
                                     <TextField
                                         className={classes.textField}
                                         variant="outlined"
@@ -348,72 +348,72 @@ export default function Course() {
                                         value={duration}
                                         onChange={onChangeDuration}
                                     />
+                                </Grid>
                             </Grid>
-                        </Grid>
-                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                            <Grid container justify='space-between' alignItems='center'>
-                                <div style={{ paddingRight: 10 }}>
-                                    <KeyboardDatePicker
-                                        margin="normal"
-                                        id="date-picker-dialog"
-                                        label="Exam Date"
-                                        format="MM/dd/yyyy"
-                                        value={selectedDate}
-                                        className={classes.textField}
-                                        inputVariant="outlined"
-                                        onChange={handleDateChange}
-                                        KeyboardButtonProps={{
-                                            'aria-label': 'change date',
-                                        }}
-                                    />
-                                </div>
-                                <div style={{ paddingLeft: 10 }}>
-                                    <KeyboardTimePicker
-                                        margin="normal"
-                                        id="time-picker"
-                                        label="Exam Time"
-                                        value={selectedDate}
-                                        inputVariant="outlined"
-                                        className={classes.textField}
-                                        onChange={handleDateChange}
-                                        KeyboardButtonProps={{
-                                            'aria-label': 'change time',
-                                        }}
-                                    />
-                                </div>
+                            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                <Grid container justify='space-between' alignItems='center'>
+                                    <div style={{ paddingRight: 10 }}>
+                                        <KeyboardDatePicker
+                                            margin="normal"
+                                            id="date-picker-dialog"
+                                            label="Exam Date"
+                                            format="MM/dd/yyyy"
+                                            value={selectedDate}
+                                            className={classes.textField}
+                                            inputVariant="outlined"
+                                            onChange={handleDateChange}
+                                            KeyboardButtonProps={{
+                                                'aria-label': 'change date',
+                                            }}
+                                        />
+                                    </div>
+                                    <div style={{ paddingLeft: 10 }}>
+                                        <KeyboardTimePicker
+                                            margin="normal"
+                                            id="time-picker"
+                                            label="Exam Time"
+                                            value={selectedDate}
+                                            inputVariant="outlined"
+                                            className={classes.textField}
+                                            onChange={handleDateChange}
+                                            KeyboardButtonProps={{
+                                                'aria-label': 'change time',
+                                            }}
+                                        />
+                                    </div>
 
 
+                                </Grid>
+                            </MuiPickersUtilsProvider>
+                            <br />
+                            <Grid container spacing={2} justify='space-between' alignItems='center'>
+                                <Button
+                                    variant="contained"
+                                    color="secondary.dark"
+                                    className={classes.button}
+                                    style={{ width: '48%' }}
+                                    onClick={handleCloseMenu}
+                                >
+                                    Close
+                                </Button>
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    style={{ width: '48%' }}
+                                    className={classes.button}
+                                    onClick={event => {
+                                        examData.push({
+                                            name,
+                                            questionNo: qNo,
+                                            duration,
+                                        })
+                                        console.log(examData);
+                                        navigateTo('../instructor/course/Paper')
+                                    }}
+                                >
+                                    Save
+                                </Button>
                             </Grid>
-                        </MuiPickersUtilsProvider>
-                        <br />
-                        <Grid container spacing={2} justify='space-between' alignItems='center'>
-                            <Button
-                                variant="contained"
-                                color="secondary.dark"
-                                className={classes.button}
-                                style={{ width: '48%' }}
-                                onClick={handleCloseMenu}
-                            >
-                                Close
-                                </Button>
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                style={{ width: '48%' }}
-                                className={classes.button}
-                                onClick={event => {
-                                    examData.push({
-                                        name,
-                                        questionNo: qNo,
-                                        duration,
-                                    })
-                                    console.log(examData);
-                                    navigateTo('../instructor/course/Paper')
-                                }}
-                            >
-                                Save
-                                </Button>
-                        </Grid>
                         </form>
 
                     </div>

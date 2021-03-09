@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
     },
     olHeading: {
         paddingLeft: "40px"
-    } 
+    }
 }));
 
 const defaultProps = {
@@ -134,13 +134,9 @@ export default function Exam() {
                             <Button className={classes.button}
                                 variant="contained"
                                 color="primary"
-<<<<<<< HEAD
-                                component={Link} to="./Exam"
+                                // component={Link} to={`./Exam/:${examRoom}`}
+                                onClick={event => { navigateTo(`../Exam/${examRoom}`) }}
                                 disabled={activebutton}>
-                                    
-=======
-                                onClick={event => { navigateTo('/student/course/exam/' + examRoom) }}>
->>>>>>> 456b0e81e598c8823001604139b5429fe88144e0
                                 Start Now!
                             </Button>
                         </Grid>

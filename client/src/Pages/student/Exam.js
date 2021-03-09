@@ -26,6 +26,8 @@ const useStyles = makeStyles((theme) => ({
   },
   button: {
     borderRadius: 100,
+    width: "150px",
+
   }
 }));
 
@@ -225,26 +227,28 @@ export default function AutoGrid() {
     <React.Fragment>
       <AppBar />
       
-      <div className={classes.root}>
-        
-        <Grid container spacing={0}>
-          
+      <div className={classes.root}>  
+        <Grid container spacing={3}>  
           <Grid item xs={9} style={{paddingTop: 40}} >
             <Timer />
             {questions[qNo ? qNo : 0]}
-            <Grid container justify="center" style={{paddingTop: 40}}>
-              <Button variant="contained" color="primary" className={classes.button} onClick={handleChange} >
-              Save &amp; Next
-            </Button>
-              <Button variant="contained" disabled={activebutton} onClick={event => { navigateTo('./ExamComplete') }}>
-                Submit
-               </Button>
+            <Grid container spacing={2} justify="center" style={{paddingTop: 40}}>
+              <Grid item>
+                <Button variant="contained" color="primary" className={classes.button} onClick={handleChange} >
+                  Save &amp; Next
+                </Button>
+              </Grid>
+              <Grid item>
+                <Button variant="contained" color="secondary" className={classes.button} disabled={activebutton} onClick={event => { navigateTo('./ExamComplete') }}>
+                  Submit
+                </Button>
+              </Grid>
             </Grid> 
           </Grid>
-          <Grid container justify="center" xs>
+          <Grid container justify="right" xs style={{paddingTop: 40}}>
             <div className="videos">
-              <video width="250" ref={videoRef}></video>
-              <video id="remoteVideo" width="250" ref={remoteVideoRef}></video>
+              <video width="350" ref={videoRef}></video>
+              <video id="remoteVideo" width="350" ref={remoteVideoRef}></video>
             </div>
           </Grid>
         </Grid>

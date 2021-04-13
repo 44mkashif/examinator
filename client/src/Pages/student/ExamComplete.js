@@ -12,13 +12,19 @@ import { Link } from 'react-router-dom';
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
-        marginTop: 50
+        marginTop: 120
     },
     paper: {
         padding: theme.spacing(2),
         textAlign: 'center',
         color: theme.palette.text.secondary,
     },
+    button: {
+        borderRadius: 100,
+    },
+    margin:{
+        marginTop: 50
+    }
 }));
 
 export default function StudentExamComplete() {
@@ -49,7 +55,7 @@ export default function StudentExamComplete() {
                                         Your Submission cannot be previewed at this Time
                                 </Typography>
                             </Grid>
-                        <Grid xs={12}>
+                        <Grid xs={12} className={classes.margin}>
                             <Button className={classes.button}
                                 variant="contained"
                                 color="primary"

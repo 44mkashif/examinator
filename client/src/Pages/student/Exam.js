@@ -8,6 +8,7 @@ import personImg from './../../assets/person.png';
 import Button from '@material-ui/core/Button';
 import Timer from './Components/Timer';
 import io from 'socket.io-client';
+import Typography from '@material-ui/core/Typography';
 import { useHistory, useParams } from 'react-router-dom';
 
 import Box from '@material-ui/core/Box';
@@ -262,7 +263,10 @@ export default function AutoGrid() {
           <Grid container justify="right" xs style={{ paddingTop: 40 }}>
             <div className="videos">
               <video width="350" ref={videoRef}></video>
-              <video id="remoteVideo" width="350" ref={remoteVideoRef}></video>
+                
+              <video id="remoteVideo" width="350" ref={remoteVideoRef}>
+                </video>
+
             </div>
           </Grid>
         </Grid>

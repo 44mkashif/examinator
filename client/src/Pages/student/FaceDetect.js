@@ -1,5 +1,5 @@
 import React from 'react';
-import AppBar from './Components/AppBar';
+import AppBar from './Components/AppBar' ;
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
@@ -10,7 +10,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import ButtonBase from '@material-ui/core/ButtonBase';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams, } from 'react-router-dom';
 
 import FaceDetect from '../../assets/Face.png';
 
@@ -40,6 +40,8 @@ export default function Testpage() {
 
     const history = useHistory();
     const navigateTo = (path) => history.push(path);
+
+    const examRoom = useParams().exam;
 
     const classes = useStyles();
 
@@ -79,7 +81,7 @@ export default function Testpage() {
                     <Card className={classes.card} elevation="7">
                         <ButtonBase className={classes.cardMargin}
 
-                            onClick={event => { navigateTo('') }}>
+                            onClick={event => { navigateTo(`./Course/Exam/${examRoom}`) }}>
 
                             <CardContent className={classes.cardContent}>
                                 <img src={FaceDetect} width="100" height="100" />

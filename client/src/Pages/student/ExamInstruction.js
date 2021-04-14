@@ -135,7 +135,7 @@ export default function Exam() {
                                 variant="contained"
                                 color="primary"
                                 // component={Link} to={`./Exam/:${examRoom}`}
-                                onClick={event => { navigateTo(`../Exam/${examRoom}`) }}
+                                onClick={event => { navigateTo(`../../facedetect`) }}
                                 disabled={activebutton}>
                                 Proceed
                             </Button>

@@ -137,7 +137,7 @@ export default function Exam() {
                                 // component={Link} to={`./Exam/:${examRoom}`}
                                 onClick={event => { navigateTo(`../Exam/${examRoom}`) }}
                                 disabled={activebutton}>
-                                Start Now!
+                                Proceed
                             </Button>
                         </Grid>
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import AppBar from './Student/Components/AppBar';
+import AppBar from './Components/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
@@ -12,7 +12,7 @@ import Grid from '@material-ui/core/Grid';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import { useHistory } from 'react-router-dom';
 
-import FaceDetect from '../assets/Face.png';
+import FaceDetect from '../../assets/Face.png';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -46,29 +46,29 @@ export default function Testpage() {
     const videoRef = React.useRef(null);
     const remoteVideoRef = React.useRef(null);
 
-    const renderValidity = ()=>{
-        return(
-        <div className={classes.root}>
-            <Grid container spacing={2} align='center' >
-                <Card className={classes.card} elevation="7">
-                    <ButtonBase className={classes.cardMargin}
+    const renderValidity = () => {
+        return (
+            <div className={classes.root}>
+                <Grid container spacing={2} align='center' >
+                    <Card className={classes.card} elevation="7">
+                        <ButtonBase className={classes.cardMargin}
 
-                        onClick={event => {
-                            setButton(true)
-                            setValidity(false);
+                            onClick={event => {
+                                setButton(true)
+                                setValidity(false);
                             }}>
 
-                        <CardContent className={classes.cardContent}>
-                            <img src={FaceDetect} width="100" height="100" />
+                            <CardContent className={classes.cardContent}>
+                                <img src={FaceDetect} width="100" height="100" />
 
-                            <Typography>Verify Your Identity</Typography>
+                                <Typography>Verify Your Identity</Typography>
 
-                        </CardContent>
+                            </CardContent>
 
-                    </ButtonBase>
-                </Card>
-            </Grid>
-        </div>
+                        </ButtonBase>
+                    </Card>
+                </Grid>
+            </div>
         );
     }
 
@@ -105,8 +105,8 @@ export default function Testpage() {
             <CssBaseline />
             <Container fixed>
                 {!!displayValidity ? renderValidity() : null}
-                {!!activebutton? renderVideo(): null}
-                   
+                {!!activebutton ? renderVideo() : null}
+
 
             </Container>
         </React.Fragment>

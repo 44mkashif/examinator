@@ -11,12 +11,14 @@ import StudentCourse from './Pages/Student/Course';
 import StudentExam from './Pages/Student/Exam';
 import StudentExamInstruction from './Pages/Student/ExamInstruction';
 import StudentExamComplete from './Pages/Student/ExamComplete';
+import FaceDetect from './Pages/Student/FaceDetect';
 
 import InstructorLogin from './Pages/Instructor/Login';
 import InstructorDashboard from './Pages/Instructor/Dashboard';
 import InstructorCourse from './Pages/Instructor/Course';
 import InstructorPaper from './Pages/Instructor/Paper';
 import InstructorExam from './Pages/Instructor/Exam';
+
 
 import Test from './Pages/TestPage';
 
@@ -94,7 +96,9 @@ ReactDOM.render(
           <GuardedRoute path="/Student/Course/Exam/:exam" exact component={StudentExam} meta={{ auth: true, role: 'student' }} />
           <GuardedRoute path="/Student/Course/ExamInstruction/:exam" exact component={StudentExamInstruction} meta={{ auth: true, role: 'student' }} />
           <GuardedRoute path="/Student/Course/ExamComplete" exact component={StudentExamComplete} meta={{ auth: true, role: 'student' }} />
+          <Route path="/Student/FaceDetect" exact component={FaceDetect} />
           <Route path="/test" exact component={Test} />
+         
 
           <GuardedRoute path="/Instructor/Login" exact component={InstructorLogin} />
           <GuardedRoute path="/Instructor/Dashboard" exact component={InstructorDashboard} meta={{ auth: true, role: 'instructor' }} />

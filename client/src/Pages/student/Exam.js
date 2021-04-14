@@ -1,10 +1,11 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
+import Toolbar from '@material-ui/core/Toolbar';
+import logoImg from './../../assets/navbar-2.png';
 import Grid from '@material-ui/core/Grid';
 import Question from './Components/Question';
-import AppBar from './Components/AppBar';
-import personImg from './../../assets/person.png';
+import AppBar from '@material-ui/core/AppBar';
+import { Link } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import Timer from './Components/Timer';
 import io from 'socket.io-client';
@@ -231,7 +232,20 @@ export default function AutoGrid() {
 
   return (
     <React.Fragment>
-      <AppBar />
+     <AppBar position="relative">
+            <Toolbar>
+                <Grid container spacing={2} justify='space-between' alignItems='center'>
+                    <div>
+                        <Grid container>
+                          <img src={logoImg} alt="logo" style={{ width: 40, marginRight: 10 }} />
+                          <Typography style={{ color: 'white', marginTop:5 }}>
+                              EXAMINATOR
+                          </Typography>
+                        </Grid>
+                    </div>
+                </Grid>
+            </Toolbar>
+        </AppBar>
 
       <div className={classes.root}>
         <Grid container spacing={3}>

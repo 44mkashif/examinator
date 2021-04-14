@@ -129,6 +129,7 @@ export default function Course() {
             examData.push(e);
         })
         setLoading(true);
+        console.log(examData[0].startTime);
 
     })
 

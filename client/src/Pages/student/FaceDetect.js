@@ -5,8 +5,7 @@ import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-
+import CardContent from '@material-ui/core/CardContent';    
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import ButtonBase from '@material-ui/core/ButtonBase';
@@ -24,11 +23,19 @@ const useStyles = makeStyles((theme) => ({
         color: theme.palette.text.secondary,
     },
     card: {
-        width: 300,
+        width: 400,
         margin: theme.spacing(1, 3, 2),
         // display: 'flex',
         // flexDirection: 'column',
     },
+    cardGrid: {
+        paddingTop: theme.spacing(8),
+        paddingBottom: theme.spacing(8),
+        
+      },
+      align: {
+          paddingTop: 150
+      }
 }));
 
 
@@ -50,50 +57,46 @@ export default function Testpage() {
 
     const renderValidity = () => {
         return (
-            <div className={classes.root}>
-                <Grid container spacing={2} align='center' >
-                    <Card className={classes.card} elevation="7">
-                        <ButtonBase className={classes.cardMargin}
-
-                            onClick={event => {
-                                setButton(true)
-                                setValidity(false);
-                            }}>
-
-                            <CardContent className={classes.cardContent}>
-                                <img src={FaceDetect} width="100" height="100" />
-
-                                <Typography>Verify Your Identity</Typography>
-
-                            </CardContent>
-
-                        </ButtonBase>
-                    </Card>
+            
+                < Grid container className={classes.align} align="center" justify="center" direction="column" >        
+                    <Grid item l={12} >
+                        <Card className={classes.card} elevation="7">
+                            <ButtonBase className={classes.cardMargin}
+                                onClick={event => {
+                                    setButton(true)
+                                    setValidity(false);
+                                }}>
+                                <CardContent className={classes.cardContent}>
+                                    <img src={FaceDetect} width="300" height="300" />
+                                    <Typography variant="h6">
+                                        Verify Your Identity
+                                    </Typography>
+                                </CardContent>
+                            </ButtonBase>
+                        </Card>
+                    </Grid>                  
                 </Grid>
-            </div>
+         
         );
     }
 
     const renderVideo = () => {
         return (
-            <div className="videos">
-                <Grid container spacing={2} align='center' >
+            < Grid container className={classes.align} align="center" justify="center" direction="column" >        
+                <Grid item l={12} >
                     <Card className={classes.card} elevation="7">
                         <ButtonBase className={classes.cardMargin}
-
                             onClick={event => { navigateTo(`./Course/Exam/${examRoom}`) }}>
-
                             <CardContent className={classes.cardContent}>
-                                <img src={FaceDetect} width="100" height="100" />
-
-                                <Typography>Video Feed</Typography>
-
+                                <img src={FaceDetect} width="300" height="300" />
+                                <Typography  variant="h6">
+                                    Video Feed
+                                </Typography>
                             </CardContent>
-
                         </ButtonBase>
                     </Card>
                 </Grid>
-            </div>
+            </Grid>     
         );
     }
 

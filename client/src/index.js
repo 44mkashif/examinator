@@ -96,7 +96,7 @@ ReactDOM.render(
           <GuardedRoute path="/Student/Course/Exam/:exam" exact component={StudentExam} meta={{ auth: true, role: 'student' }} />
           <GuardedRoute path="/Student/Course/ExamInstruction/:exam" exact component={StudentExamInstruction} meta={{ auth: true, role: 'student' }} />
           <GuardedRoute path="/Student/Course/ExamComplete" exact component={StudentExamComplete} meta={{ auth: true, role: 'student' }} />
-          <Route path="/Student/FaceDetect" exact component={FaceDetect} />
+          <GuardedRoute path="/Student/FaceDetect" exact component={FaceDetect} meta={{ auth: true, role: 'student' }} />
           <Route path="/test" exact component={Test} />
          
 

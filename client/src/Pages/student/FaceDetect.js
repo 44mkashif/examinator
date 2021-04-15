@@ -18,6 +18,7 @@ import FaceDetect from '../../assets/Face.png';
 import { Alert, AlertTitle } from '@material-ui/lab';
 import Box from '@material-ui/core/Box';
 import FacialRecognitionService from '../../services/FacialRecognitionService';
+import FormData from 'form-data';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -65,19 +66,42 @@ export default function Testpage() {
 
     const webcamRef = React.useRef(null);
 
-    const [image, setImage] = React.useState('');
+    const [image, setImage] = React.useState(null);
 
-    var body = {}
+    var data = new FormData();
 
     const capture = () => {
-        setImage(webcamRef.current.getScreenshot())
-        body["file1"] = image;
-        body["file2"] = image;
-        verifyImage();
+        const imageSrc = webcamRef.current.getScreenshot();
+        setImage(imageSrc);
+        const capturedImage = dataURLtoFile(imageSrc);
+
+        verifyImage(capturedImage);
     };
 
-    const verifyImage = async () => {
-        const verification = await FacialRecognitionService.verifyImage(body);
+    const verifyImage = async (capturedImage) => {
+
+        data.append('file1', capturedImage, capturedImage.name);
+        data.append('file2', capturedImage, capturedImage.name);
+
+        const verification = await FacialRecognitionService.verifyImage(data);
+        if (verification) {
+            setVerification("Success");
+            navigateTo(`./Course/Exam/${examRoom}`)
+        }
+        else setVerification("Error");
+    }
+
+    const dataURLtoFile = (dataurl, filename) => {
+        const arr = dataurl.split(',')
+        const mime = arr[0].match(/:(.*?);/)[1]
+        const bstr = atob(arr[1])
+        let n = bstr.length
+        const u8arr = new Uint8Array(n)
+        while (n) {
+            u8arr[n - 1] = bstr.charCodeAt(n - 1)
+            n -= 1 // to make eslint happy
+        }
+        return new File([u8arr], filename, { type: mime })
     }
 
     const renderValidity = () => {

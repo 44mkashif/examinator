@@ -9,7 +9,10 @@ import CardContent from '@material-ui/core/CardContent';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import ButtonBase from '@material-ui/core/ButtonBase';
+import Divider from '@material-ui/core/Divider';
 import { useHistory, useParams, } from 'react-router-dom';
+import Button from '@material-ui/core/Button';
+import Icon from '@material-ui/core/Icon';
 
 import FaceDetect from '../../assets/Face.png';
 
@@ -33,6 +36,13 @@ const useStyles = makeStyles((theme) => ({
         paddingBottom: theme.spacing(8),
         
       },
+    divider: {
+        width: '1px',
+        // height: '184px',
+        marginLeft: '20px',
+        marginRight: '20px',
+
+    },
       align: {
           paddingTop: 150
       }
@@ -58,24 +68,39 @@ export default function Testpage() {
     const renderValidity = () => {
         return (
             
-                < Grid container className={classes.align} align="center" justify="center" direction="column" >        
-                    <Grid item l={12} >
-                        <Card className={classes.card} elevation="7">
-                            <ButtonBase className={classes.cardMargin}
-                                onClick={event => {
-                                    setButton(true)
-                                    setValidity(false);
-                                }}>
-                                <CardContent className={classes.cardContent}>
-                                    <img src={FaceDetect} width="300" height="300" />
-                                    <Typography variant="h6">
-                                        Verify Your Identity
-                                    </Typography>
-                                </CardContent>
-                            </ButtonBase>
-                        </Card>
-                    </Grid>                  
-                </Grid>
+                <div className={classes.root}>
+                <Paper className={classes.paper}>
+                        <Grid container spacing={3}>
+                            <Grid item xs={12} sm={6}>
+                            <Typography>Take a Photo with your face Fitting on the screen.<br></br> Make sure that there is enough light in the room. <br></br>If the photo is not verified, please take a new photo.</Typography>
+                            </Grid>
+                        <Divider orientation="vertical" className={classes.divider} flexItem />
+                        
+                            <Grid item xs={12} sm={6}>
+                                <Card className={classes.card} elevation="7">
+                                        <CardContent className={classes.cardContent}>
+                                            <img src={FaceDetect} width="300" height="300" />
+                                            <Typography variant="h6">
+                                                Verify Your Identity
+                                            </Typography>
+                                        </CardContent>
+                                <Button 
+                                    variant="contained"
+                                    color="primary"
+                                    className={classes.button}
+                                    endIcon={<Icon>send</Icon>}
+                                    onClick={event => {
+                                        setButton(true)
+                                        setValidity(false);
+                                    }}>
+                                    Next Step
+                                </Button>
+                                </Card>
+                            </Grid>
+                        </Grid>
+                    </Paper>
+                    
+                </div>
          
         );
     }

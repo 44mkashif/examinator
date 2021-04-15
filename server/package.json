@@ -12,7 +12,7 @@
     "client": "cd ../client && npm start",
     "webrtc": "cd ../WebRTC Server && nodemon",
     "flask": "cd ../FlaskServer && python flask_server.py",
-    "dev": "concurrently \"npm run server\" \"npm run client\" \" npm run webrtc\""
+    "dev": "concurrently \"npm run server\" \"npm run client\" \" npm run webrtc\" \" npm run flask\""
   },
   "keywords": [],
   "author": "",

@@ -9,7 +9,8 @@
     "server": "nodemon bin/server.js",
     "client": "cd ../client && npm start",
     "webrtc": "cd ../WebRTC Server && nodemon",
-    "dev": "concurrently \"npm run server\" \"npm run client\" \" npm run webrtc\""
+    "flaskServer": "cd ../FlaskServer && python flask_server.py",
+    "dev": "concurrently \"npm run server\" \"npm run client\" \" npm run webrtc\" \" npm run flaskServer\""
   },
   "keywords": [],
   "author": "",

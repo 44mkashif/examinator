@@ -36,13 +36,6 @@ const useStyles = makeStyles((theme) => ({
         paddingBottom: theme.spacing(8),
         
       },
-    divider: {
-        width: '1px',
-        // height: '184px',
-        marginLeft: '20px',
-        marginRight: '20px',
-
-    },
       align: {
           paddingTop: 150
       }
@@ -74,7 +67,7 @@ export default function Testpage() {
                             <Grid item xs={12} sm={6}>
                             <Typography>Take a Photo with your face Fitting on the screen.<br></br> Make sure that there is enough light in the room. <br></br>If the photo is not verified, please take a new photo.</Typography>
                             </Grid>
-                        <Divider orientation="vertical" className={classes.divider} flexItem />
+                        <Divider orientation="vertical" flexItem style={{ marginRight: "-1px" }} />
                         
                             <Grid item xs={12} sm={6}>
                                 <Card className={classes.card} elevation="7">

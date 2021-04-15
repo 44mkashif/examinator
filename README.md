@@ -21,7 +21,7 @@ npm run webrtc-install
 # Install dependencies for Flask Server
 npm run flask-install
 
-# Run the React client, Express server, WebRTC and Flask Servers with concurrently
+# Run the React client, Express, WebRTC and Flask Servers with concurrently
 npm run dev
 
 # Run the Express server only

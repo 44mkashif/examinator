@@ -36,8 +36,8 @@ npm run webrtc
 # Run the Flask Server only
 npm run flask
 
-# Express Server: http://localhost:4000 
-# React client:   http://localhost:3000
-# WebRTC Server:  http://localhost:4001
-# Flask Server:   http://localhost:5000
+# Express Server Port:  4000 
+# React client Port:    3000
+# WebRTC Server Port:   4001
+# Flask Server Port:    5000
 ```

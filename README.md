@@ -16,7 +16,8 @@ npm install
 npm run client-install
 
 # Install dependencies for WebRTC Server
-npm run webrtc-install
+npm run client-install
+
 
 # Install dependencies for Flask Server
 npm run flask-install

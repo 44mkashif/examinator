@@ -32,8 +32,6 @@ const useStyles = makeStyles((theme) => ({
     card: {
         width: 400,
         margin: theme.spacing(1, 3, 2),
-        // display: 'flex',
-        // flexDirection: 'column',
     },
     cardGrid: {
         paddingTop: theme.spacing(8),
@@ -139,24 +137,6 @@ export default function Testpage() {
                             >
                                 Capture Photo
                             </Button>
-                            {/* <Card className={classes.card} elevation="7">
-                                <CardContent className={classes.cardContent}>
-                                    <img src={FaceDetect} width="300" height="300" />
-                                    
-                                    <Typography variant="h6">Verify Your Identity</Typography>
-                                </CardContent>
-                                <Button
-                                    variant="contained"
-                                    color="primary"
-                                    className={classes.button}
-                                    endIcon={<Icon></Icon>}
-                                    onClick={event => {
-                                        setCaptured(true)
-                                        setValidity(false);
-                                    }}>
-                                    Next Step
-                                </Button>
-                            </Card> */}
                         </Grid>
                     </Grid>
                 </Paper>
@@ -171,7 +151,6 @@ export default function Testpage() {
             < Grid container className={classes.align} align="center" justify="center" direction="column" >
                 <Grid item l={12} >
                     <img src={image} />
-                    {/* <Typography variant="h6">Verification Status: Success/Failed</Typography> */}
                     {verification == "Success" ?
                         <Box mt={5}>
                             <Alert severity="success">
@@ -185,19 +164,20 @@ export default function Testpage() {
                                     <AlertTitle>Error</AlertTitle>
                                     Verification Status: Failed
                             </Alert>
-                            </Box> : <div></div>
+                                <div>
+                                    <Button
+                                        variant="contained"
+                                        color="primary"
+                                        className={classes.button}
+                                        onClick={event => {
+                                            setValidity(true);
+                                            setCaptured(false);
+                                        }}
+                                    >Recapture</Button>
+                                </div>
+                            </Box> :  <div></div>
+                            
                     }
-                    {/* <Card className={classes.card} elevation="7">
-                        <ButtonBase className={classes.cardMargin}
-                            onClick={event => { navigateTo(`./Course/Exam/${examRoom}`) }}>
-                            <CardContent className={classes.cardContent}>
-                                <img src={FaceDetect} width="300" height="300" />
-                                <Typography variant="h6">
-                                    Video Feed
-                                </Typography>
-                            </CardContent>
-                        </ButtonBase>
-                    </Card> */}
                 </Grid>
             </Grid>
         );

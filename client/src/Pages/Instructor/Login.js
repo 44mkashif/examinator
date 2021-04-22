@@ -99,7 +99,8 @@ export default function Login() {
   const [errorMessage, setErrorMessage] = React.useState("");
   const [isMobile, setIsMobile] = React.useState(window.innerWidth < 1200);
 
-  var body = {}
+  var body = {
+  }
 
   const instructorLogin = async (e) => {
     e.preventDefault();

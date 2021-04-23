@@ -25,6 +25,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import DateFnsUtils from '@date-io/date-fns';
 import Footer from '../Components/Footer';
 import { useParams } from 'react-router-dom';
+import CourseService from './../../services/CourseService';
 
 import {
     MuiPickersUtilsProvider,
@@ -115,6 +116,8 @@ const useStyles = makeStyles((theme) => ({
 
 var examData = [];
 
+var body = {}
+
 export default function Course() {
 
     const [loading, setLoading] = React.useState(false);
@@ -131,7 +134,6 @@ export default function Course() {
             examData.push(e);
         })
         setLoading(true);
-
     })
 
     const history = useHistory();
@@ -139,41 +141,48 @@ export default function Course() {
     const classes = useStyles();
     const [openMenu, setOpenMenu] = React.useState(false);
 
-
-
-
     const handleOpenMenu = () => {
         setOpenMenu(true);
     };
     const handleCloseMenu = () => {
         setOpenMenu(false);
     };
-    const [selectedDate, setSelectedDate] = React.useState(new Date('2014-08-18T21:11:54'));
-    const handleDateChange = (date) => {
-        setSelectedDate(date);
-    };
-    const [name, setExamName] = React.useState('');
-    const [qNo, setqNo] = React.useState(0);
-    const [duration, setDuration] = React.useState(0);
 
-    var body = {
-        items: []
-    }
+    const [selectedDate, setSelectedDate] = React.useState(new Date());
 
     const onChangeExamName = (e) => {
-        setExamName(e.target.value);
+        body[e.target.name] = e.target.value;
+        console.log(body);
     }
 
     const onChangeDuration = (e) => {
-        setDuration(e.target.value);
+        body[e.target.name] = e.target.value;
+        console.log(body);
     }
     const onChangeQNo = (e) => {
-        setqNo(e.target.value);
+        body[e.target.name] = e.target.value;
+        console.log(body);
     }
 
+    const handleDateChange = (date) => {
+        setSelectedDate(date);
+        body["startTime"] = date;
+        console.log(body);
+    };
 
+    const createCourse = async (e) => {
+        // body["items"].push([{
+        //     name,
+        //     questionNo: qNo,
+        //     duration
+        // }])
+        e.preventDefault();
+        body["courseId"] = courseId;
+        console.log(body);
+        const error = await CourseService.createCourse(body, authToken);
 
-
+        navigateTo(`../../Instructor/Course/${courseId}/Paper`);
+    }
 
     return (
         <React.Fragment>
@@ -268,7 +277,7 @@ export default function Course() {
                 <Fade in={openMenu}>
                     <div className={classes.paper}>
                         <h2 id="transition-modal-title">Schedule Exam</h2>
-                        <form className={classes.form}>
+                        <form className={classes.form} onSubmit={createCourse}>
                             <TextField
                                 className={classes.textField}
                                 variant="outlined"
@@ -279,7 +288,7 @@ export default function Course() {
                                 label="Exam Name"
                                 autoComplete="off"
                                 autoFocus
-                                value={name}
+                                name="name"
                                 onChange={onChangeExamName}
                             />
                             <Grid container justify='center' alignItems='center'>
@@ -294,7 +303,7 @@ export default function Course() {
                                         label="No of Questions"
                                         type='number'
                                         autoComplete="off"
-                                        value={qNo}
+                                        name="totalMarks"   //Temporarily stored no of questions in totalMarks
                                         onChange={onChangeQNo}
                                     />
                                 </Grid>
@@ -308,7 +317,7 @@ export default function Course() {
                                         id="standard-basic"
                                         label="Duration"
                                         autoComplete="off"
-                                        value={duration}
+                                        name="duration"
                                         onChange={onChangeDuration}
                                     />
                                 </Grid>
@@ -321,9 +330,10 @@ export default function Course() {
                                             id="date-picker-dialog"
                                             label="Exam Date"
                                             format="MM/dd/yyyy"
-                                            value={selectedDate}
+                                            name="date"
                                             className={classes.textField}
                                             inputVariant="outlined"
+                                            value={selectedDate}
                                             onChange={handleDateChange}
                                             KeyboardButtonProps={{
                                                 'aria-label': 'change date',
@@ -335,9 +345,10 @@ export default function Course() {
                                             margin="normal"
                                             id="time-picker"
                                             label="Exam Time"
-                                            value={selectedDate}
+                                            name="time"
                                             inputVariant="outlined"
                                             className={classes.textField}
+                                            value={selectedDate}
                                             onChange={handleDateChange}
                                             KeyboardButtonProps={{
                                                 'aria-label': 'change time',
@@ -363,22 +374,9 @@ export default function Course() {
                                     variant="contained"
                                     color="primary"
                                     style={{ width: '48%' }}
+                                    type="submit"
                                     className={classes.button}
-                                    onClick={event => {
-                                        examData.push({
-                                            name,
-                                            questionNo: qNo,
-                                            duration,
-                                        })
-                                        body["items"].push([{
-                                            name,
-                                            questionNo: qNo,
-                                            duration
-                                        }])
-                                        console.log(body);
-                                        console.log(examData);
-                                        navigateTo(`../../Instructor/Course/${courseId}/Paper`)
-                                    }}
+                                // onClick={createCourse}
                                 >
                                     Save
                                 </Button>
@@ -392,6 +390,5 @@ export default function Course() {
             <Footer />
             {/* End footer */}
         </React.Fragment>
-
     );
 }

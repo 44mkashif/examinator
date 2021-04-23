@@ -84,7 +84,7 @@ export default function Testpage() {
         const verification = await FacialRecognitionService.verifyImage(data);
         if (verification) {
             setVerification("Success");
-            navigateTo(`./Course/Exam/${examRoom}`)
+            navigateTo(`../Course/Exam/${examRoom}`)
         }
         else setVerification("Error");
     }
@@ -175,8 +175,8 @@ export default function Testpage() {
                                         }}
                                     >Recapture</Button>
                                 </div>
-                            </Box> :  <div></div>
-                            
+                            </Box> : <div></div>
+
                     }
                 </Grid>
             </Grid>

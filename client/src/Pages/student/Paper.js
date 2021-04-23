@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
     },
     paper: {
         padding: theme.spacing(1),
-      //  textAlign: 'center',
+        //  textAlign: 'center',
         color: theme.palette.text.secondary,
         userSelect: 'none',
         marginTop: '30px'
@@ -27,7 +27,7 @@ var questionNum = 5;
 
 export default function AutoGrid() {
     const classes = useStyles();
-  
+
     var questions = [];
     for (var i = 0; i < questionNum; i++) {
         questions.push(<Question />);
@@ -47,6 +47,6 @@ export default function AutoGrid() {
                 </Grid>
             </div>
         </React.Fragment>
-        
+
     );
 }

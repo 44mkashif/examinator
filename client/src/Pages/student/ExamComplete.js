@@ -8,6 +8,7 @@ import { Typography } from '@material-ui/core';
 import Submitted from '../../assets/Submitted.png';
 import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
+import Footer from '../Components/Footer';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -22,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
     button: {
         borderRadius: 100,
     },
-    margin:{
+    margin: {
         marginTop: 50
     }
 }));
@@ -37,37 +38,39 @@ export default function StudentExamComplete() {
         <React.Fragment>
             <AppBar />
             <CssBaseline />
-            
+
             <Container fixed>
                 <div className={classes.root}>
                     <Grid container spacing={2} align='center' >
                         <Grid item xs={12}>
                             <img src={Submitted} width="100" height="100" />
                         </Grid>
-                            <Grid item xs={12}>
-                            
-                                <Typography>
-                                    Your Exam Have Been Submitted
+                        <Grid item xs={12}>
+
+                            <Typography>
+                                Your Exam Have Been Submitted
                                 </Typography>
-                            </Grid>
-                            <Grid  xs={12}>
-                                    <Typography>
-                                        Your Submission cannot be previewed at this Time
+                        </Grid>
+                        <Grid xs={12}>
+                            <Typography>
+                                Your Submission cannot be previewed at this Time
                                 </Typography>
-                            </Grid>
+                        </Grid>
                         <Grid xs={12} className={classes.margin}>
                             <Button className={classes.button}
                                 variant="contained"
                                 color="primary"
-                                component={Link} to="../Dashboard">
+                                component={Link} to="../../Dashboard">
                                 Return to Dashboard
                             </Button>
                         </Grid>
-                            
+
                     </Grid>
-                    </div>
+                </div>
             </Container>
-            
+            {/* Footer */}
+            <Footer />
+            {/* End footer */}
         </React.Fragment>
     )
 };

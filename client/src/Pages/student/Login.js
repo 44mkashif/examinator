@@ -15,6 +15,7 @@ import bgImage from './../../assets/studentLogin.jpg';
 import AuthService from '../../services/AuthService';
 import { useState } from 'react';
 import { Alert, AlertTitle } from '@material-ui/lab';
+import Footer from '../Components/Footer';
 
 
 function Copyright() {
@@ -121,59 +122,60 @@ export default function Login() {
   }, [isMobile]);
 
   return (
-    <Grid container component="main" className={classes.root}>
-      <CssBaseline />
-      <Grid item xs={12} sm={8} md={5} component={Paper} container alignItems="center"
-        justify="center" elevation={6} square className={`${!isMobile ? classes.round : ""}`}>
-        <div className={`${!isMobile ? classes.paper : classes.mobile}`}>
-          <div>
-            <img className={classes.logo} src={logo} alt="" />
-          </div>
+    <React.Fragment>
+      <Grid container component="main" className={classes.root}>
+        <CssBaseline />
+        <Grid item xs={12} sm={8} md={5} component={Paper} container alignItems="center"
+          justify="center" elevation={6} square className={`${!isMobile ? classes.round : ""}`}>
+          <div className={`${!isMobile ? classes.paper : classes.mobile}`}>
+            <div>
+              <img className={classes.logo} src={logo} alt="" />
+            </div>
 
-          <Typography component="h1" variant="h5">
-            Student Sign In
+            <Typography component="h1" variant="h5">
+              Student Sign In
           </Typography>
-          <form className={classes.form} noValidate onSubmit={studentLogin}>
-            <TextField
-              className={classes.textField}
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              autoFocus
-              onChange={onEmailChange}
-            />
-            <TextField
-              className={classes.textField}
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-              onChange={onPasswordChange}
-            />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-            >
-              Sign In
+            <form className={classes.form} noValidate onSubmit={studentLogin}>
+              <TextField
+                className={classes.textField}
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="email"
+                autoFocus
+                onChange={onEmailChange}
+              />
+              <TextField
+                className={classes.textField}
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+                onChange={onPasswordChange}
+              />
+              <FormControlLabel
+                control={<Checkbox value="remember" color="primary" />}
+                label="Remember me"
+              />
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+              >
+                Sign In
             </Button>
-            {/* <Grid container>
+              {/* <Grid container>
               <Grid item xs>
                 <Link href="#" variant="body2">
                   Forgot password?
@@ -185,21 +187,22 @@ export default function Login() {
                 </Link>
               </Grid>
             </Grid> */}
-            {errorMessage &&
-              <Box mt={5}>
-                <Alert severity="error">
-                  <AlertTitle>Error</AlertTitle>
-                  {errorMessage}
-                </Alert>
-              </Box>
-            }
-            <Box mt={5}>
-              <Copyright />
-            </Box>
-          </form>
-        </div>
+              {errorMessage &&
+                <Box mt={5}>
+                  <Alert severity="error">
+                    <AlertTitle>Error</AlertTitle>
+                    {errorMessage}
+                  </Alert>
+                </Box>
+              }
+              {/* Footer */}
+              <Footer />
+              {/* End footer */}
+            </form>
+          </div>
+        </Grid>
+        {/* <Grid item xs={false} sm={4} md={7} className={classes.image} /> */}
       </Grid>
-      {/* <Grid item xs={false} sm={4} md={7} className={classes.image} /> */}
-    </Grid>
+    </React.Fragment>
   );
 }

@@ -23,6 +23,9 @@ import EditIcon from '@material-ui/icons/Edit';
 import DateRangeIcon from '@material-ui/icons/DateRange';
 import DeleteIcon from '@material-ui/icons/Delete';
 import DateFnsUtils from '@date-io/date-fns';
+import Footer from '../Components/Footer';
+import { useParams } from 'react-router-dom';
+
 import {
     MuiPickersUtilsProvider,
     KeyboardTimePicker,
@@ -112,13 +115,12 @@ const useStyles = makeStyles((theme) => ({
 
 var examData = [];
 
-const courseId = "603ea3d760c6ed3f3880dff3"; //TODO: current course id
-const authToken = localStorage.getItem('auth-token');
-
 export default function Course() {
 
     const [loading, setLoading] = React.useState(false);
 
+    const courseId = useParams().course;
+    const authToken = localStorage.getItem('auth-token');
 
     ExamService.getExams(courseId, authToken).then((examsFromDb) => {
         console.log(examsFromDb);
@@ -129,7 +131,6 @@ export default function Course() {
             examData.push(e);
         })
         setLoading(true);
-        console.log(examData[0].startTime);
 
     })
 
@@ -205,7 +206,7 @@ export default function Course() {
                             <div key={i} className={classes.card}>
                                 <Card className={classes.card} elevation="7">
                                     <ButtonBase className={classes.cardMargin}
-                                        onClick={event => { navigateTo(`../instructor/course/exam/${exam._id}`) }}
+                                        onClick={event => { navigateTo(`../Course/Exam/${exam._id}`) }}
                                     >
                                         <CardContent className={classes.cardContent}>
                                             <Typography gutterBottom variant="h5" component="h2">
@@ -376,7 +377,7 @@ export default function Course() {
                                         }])
                                         console.log(body);
                                         console.log(examData);
-                                        navigateTo('../instructor/course/Paper')
+                                        navigateTo(`../../Instructor/Course/${courseId}/Paper`)
                                     }}
                                 >
                                     Save
@@ -387,6 +388,9 @@ export default function Course() {
                     </div>
                 </Fade>
             </Modal>
+            {/* Footer */}
+            <Footer />
+            {/* End footer */}
         </React.Fragment>
 
     );

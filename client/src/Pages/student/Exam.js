@@ -11,6 +11,7 @@ import Timer from './Components/Timer';
 import io from 'socket.io-client';
 import Typography from '@material-ui/core/Typography';
 import { useHistory, useParams } from 'react-router-dom';
+import Footer from '../Components/Footer';
 
 import Box from '@material-ui/core/Box';
 import { Alert, AlertTitle } from '@material-ui/lab';
@@ -232,20 +233,20 @@ export default function AutoGrid() {
 
   return (
     <React.Fragment>
-     <AppBar position="relative">
-            <Toolbar>
-                <Grid container spacing={2} justify='space-between' alignItems='center'>
-                    <div>
-                        <Grid container>
-                          <img src={logoImg} alt="logo" style={{ width: 40, marginRight: 10 }} />
-                          <Typography style={{ color: 'white', marginTop:5 }}>
-                              EXAMINATOR
+      <AppBar position="relative">
+        <Toolbar>
+          <Grid container spacing={2} justify='space-between' alignItems='center'>
+            <div>
+              <Grid container>
+                <img src={logoImg} alt="logo" style={{ width: 40, marginRight: 10 }} />
+                <Typography style={{ color: 'white', marginTop: 5 }}>
+                  EXAMINATOR
                           </Typography>
-                        </Grid>
-                    </div>
-                </Grid>
-            </Toolbar>
-        </AppBar>
+              </Grid>
+            </div>
+          </Grid>
+        </Toolbar>
+      </AppBar>
 
       <div className={classes.root}>
         <Grid container spacing={3}>
@@ -268,7 +269,7 @@ export default function AutoGrid() {
               </Grid>
               <Grid item>
                 <Button variant="contained" color="secondary" className={classes.button}
-                  disabled={activebutton} onClick={event => { navigateTo('../ExamComplete') }}>
+                  disabled={activebutton} onClick={event => { navigateTo(`../ExamComplete/${examRoom}`) }}>
                   Submit
                 </Button>
               </Grid>
@@ -277,14 +278,17 @@ export default function AutoGrid() {
           <Grid container justify="right" xs style={{ paddingTop: 40 }}>
             <div className="videos">
               <video width="350" ref={videoRef}></video>
-                
+
               <video id="remoteVideo" width="350" ref={remoteVideoRef}>
-                </video>
+              </video>
 
             </div>
           </Grid>
         </Grid>
       </div>
+      {/* Footer */}
+      <Footer />
+      {/* End footer */}
     </React.Fragment>
 
   );

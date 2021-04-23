@@ -15,7 +15,8 @@ import DateRangeIcon from '@material-ui/icons/DateRange';
 import Divider from '@material-ui/core/Divider';
 import ExamService from '../../services/ExamService';
 import TimerIcon from '@material-ui/icons/Timer';
-
+import Footer from '../Components/Footer';
+import { useParams } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -98,9 +99,6 @@ const useStyles = makeStyles((theme) => ({
 
 var examData = [];
 
-const courseId = "603ea3d760c6ed3f3880dff3"; //TODO: current course id
-const authToken = localStorage.getItem('auth-token');
-
 export default function Course() {
 
     const history = useHistory();
@@ -109,6 +107,8 @@ export default function Course() {
 
     const [loading, setLoading] = React.useState(false);
 
+    const courseId = useParams().course;
+    const authToken = localStorage.getItem('auth-token');
 
     ExamService.getExams(courseId, authToken).then((examsFromDb) => {
         console.log(examsFromDb);
@@ -154,7 +154,7 @@ export default function Course() {
                             <div key={i} className={classes.card}>
                                 <Card className={classes.card} elevation="7">
                                     <ButtonBase className={classes.cardMargin}
-                                        onClick={event => { navigateTo(`../student/course/ExamInstruction/${exam._id}`) }}
+                                        onClick={event => { navigateTo(`../Course/ExamInstruction/${exam._id}`) }}
                                     >
                                         <CardContent className={classes.cardContent}>
                                             <Typography gutterBottom variant="h5" component="h2">
@@ -235,7 +235,9 @@ export default function Course() {
 
                 </Container>
             </div>
-
+            {/* Footer */}
+            <Footer />
+            {/* End footer */}
         </React.Fragment>
     );
 }

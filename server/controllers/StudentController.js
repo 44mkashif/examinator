@@ -41,7 +41,7 @@ class StudentController {
     static async getStudentImage(req, res){
         try {
             let student = await Student.findById({_id: req.query.userId});
-            return res.status(401).send({success: true, msg: 'imgURL fetched Successfuly', imgURL: student.imgUrl});
+            return res.status(200).send({success: true, msg: 'imgURL fetched Successfuly', imgURL: student.imgUrl});
         } catch (error) {
             console.log(error)
             return res.status(400).send({success: false, msg: error});

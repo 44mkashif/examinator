@@ -99,7 +99,7 @@ class ExamController {
                     }
                 },
                 {
-                    $sample: { size: 2 }
+                    $sample: { size: 5 }
                 },
                 {
                     $group: {

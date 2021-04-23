@@ -30,7 +30,6 @@ let examSchema = new mongoose.Schema(
         timestamps: true
     }
 );
-examSchema.index({ name: 1 }, { unique: true });
 let Exam = mongoose.model('Exam', examSchema);
 
 module.exports = { Exam }

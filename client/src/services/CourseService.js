@@ -21,6 +21,21 @@ class CourseService extends Component {
         }
     }
 
+    static async createCourse(body, authToken) {
+        try {
+            const res = await axios.post('http://localhost:4000/api/instructor/exam', body, {
+                headers: {
+                    'auth-token': authToken
+                },
+            });
+            if (res) {
+                console.log(res);
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
 }
 
 export default CourseService;

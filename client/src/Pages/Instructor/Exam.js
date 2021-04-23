@@ -8,6 +8,7 @@ import { Alert, AlertTitle } from '@material-ui/lab';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Footer from '../Components/Footer';
+import { makeStyles } from '@material-ui/core/styles';
 
 <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
 
@@ -18,7 +19,17 @@ var examRoom;
 var peerConnections = {};
 var remoteId;
 
+const useStyles = makeStyles((theme) => ({
+  video: {
+    
+    borderStyle: "solid",
+    borderColor: "red",
+  }
+}));
+
 export default function Exam() {
+  const classes = useStyles();
+
   examRoom = useParams().exam;
   const videoRef = React.useRef(null);
   const [msg, setmsg] = React.useState('');
@@ -118,6 +129,7 @@ export default function Exam() {
       remoteVideo.autoplay = true;
       remoteVideo.id = remoteId;
       remoteVideo.width = 250;
+      remoteVideo.className = classes.video;
       videoDivision.appendChild(remoteVideo);
     }
     function handleRemoteStreamRemoved(e) {
@@ -158,7 +170,7 @@ export default function Exam() {
       <AppBar />
       <Grid container justify="start" xs style={{ paddingTop: 20, paddingLeft: 20, paddingRight: 20 }} >
         <div id="videos" >
-          <video width="250" ref={videoRef}></video>
+          <video className={classes.video} width="250" ref={videoRef}></video>
         </div>
         <Grid container style={{ paddingLeft: 90 }}>
           <Typography>

@@ -35,6 +35,15 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 100,
     width: "150px",
 
+  }, 
+  video: {
+    borderStyle: "solid",
+    borderColor: theme.palette.primary.main,
+  },
+  rvideo: {
+    
+    borderStyle: "solid",
+    borderColor: theme.palette.secondary.main,
   }
 }));
 
@@ -277,9 +286,9 @@ export default function AutoGrid() {
           </Grid>
           <Grid container justify="right" xs style={{ paddingTop: 40 }}>
             <div className="videos">
-              <video width="350" ref={videoRef}></video>
+              <video className={classes.video} width="350" ref={videoRef}></video>
 
-              <video id="remoteVideo" width="350" ref={remoteVideoRef}>
+              <video id="remoteVideo" className={classes.rvideo} width="350" ref={remoteVideoRef}>
               </video>
 
             </div>

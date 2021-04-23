@@ -137,7 +137,10 @@ export default function Course() {
     })
 
     const history = useHistory();
-    const navigateTo = (path) => history.push(path);
+    const navigateTo = (path) => history.push({
+        pathname: path,
+        state: { data: body }
+    });
     const classes = useStyles();
     const [openMenu, setOpenMenu] = React.useState(false);
 
@@ -179,7 +182,7 @@ export default function Course() {
         e.preventDefault();
         body["courseId"] = courseId;
         console.log(body);
-        const error = await CourseService.createCourse(body, authToken);
+        // const error = await CourseService.createCourse(body, authToken);
 
         navigateTo(`../../Instructor/Course/${courseId}/Paper`);
     }
@@ -303,7 +306,7 @@ export default function Course() {
                                         label="No of Questions"
                                         type='number'
                                         autoComplete="off"
-                                        name="totalMarks"   //Temporarily stored no of questions in totalMarks
+                                        name="qCount"
                                         onChange={onChangeQNo}
                                     />
                                 </Grid>

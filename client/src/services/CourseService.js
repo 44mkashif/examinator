@@ -28,11 +28,13 @@ class CourseService extends Component {
                     'auth-token': authToken
                 },
             });
-            if (res) {
-                console.log(res);
+            if (res.data.success) {
+                console.log(res.data.msg);
+                return res.data.msg;
             }
         } catch (error) {
-            console.log(error)
+            return error.response.data.msg;
+            console.log(error.response.data);
         }
     }
 

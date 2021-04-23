@@ -116,6 +116,10 @@ const useStyles = makeStyles((theme) => ({
 
 var examData = [];
 
+var s = [];
+var d = [];
+var t = [];
+
 var body = {}
 
 export default function Course() {
@@ -125,6 +129,8 @@ export default function Course() {
     const courseId = useParams().course;
     const authToken = localStorage.getItem('auth-token');
 
+    
+
     ExamService.getExams(courseId, authToken).then((examsFromDb) => {
         console.log(examsFromDb);
 
@@ -133,7 +139,19 @@ export default function Course() {
         examsFromDb.forEach((e) => {
             examData.push(e);
         })
+        
+        for (var i = 0; i < examData.length; i++) {
+            s[i] = (examData[i].startTime).toString();
+            d[i] = s[i].substring(0, 10);
+            t[i] = s[i].substring(11, 19);
+        }
+
+        
+
         setLoading(true);
+        console.log((examData[0].startTime).toString());
+        console.log(d);
+        console.log(t);
     })
 
     const history = useHistory();
@@ -187,6 +205,7 @@ export default function Course() {
         navigateTo(`../../Instructor/Course/${courseId}/Paper`);
     }
 
+
     return (
         <React.Fragment>
             <AppBar position="relative">
@@ -233,13 +252,13 @@ export default function Course() {
                                             <Grid container justify="center">
                                                 <DateRangeIcon className={classes.iconClass} />
                                                 <Typography className={classes.margin}>
-                                                    12 Jan, 2021
+                                                    {d[i]}
                                                 </Typography>
                                             </Grid>
                                             <Grid container justify="center">
                                                 <AccessTimeIcon className={classes.iconClass} />
                                                 <Typography className={classes.margin}>
-                                                    10:00 PM
+                                                    {t[i]}
                                                     </Typography>
                                             </Grid>
                                         </CardContent>

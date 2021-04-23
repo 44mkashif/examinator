@@ -5,7 +5,7 @@ const connect = () => {
     // 'mongodb+srv://saifhashmi:Emn3Ae09No8jFglb@cluster0.pj1dt.mongodb.net/Examinator?retryWrites=true&w=majority'
     const url1 = 'mongodb+srv://saifhashmi:Emn3Ae09No8jFglb@cluster0.pj1dt.mongodb.net/Examinator?retryWrites=true&w=majority';
     const url2 = 'mongodb://localhost:27017/examinator';
-    mongoose.connect(url2, { useNewUrlParser: true, useUnifiedTopology: true });
+    mongoose.connect(url1, { useNewUrlParser: true, useUnifiedTopology: true });
     var db = mongoose.connection;
     db.on('error', err => {
         console.log(err);

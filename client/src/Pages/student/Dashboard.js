@@ -19,20 +19,8 @@ import Button from '@material-ui/core/Button';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import AuthService from '../../services/AuthService';
 import CourseService from '../../services/CourseService';
+import Footer from '../Components/Footer';
 
-
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        Examinator
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
 const useStyles = makeStyles((theme) => ({
   icon: {
     marginRight: theme.spacing(2),
@@ -61,10 +49,6 @@ const useStyles = makeStyles((theme) => ({
   cardContent: {
     flexGrow: 1,
   },
-  footer: {
-    backgroundColor: theme.palette.background.paper,
-    padding: theme.spacing(6),
-  },
   logoImg: {
     width: 35,
     marginRight: 10
@@ -82,6 +66,9 @@ const useStyles = makeStyles((theme) => ({
   },
   whiteColor: {
     color: theme.palette.primary.contrastText
+  },
+  avatar: {
+    backgroundColor: theme.palette.primary.main
   }
 }));
 
@@ -91,7 +78,7 @@ var logout = () => {
   AuthService.logout();
 }
 
-const instructorId = '603c093af7679f2738b69f29' ;
+const instructorId = '603c093af7679f2738b69f29';
 const authToken = localStorage.getItem('auth-token');
 
 // this.state = {
@@ -114,6 +101,7 @@ export default function Dashboard() {
     coursesFromDb.forEach((c) => {
       courseData.push(c);
     })
+
     setLoading(true);
   })
 
@@ -139,7 +127,7 @@ export default function Dashboard() {
           <Grid container spacing={2} justify='space-between' alignItems='center'>
             <div>
               <Grid container>
-                <Button component={Link} to="/student/dashboard">
+                <Button component={Link} to="/Student/Dashboard">
                   <img src={logoImg} alt="logo" style={{ width: 40, marginRight: 10 }} />
                   <Typography className={classes.whiteColor}>
                     Examinator
@@ -160,18 +148,18 @@ export default function Dashboard() {
       </AppBar>
       <main>
         <Container className={classes.cardGrid}>
-          
+
           <Grid container spacing={2} justify="center">
             {courseData.map((course, c) => (
               <div key={c} className={classes.card}>
                 <ButtonBase
-                  onClick={event => { navigateTo('../student/course?id=1') }}
+                  onClick={event => { navigateTo(`../Student/Course/${course._id}`) }}
                 >
                   <Card className={classes.card}>
                     <CardHeader
                       avatar={
                         <Avatar className={classes.avatar}>
-                          
+                          {course.courseCode[0] + course.courseCode[1]}
                         </Avatar>
                       }
                       title={course.courseName}
@@ -188,15 +176,7 @@ export default function Dashboard() {
         </Container>
       </main>
       {/* Footer */}
-      <footer className={classes.footer}>
-        <Typography variant="h6" align="center" gutterBottom>
-          Examinator
-        </Typography>
-        <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
-          Smart Examination System
-        </Typography>
-        <Copyright />
-      </footer>
+      <Footer />
       {/* End footer */}
     </React.Fragment>
   );

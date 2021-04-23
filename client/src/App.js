@@ -98,7 +98,7 @@ function App() {
                   <Button
                     variant="contained"
                     className={classes.button}
-                    component={Link} to="/student/login"
+                    component={Link} to="/Student/Login"
                   >
                     Student Portal
                   </Button>

@@ -15,6 +15,7 @@ import bgImage from './../../assets/instructorLogin.webp';
 import AuthService from './../../services/AuthService';
 import { useState } from 'react';
 import { Alert, AlertTitle } from '@material-ui/lab';
+import Footer from '../Components/Footer';
 
 function Copyright() {
   return (
@@ -196,9 +197,9 @@ export default function Login() {
                 </Alert>
               </Box>
             }
-            <Box mt={5}>
-              <Copyright />
-            </Box>
+            {/* Footer */}
+            <Footer />
+            {/* End footer */}
           </form>
         </div>
       </Grid>

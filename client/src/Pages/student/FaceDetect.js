@@ -39,8 +39,19 @@ const useStyles = makeStyles((theme) => ({
 
     },
     align: {
-        paddingTop: 150
-    }
+        paddingTop: 100
+    },
+    padding:{
+        paddingTop: 10,
+        
+        alignItems: 'center'
+    },
+    button: {
+        
+        borderRadius: 100,
+        
+      },
+    
 }));
 
 const videoConstraints = {
@@ -108,8 +119,10 @@ export default function Testpage() {
             <div className={classes.root}>
                 <Paper className={classes.paper}>
                     <Grid container spacing={3}>
-                        <Grid item xs={12} sm={6}>
-                            <Typography>Take a Photo with your face Fitting on the screen.<br></br> Make sure that there is enough light in the room. <br></br>If the photo is not verified, please take a new photo.</Typography>
+                        <Grid item xs={12} sm={6} >
+                            <Typography variant="h6" style={{ paddingTop: 200}}>
+                                Take a Photo with your face Fitting on the screen.<br></br> Make sure that there is enough light in the room. <br></br>If the photo is not verified, please take a new photo.
+                            </Typography>
                         </Grid>
                         <Divider orientation="vertical" flexItem style={{ marginRight: "-1px" }} />
 
@@ -123,20 +136,24 @@ export default function Testpage() {
                                 videoConstraints={videoConstraints}
                             />
                             {/* <button onClick={capture}>Capture photo</button> */}
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                className={classes.button}
-                                // onClick={capture}
-                                // endIcon={<Icon></Icon>}
-                                onClick={event => {
-                                    capture();
-                                    setCaptured(true);
-                                    setValidity(false);
-                                }}
-                            >
-                                Capture Photo
-                            </Button>
+                            
+                            <Grid align="center" className={classes.padding}>
+                                <Button
+                                    
+                                    variant="contained"
+                                    color="primary"
+                                    className={classes.button}
+                                    // onClick={capture}
+                                    // endIcon={<Icon></Icon>}
+                                    onClick={event => {
+                                        capture();
+                                        setCaptured(true);
+                                        setValidity(false);
+                                    }}
+                                >
+                                    Capture Photo
+                                </Button>
+                            </Grid>
                         </Grid>
                     </Grid>
                 </Paper>
@@ -148,9 +165,12 @@ export default function Testpage() {
 
     const renderCaptured = () => {
         return (
-            < Grid container className={classes.align} align="center" justify="center" direction="column" >
-                <Grid item l={12} >
+            < Grid container className={classes.align} >
+                <Grid item xs={6}>
                     <img src={image} />
+                </Grid>
+
+                <Grid item xs={6} className={classes.align}>
                     {verification == "Success" ?
                         <Box mt={5}>
                             <Alert severity="success">
@@ -163,18 +183,22 @@ export default function Testpage() {
                                 <Alert severity="error">
                                     <AlertTitle>Error</AlertTitle>
                                     Verification Status: Failed
-                            </Alert>
-                                <div>
-                                    <Button
-                                        variant="contained"
-                                        color="primary"
-                                        className={classes.button}
-                                        onClick={event => {
-                                            setValidity(true);
-                                            setCaptured(false);
-                                        }}
-                                    >Recapture</Button>
-                                </div>
+                                </Alert>
+                                <Grid align="center" className={classes.padding}>
+                                    <div  > 
+                                        <Button
+                                            variant="contained"
+                                            color="primary"
+                                            
+                                            className={classes.button}
+                                            onClick={event => {
+                                                setValidity(true);
+                                                setCaptured(false);
+                                            }}
+                                        >Recapture</Button>
+                                    </div>
+                                </Grid>
+                                
                             </Box> : <div></div>
 
                     }

@@ -24,6 +24,9 @@ let studentSchema = new mongoose.Schema(
             type: String,
             required: true
         },
+        imgUrl: {
+            type: String
+        },
         authToken: String
     },
     {

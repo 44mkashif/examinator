@@ -50,7 +50,11 @@ const useStyles = makeStyles((theme) => ({
         
         borderRadius: 100,
         
-      },
+    },
+    video: {
+        borderStyle: "solid",
+        borderColor: theme.palette.primary.main,
+    },
     
 }));
 
@@ -128,6 +132,7 @@ export default function Testpage() {
 
                         <Grid item xs={12} sm={6}>
                             <Webcam
+                                className={classes.video}
                                 audio={false}
                                 ref={webcamRef}
                                 screenshotFormat="image/jpeg"
@@ -166,7 +171,8 @@ export default function Testpage() {
     const renderCaptured = () => {
         return (
             < Grid container className={classes.align} >
-                <Grid item xs={6}>
+                <Grid item xs={6} >
+                    
                     <img src={image} />
                 </Grid>
 

@@ -98,6 +98,10 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
+var s = [];
+var d = [];
+var t = [];
+
 var examData = [];
 
 export default function Course() {
@@ -126,6 +130,13 @@ export default function Course() {
         examsFromDb.forEach((e) => {
             examData.push(e);
         })
+
+        for (var i = 0; i < examData.length; i++) {
+            s[i] = (examData[i].startTime).toString();
+            d[i] = s[i].substring(0, 10);
+            t[i] = s[i].substring(11, 19);
+        }
+
         setLoading(true);
 
     })
@@ -177,13 +188,13 @@ export default function Course() {
                                             <Grid container justify="center">
                                                 <DateRangeIcon className={classes.iconClass} />
                                                 <Typography className={classes.margin}>
-                                                    12 Jan, 2021
+                                                    {d[i]}
                                                 </Typography>
                                             </Grid>
                                             <Grid container justify="center">
                                                 <AccessTimeIcon className={classes.iconClass} />
                                                 <Typography className={classes.margin}>
-                                                    10:00 PM
+                                                    {t[i]}
                                                     </Typography>
                                             </Grid>
                                         </CardContent>
@@ -202,44 +213,6 @@ export default function Course() {
                     <br />
                     <Divider variant="middle" />
                     <br />
-
-                    {/*<Grid container spacing={4} justify="center">
-                        {examData.map((exam, i) => (
-                            <div key={i} className={classes.card}>
-                                <Card className={classes.card} elevation="7">
-                                    <ButtonBase className={classes.cardMargin}
-                                        onClick={event => { navigateTo('../instructor/course/exam') }}
-                                    >
-                                        <CardContent className={classes.cardContent}>
-                                            <Typography gutterBottom variant="h5" component="h2">
-                                                {exam.name}
-                                            </Typography>
-                                            <Grid container justify="center">
-                                                <TimerIcon className={classes.iconClass} />
-                                                <Typography className={classes.margin}>
-                                                    Duration: {exam.duration} hrs
-                                                </Typography>
-                                            </Grid>
-                                            <Grid container justify="center">
-                                                <DateRangeIcon className={classes.iconClass} />
-                                                <Typography className={classes.margin}>
-                                                    12 Jan, 2021
-                                                </Typography>
-                                            </Grid>
-                                            <Grid container justify="center">
-                                                <AccessTimeIcon className={classes.iconClass} />
-                                                <Typography className={classes.margin}>
-                                                    10:00 PM
-                                                    </Typography>
-                                            </Grid>
-                                        </CardContent>
-                                    </ButtonBase>
-                                </Card>
-
-                            </div>
-                        ))}
-
-                    </Grid> */}
 
                 </Container>
             </div>

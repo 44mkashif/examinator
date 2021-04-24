@@ -4,17 +4,12 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import ButtonBase from '@material-ui/core/ButtonBase';
 import Divider from '@material-ui/core/Divider';
 import { useHistory, useParams, } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
-import Icon from '@material-ui/core/Icon';
 import Webcam from "react-webcam";
-import FaceDetect from '../../assets/Face.png';
 import { Alert, AlertTitle } from '@material-ui/lab';
 import Box from '@material-ui/core/Box';
 import FacialRecognitionService from '../../services/FacialRecognitionService';
@@ -51,6 +46,9 @@ const videoConstraints = {
 
 export default function Testpage() {
 
+    const studentId = localStorage.getItem('studentId');
+    const authToken = localStorage.getItem('auth-token');
+
     const [displayCaptured, setCaptured] = React.useState(false);
     const [displayValidity, setValidity] = React.useState(true);
     const [verification, setVerification] = React.useState("");
@@ -68,15 +66,21 @@ export default function Testpage() {
 
     var data = new FormData();
 
+    const [imgURL, setimgURL] = React.useState(null);
+
+    FacialRecognitionService.getImage(studentId, authToken).then((imgUrl) => {
+        setimgURL(imgUrl);
+    })
+
     const capture = () => {
         const imageSrc = webcamRef.current.getScreenshot();
         setImage(imageSrc);
         const capturedImage = dataURLtoFile(imageSrc);
-
         verifyImage(capturedImage);
     };
 
     const verifyImage = async (capturedImage) => {
+        console.log("Source image url: ", imgURL);
 
         data.append('file1', capturedImage, capturedImage.name);
         data.append('file2', capturedImage, capturedImage.name);
@@ -136,7 +140,7 @@ export default function Testpage() {
                                 }}
                             >
                                 Capture Photo
-                            </Button>
+                                </Button>
                         </Grid>
                     </Grid>
                 </Paper>
@@ -155,15 +159,15 @@ export default function Testpage() {
                         <Box mt={5}>
                             <Alert severity="success">
                                 <AlertTitle>Success</AlertTitle>
-                                    Verification Status: Successfull
-                            </Alert>
+                                        Verification Status: Successfull
+                                </Alert>
                         </Box>
                         : verification == "Error" ?
                             <Box mt={5}>
                                 <Alert severity="error">
                                     <AlertTitle>Error</AlertTitle>
-                                    Verification Status: Failed
-                            </Alert>
+                                        Verification Status: Failed
+                                </Alert>
                                 <div>
                                     <Button
                                         variant="contained"

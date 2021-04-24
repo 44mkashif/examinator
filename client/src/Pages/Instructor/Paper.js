@@ -14,6 +14,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Paper from '@material-ui/core/Paper';
 import CourseService from './../../services/CourseService';
 import { useHistory } from 'react-router-dom';
+import { Alert, AlertTitle } from '@material-ui/lab';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -58,11 +59,15 @@ var questions = [];
 var cOptions = [];
 
 const authToken = localStorage.getItem('auth-token');
+var error;
 
 export default function SimplePaper() {
     const classes = useStyles();
 
     const location = useLocation();
+
+    const [Checksuccess, setChecksuccess] = React.useState(false);
+    const [Checkfail, setCheckfail] = React.useState(false);
 
     const data = location.state.data;
 
@@ -142,10 +147,24 @@ export default function SimplePaper() {
 
         console.log(exam);
 
-        const resMsg = await CourseService.createCourse(exam, authToken);
-        console.log(resMsg);
+        const res = await CourseService.createCourse(exam, authToken);
+        console.log(res);
 
-        navigateTo(`/Instructor/dashboard`);
+        console.log(typeof (res["success"]) );
+        
+        
+
+        if (res["success"]) {
+            
+            console.log(res["success"]);
+            setChecksuccess(true);
+        } else {
+            setCheckfail(true);
+            error=res["msg"];
+            console.log(res["msg"]);
+            console.log(res["success"]);
+        }
+        
     }
 
     return (
@@ -287,6 +306,28 @@ export default function SimplePaper() {
                         Save
                     </Button>
                 </Grid>
+                <div>
+
+                    
+                    {Checksuccess &&
+                        <Alert severity="success" action={
+                        <Button color="inherit" size="small" onClick={event => { navigateTo(`/Instructor/dashboard`) }}>
+                                Return to Dashboard
+                            </Button>
+                        }>
+                            <AlertTitle>Success</AlertTitle>
+                            <strong> Your Exam has been successfully Scheduled </strong>
+                            </Alert>
+                    }
+
+                    {
+                        Checkfail &&
+                        <Alert severity="error">
+                            <AlertTitle>Error</AlertTitle>
+                            <strong> {error} </strong>
+                        </Alert>
+                    }
+                </div>
 
             </div>
 

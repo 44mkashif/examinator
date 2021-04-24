@@ -241,7 +241,7 @@ export default function AutoGrid() {
                 <img src={logoImg} alt="logo" style={{ width: 40, marginRight: 10 }} />
                 <Typography style={{ color: 'white', marginTop: 5 }}>
                   EXAMINATOR
-                          </Typography>
+                </Typography>
               </Grid>
             </div>
           </Grid>

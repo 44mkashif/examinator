@@ -29,12 +29,13 @@ class CourseService extends Component {
                 },
             });
             if (res.data.success) {
-                console.log(res.data.msg);
-                return res.data.msg;
+                console.log(res.data);
+                return res.data;
             }
         } catch (error) {
-            return error.response.data.msg;
             console.log(error.response.data);
+            return error.response.data;
+            
         }
     }
 

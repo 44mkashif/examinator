@@ -16,8 +16,8 @@ class AuthService extends Component {
         window.location.href = '/Student/Dashboard';
       }
     } catch (error) {
-      console.log(error.response.data);
-      return error.response.data;
+      console.log(error.response.data.msg);
+      return error.response.data.msg;
     }
   }
 

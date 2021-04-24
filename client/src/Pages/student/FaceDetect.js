@@ -67,6 +67,9 @@ export default function Testpage() {
     const [displayCaptured, setCaptured] = React.useState(false);
     const [displayValidity, setValidity] = React.useState(true);
     const [verification, setVerification] = React.useState("");
+    const [image, setImage] = React.useState(null);
+    const [imgURL, setimgURL] = React.useState(null);
+    // const [srcImg, setSrcImg] = React.useState(null);
 
     const history = useHistory();
     const navigateTo = (path) => history.push(path);
@@ -77,11 +80,9 @@ export default function Testpage() {
 
     const webcamRef = React.useRef(null);
 
-    const [image, setImage] = React.useState(null);
 
     var data = new FormData();
 
-    const [imgURL, setimgURL] = React.useState(null);
 
     FacialRecognitionService.getImage(studentId, authToken).then((imgUrl) => {
         setimgURL(imgUrl);
@@ -94,18 +95,43 @@ export default function Testpage() {
         verifyImage(capturedImage);
     };
 
+    const retrieveImageFromUrl = (url) => {
+        return new Promise((resolve) => {
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", url, true);
+            xhr.responseType = "blob";
+            xhr.onload = function (e) {
+                console.log("Source Image: ", this.response);
+                resolve(this.response);
+
+                // var reader = new FileReader();
+                // reader.onload = function (event) {
+                //     var res = event.target.result;
+                //     var srcImg = dataURLtoFile(res);
+                //     resolve(srcImg);
+                // }
+                // var file = this.response;
+                // reader.readAsDataURL(file)
+            };
+            xhr.send();
+        });
+    }
+
     const verifyImage = async (capturedImage) => {
         console.log("Source image url: ", imgURL);
+        console.log("Captured Image: ", capturedImage);
 
-        data.append('file1', capturedImage, capturedImage.name);
-        data.append('file2', capturedImage, capturedImage.name);
+        retrieveImageFromUrl(imgURL).then(async (srcImg) => {
+            data.append('file1', capturedImage, capturedImage.name);
+            data.append('file2', srcImg, srcImg.name);
 
-        const verification = await FacialRecognitionService.verifyImage(data);
-        if (verification) {
-            setVerification("Success");
-            navigateTo(`../Course/Exam/${examRoom}`)
-        }
-        else setVerification("Error");
+            const verification = await FacialRecognitionService.verifyImage(data);
+            if (verification) {
+                setVerification("Success");
+                navigateTo(`../Course/Exam/${examRoom}`);
+            }
+            else setVerification("Error");
+        });
     }
 
     const dataURLtoFile = (dataurl, filename) => {

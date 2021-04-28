@@ -12,6 +12,7 @@ import io from 'socket.io-client';
 import Typography from '@material-ui/core/Typography';
 import { useHistory, useParams } from 'react-router-dom';
 import Footer from '../Components/Footer';
+import PersonIcon from '@material-ui/icons/Person';
 
 import Box from '@material-ui/core/Box';
 import { Alert, AlertTitle } from '@material-ui/lab';
@@ -35,15 +36,20 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 100,
     width: "150px",
 
-  }, 
+  },
   video: {
     borderStyle: "solid",
     borderColor: theme.palette.primary.main,
   },
   rvideo: {
-    
+
+    borderStyle: "solid",
+    borderColor: theme.palette.secondary.main
+  },
+  avatar: {
     borderStyle: "solid",
     borderColor: theme.palette.secondary.main,
+    font: "1500px"
   }
 }));
 
@@ -116,9 +122,11 @@ export default function AutoGrid() {
         if (message.toggleState.checked) {
           console.log('retain')
           document.getElementById('remoteVideo').hidden = false;
+          document.getElementById('instructorAvatar').hidden = true;
         } else {
           console.log('remove')
           document.getElementById('remoteVideo').hidden = true;
+          document.getElementById('instructorAvatar').hidden = false;
         }
       }
     })
@@ -176,6 +184,9 @@ export default function AutoGrid() {
       let remoteVideo = remoteVideoRef.current;
       remoteVideo.srcObject = e.stream;
       remoteVideo.play();
+
+      document.getElementById('remoteVideo').hidden = false;
+      document.getElementById('instructorAvatar').hidden = true;
 
       // remoteStream = e.stream;
       // let remoteVideo = document.createElement('video');
@@ -288,8 +299,10 @@ export default function AutoGrid() {
             <div className="videos">
               <video className={classes.video} width="350" ref={videoRef}></video>
 
-              <video id="remoteVideo" className={classes.rvideo} width="350" ref={remoteVideoRef}>
-              </video>
+              <video id="remoteVideo" className={classes.rvideo} width="350" ref={remoteVideoRef} hidden></video>
+              <div id="instructorAvatar">
+                <PersonIcon className={classes.avatar} />
+              </div>
 
             </div>
           </Grid>

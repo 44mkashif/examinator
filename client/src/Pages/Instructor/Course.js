@@ -151,9 +151,6 @@ export default function Course() {
         }
 
         setLoading(true);
-        console.log((examData[0].startTime).toString());
-        console.log(d);
-        console.log(t);
     })
 
     const history = useHistory();

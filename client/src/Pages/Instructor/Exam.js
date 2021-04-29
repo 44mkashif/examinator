@@ -9,6 +9,19 @@ import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Footer from '../Components/Footer';
 import { makeStyles } from '@material-ui/core/styles';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import Avatar from '@material-ui/core/Avatar';
+import Drawer from '@material-ui/core/Drawer';
+import Toolbar from '@material-ui/core/Toolbar';
+import List from '@material-ui/core/List';
+import Divider from '@material-ui/core/Divider';
+import MicIcon from '@material-ui/icons/Mic';
+import MicOffIcon from '@material-ui/icons/MicOff';
+import ArrowForwardRoundedIcon from '@material-ui/icons/ArrowForwardRounded';
+
 
 <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
 
@@ -19,13 +32,36 @@ var examRoom;
 var peerConnections = {};
 var remoteId;
 
+
+const drawerWidth = 240;
+
 const useStyles = makeStyles((theme) => ({
+  root: {
+    display: 'flex',
+  },
+  appBar: {
+    zIndex: theme.zIndex.drawer + 1,
+  },
+  drawer: {
+    width: drawerWidth,
+    flexShrink: 0,
+  },
+  drawerPaper: {
+    width: drawerWidth,
+  },
+  drawerContainer: {
+    overflow: 'auto',
+  },
+  content: {
+    flexGrow: 0.05,
+    padding: theme.spacing(1),
+  },
   video: {
     
     borderStyle: "solid",
     borderColor: "red",
   }
-}));
+
 
 export default function Exam() {
   const classes = useStyles();
@@ -36,6 +72,7 @@ export default function Exam() {
   const [toggleState, settoggleState] = React.useState({
     checked: true,
   });
+  
 
   React.useEffect(() => {
     const socket = io("http://127.0.0.1:4001");
@@ -164,10 +201,54 @@ export default function Exam() {
 
   }, [])
 
-
+  const classes = useStyles();
   return (
     <React.Fragment>
       <AppBar />
+      <CssBaseline />
+      <Drawer
+        className={classes.drawer}
+        variant="permanent"
+        classes={{
+          paper: classes.drawerPaper,
+        }}
+        anchor="right"
+      >
+        <Toolbar />
+        <div className={classes.content}>
+          <Typography variant="h6" gutterBottom>
+            Meeting Details
+                    </Typography>
+        </div>
+
+        <Divider />
+        <div className={classes.drawerContainer}>
+          <List>
+            {['Omer Munam', 'Ahmed Ali', 'Omer Majid', 'Ahmed Ali'].map((text, index) => (
+              <ListItem button key={text}>
+                <ListItemIcon>{index % 2 === 0 ? <Avatar>OM</Avatar> : <Avatar>AA</Avatar>}</ListItemIcon>
+                <ListItemText primary={text} />
+                <ListItemIcon>{index % 2 === 0 ? <MicIcon></MicIcon> : <MicOffIcon></MicOffIcon>}</ListItemIcon>
+              </ListItem>
+            ))}
+          </List>
+          <Divider />
+              <div className={classes.content}>
+                  <Typography variant="h6" gutterBottom>
+                    Suspiciousness Levels
+                  </Typography>
+              </div>
+          <Divider />
+          <List>
+            {['Level 1', 'Level 2', 'Level 3', 'Level 4', 'Level 5'].map((text, index) => (
+              <ListItem button key={text}>
+                <ListItemIcon>{<ArrowForwardRoundedIcon />}</ListItemIcon>
+                <ListItemText primary={text} />
+              </ListItem>
+            ))}
+          </List>
+        </div>
+      </Drawer>
       <Grid container justify="start" xs style={{ paddingTop: 20, paddingLeft: 20, paddingRight: 20 }} >
         <div id="videos" >
           <video className={classes.video} width="250" ref={videoRef}></video>

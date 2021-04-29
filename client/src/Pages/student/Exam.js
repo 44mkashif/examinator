@@ -49,8 +49,17 @@ const useStyles = makeStyles((theme) => ({
   avatar: {
     borderStyle: "solid",
     borderColor: theme.palette.secondary.main,
-    font: "1500px"
+    font: "1500px",
+    width: "350px",
+    height: "240px",
+    color: theme.palette.secondary.main
+  },
+  avatarText:{
+    color: theme.palette.secondary.main, 
+    marginTop: 5,
+    marginBottom: 5
   }
+  
 }));
 
 var questionNum = 5;
@@ -297,13 +306,23 @@ export default function AutoGrid() {
           </Grid>
           <Grid container justify="right" xs style={{ paddingTop: 40 }}>
             <div className="videos">
+            
               <video className={classes.video} width="350" ref={videoRef}></video>
+              <div>
+                <Typography className={classes.avatarText}  align = "center"  variant="h6">
+                  Student
+                </Typography>
+              </div>
 
               <video id="remoteVideo" className={classes.rvideo} width="350" ref={remoteVideoRef} hidden></video>
               <div id="instructorAvatar">
                 <PersonIcon className={classes.avatar} />
               </div>
-
+              <div>
+                <Typography className={classes.avatarText}  align = "center"  variant="h6">
+                  Instructor
+                </Typography>
+              </div>
             </div>
           </Grid>
         </Grid>

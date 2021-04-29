@@ -119,7 +119,7 @@ export default function Course() {
 
     CourseService.getCourse(courseId, authToken, false).then((courseFromDb) => {
         console.log(courseFromDb);
-        course = courseFromDb;
+        course = courseFromDb; 
     });
 
     ExamService.getExams(courseId, authToken).then((examsFromDb) => {

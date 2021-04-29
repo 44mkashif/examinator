@@ -8,23 +8,21 @@ import { Alert, AlertTitle } from '@material-ui/lab';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Footer from './Components/Footer';
-
-import clsx from 'clsx';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import Drawer from '@material-ui/core/Drawer';
-import Toolbar from '@material-ui/core/Toolbar';
+import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import List from '@material-ui/core/List';
-import Divider from '@material-ui/core/Divider';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
+import Avatar from '@material-ui/core/Avatar';
+import Drawer from '@material-ui/core/Drawer';
+import Toolbar from '@material-ui/core/Toolbar';
+import List from '@material-ui/core/List';
+import Divider from '@material-ui/core/Divider';
+import MicIcon from '@material-ui/icons/Mic';
+import MicOffIcon from '@material-ui/icons/MicOff';
+import ArrowForwardRoundedIcon from '@material-ui/icons/ArrowForwardRounded';
+
+
 
 <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
 
@@ -42,24 +40,7 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
     },
     appBar: {
-        transition: theme.transitions.create(['margin', 'width'], {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
-        }),
-    },
-    appBarShift: {
-        width: `calc(100% - ${drawerWidth}px)`,
-        transition: theme.transitions.create(['margin', 'width'], {
-            easing: theme.transitions.easing.easeOut,
-            duration: theme.transitions.duration.enteringScreen,
-        }),
-        marginRight: drawerWidth,
-    },
-    title: {
-        flexGrow: 1,
-    },
-    hide: {
-        display: 'none',
+        zIndex: theme.zIndex.drawer + 1,
     },
     drawer: {
         width: drawerWidth,
@@ -68,29 +49,12 @@ const useStyles = makeStyles((theme) => ({
     drawerPaper: {
         width: drawerWidth,
     },
-    drawerHeader: {
-        display: 'flex',
-        alignItems: 'center',
-        padding: theme.spacing(0, 1),
-        // necessary for content to be below app bar
-        ...theme.mixins.toolbar,
-        justifyContent: 'flex-start',
+    drawerContainer: {
+        overflow: 'auto',
     },
     content: {
-        flexGrow: 1,
-        padding: theme.spacing(3),
-        transition: theme.transitions.create('margin', {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
-        }),
-        marginRight: -drawerWidth,
-    },
-    contentShift: {
-        transition: theme.transitions.create('margin', {
-            easing: theme.transitions.easing.easeOut,
-            duration: theme.transitions.duration.enteringScreen,
-        }),
-        marginRight: 0,
+        flexGrow: 0.05,
+        padding: theme.spacing(1),
     },
 }));
 
@@ -102,17 +66,6 @@ export default function Exam() {
         checked: true,
     });
 
-    const classes = useStyles();
-    const theme = useTheme();
-    const [open, setOpen] = React.useState(false);
-
-    const handleDrawerOpen = () => {
-        setOpen(true);
-    };
-
-    const handleDrawerClose = () => {
-        setOpen(false);
-    };
 
     React.useEffect(() => {
         const socket = io("http://127.0.0.1:4001");
@@ -240,11 +193,54 @@ export default function Exam() {
 
     }, [])
 
-
+    const classes = useStyles();
     return (
         <React.Fragment>
             <AppBar />
-            
+            <CssBaseline />
+            <Drawer
+                className={classes.drawer}
+                variant="permanent"
+                classes={{
+                    paper: classes.drawerPaper,
+                }}
+                anchor="right"
+            >
+                <Toolbar />
+                <div className={classes.content}>
+                    <Typography variant="h6" gutterBottom>
+                        Meeting Details
+                    </Typography>
+                </div>
+
+                <Divider />
+                <div className={classes.drawerContainer}>
+                    <List>
+                        {['Omer Munam', 'Ahmed Ali', 'Omer Majid', 'Ahmed Ali'].map((text, index) => (
+                            <ListItem button key={text}>
+                                <ListItemIcon>{index % 2 === 0 ? <Avatar>OM</Avatar> : <Avatar>AA</Avatar>}</ListItemIcon>
+                                <ListItemText primary={text} />
+                                <ListItemIcon>{index % 2 === 0 ? <MicIcon></MicIcon> : <MicOffIcon></MicOffIcon>}</ListItemIcon>
+                            </ListItem>
+                        ))}
+                    </List>
+                    <Divider />
+                    <div className={classes.content}>
+                        <Typography variant="h6" gutterBottom>
+                            Suspiciousness Levels
+                  </Typography>
+                    </div>
+                    <Divider />
+                    <List>
+                        {['Level 1', 'Level 2', 'Level 3', 'Level 4', 'Level 5'].map((text, index) => (
+                            <ListItem button key={text}>
+                                <ListItemIcon>{<ArrowForwardRoundedIcon />}</ListItemIcon>
+                                <ListItemText primary={text} />
+                            </ListItem>
+                        ))}
+                    </List>
+                </div>
+            </Drawer>
             <Grid container justify="start" xs style={{ paddingTop: 20, paddingLeft: 20, paddingRight: 20 }} >
                 <div id="videos" >
                     <video width="250" ref={videoRef}></video>

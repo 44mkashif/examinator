@@ -61,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
     borderStyle: "solid",
     borderColor: "red",
   }
-
+}));
 
 export default function Exam() {
   const classes = useStyles();
@@ -201,7 +201,6 @@ export default function Exam() {
 
   }, [])
 
-  const classes = useStyles();
   return (
     <React.Fragment>
       <AppBar />

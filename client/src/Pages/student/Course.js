@@ -17,6 +17,7 @@ import ExamService from '../../services/ExamService';
 import TimerIcon from '@material-ui/icons/Timer';
 import Footer from '../Components/Footer';
 import { useParams } from 'react-router-dom';
+import CourseService from './../../services/CourseService';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -113,6 +114,13 @@ export default function Course() {
 
     const courseId = useParams().course;
     const authToken = localStorage.getItem('auth-token');
+
+    var course;
+
+    CourseService.getCourse(courseId, authToken, false).then((courseFromDb) => {
+        console.log(courseFromDb);
+        course = courseFromDb;
+    });
 
     ExamService.getExams(courseId, authToken).then((examsFromDb) => {
         console.log(examsFromDb);

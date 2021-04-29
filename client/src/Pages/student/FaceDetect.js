@@ -4,17 +4,12 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import ButtonBase from '@material-ui/core/ButtonBase';
 import Divider from '@material-ui/core/Divider';
 import { useHistory, useParams, } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
-import Icon from '@material-ui/core/Icon';
 import Webcam from "react-webcam";
-import FaceDetect from '../../assets/Face.png';
 import { Alert, AlertTitle } from '@material-ui/lab';
 import Box from '@material-ui/core/Box';
 import FacialRecognitionService from '../../services/FacialRecognitionService';
@@ -39,8 +34,23 @@ const useStyles = makeStyles((theme) => ({
 
     },
     align: {
-        paddingTop: 150
-    }
+        paddingTop: 100
+    },
+    padding: {
+        paddingTop: 10,
+
+        alignItems: 'center'
+    },
+    button: {
+
+        borderRadius: 100,
+
+    },
+    video: {
+        borderStyle: "solid",
+        borderColor: theme.palette.primary.main,
+    },
+
 }));
 
 const videoConstraints = {
@@ -51,9 +61,15 @@ const videoConstraints = {
 
 export default function Testpage() {
 
+    const studentId = localStorage.getItem('studentId');
+    const authToken = localStorage.getItem('auth-token');
+
     const [displayCaptured, setCaptured] = React.useState(false);
     const [displayValidity, setValidity] = React.useState(true);
     const [verification, setVerification] = React.useState("");
+    const [image, setImage] = React.useState(null);
+    const [imgURL, setimgURL] = React.useState(null);
+    // const [srcImg, setSrcImg] = React.useState(null);
 
     const history = useHistory();
     const navigateTo = (path) => history.push(path);
@@ -64,29 +80,58 @@ export default function Testpage() {
 
     const webcamRef = React.useRef(null);
 
-    const [image, setImage] = React.useState(null);
 
     var data = new FormData();
+
+
+    FacialRecognitionService.getImage(studentId, authToken).then((imgUrl) => {
+        setimgURL(imgUrl);
+    })
 
     const capture = () => {
         const imageSrc = webcamRef.current.getScreenshot();
         setImage(imageSrc);
         const capturedImage = dataURLtoFile(imageSrc);
-
         verifyImage(capturedImage);
     };
 
+    const retrieveImageFromUrl = (url) => {
+        return new Promise((resolve) => {
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", url, true);
+            xhr.responseType = "blob";
+            xhr.onload = function (e) {
+                console.log("Source Image: ", this.response);
+                resolve(this.response);
+
+                // var reader = new FileReader();
+                // reader.onload = function (event) {
+                //     var res = event.target.result;
+                //     var srcImg = dataURLtoFile(res);
+                //     resolve(srcImg);
+                // }
+                // var file = this.response;
+                // reader.readAsDataURL(file)
+            };
+            xhr.send();
+        });
+    }
+
     const verifyImage = async (capturedImage) => {
+        console.log("Source image url: ", imgURL);
+        console.log("Captured Image: ", capturedImage);
 
-        data.append('file1', capturedImage, capturedImage.name);
-        data.append('file2', capturedImage, capturedImage.name);
+        retrieveImageFromUrl(imgURL).then(async (srcImg) => {
+            data.append('file1', capturedImage, capturedImage.name);
+            data.append('file2', srcImg, srcImg.name);
 
-        const verification = await FacialRecognitionService.verifyImage(data);
-        if (verification) {
-            setVerification("Success");
-            navigateTo(`../Course/Exam/${examRoom}`)
-        }
-        else setVerification("Error");
+            const verification = await FacialRecognitionService.verifyImage(data);
+            if (verification) {
+                setVerification("Success");
+                navigateTo(`../Course/Exam/${examRoom}`);
+            }
+            else setVerification("Error");
+        });
     }
 
     const dataURLtoFile = (dataurl, filename) => {
@@ -108,13 +153,16 @@ export default function Testpage() {
             <div className={classes.root}>
                 <Paper className={classes.paper}>
                     <Grid container spacing={3}>
-                        <Grid item xs={12} sm={6}>
-                            <Typography>Take a Photo with your face Fitting on the screen.<br></br> Make sure that there is enough light in the room. <br></br>If the photo is not verified, please take a new photo.</Typography>
+                        <Grid item xs={12} sm={6} >
+                            <Typography variant="h6" style={{ paddingTop: 200 }}>
+                                Take a Photo with your face Fitting on the screen.<br></br> Make sure that there is enough light in the room. <br></br>If the photo is not verified, please take a new photo.
+                            </Typography>
                         </Grid>
                         <Divider orientation="vertical" flexItem style={{ marginRight: "-1px" }} />
 
                         <Grid item xs={12} sm={6}>
                             <Webcam
+                                className={classes.video}
                                 audio={false}
                                 ref={webcamRef}
                                 screenshotFormat="image/jpeg"
@@ -123,20 +171,24 @@ export default function Testpage() {
                                 videoConstraints={videoConstraints}
                             />
                             {/* <button onClick={capture}>Capture photo</button> */}
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                className={classes.button}
-                                // onClick={capture}
-                                // endIcon={<Icon></Icon>}
-                                onClick={event => {
-                                    capture();
-                                    setCaptured(true);
-                                    setValidity(false);
-                                }}
-                            >
-                                Capture Photo
-                            </Button>
+
+                            <Grid align="center" className={classes.padding}>
+                                <Button
+
+                                    variant="contained"
+                                    color="primary"
+                                    className={classes.button}
+                                    // onClick={capture}
+                                    // endIcon={<Icon></Icon>}
+                                    onClick={event => {
+                                        capture();
+                                        setCaptured(true);
+                                        setValidity(false);
+                                    }}
+                                >
+                                    Capture Photo
+                                </Button>
+                            </Grid>
                         </Grid>
                     </Grid>
                 </Paper>
@@ -148,33 +200,41 @@ export default function Testpage() {
 
     const renderCaptured = () => {
         return (
-            < Grid container className={classes.align} align="center" justify="center" direction="column" >
-                <Grid item l={12} >
+            < Grid container className={classes.align} >
+                <Grid item xs={6} >
+
                     <img src={image} />
+                </Grid>
+
+                <Grid item xs={6} className={classes.align}>
                     {verification == "Success" ?
                         <Box mt={5}>
                             <Alert severity="success">
                                 <AlertTitle>Success</AlertTitle>
-                                    Verification Status: Successfull
-                            </Alert>
+                                        Verification Status: Successfull
+                                </Alert>
                         </Box>
                         : verification == "Error" ?
                             <Box mt={5}>
                                 <Alert severity="error">
                                     <AlertTitle>Error</AlertTitle>
                                     Verification Status: Failed
-                            </Alert>
-                                <div>
-                                    <Button
-                                        variant="contained"
-                                        color="primary"
-                                        className={classes.button}
-                                        onClick={event => {
-                                            setValidity(true);
-                                            setCaptured(false);
-                                        }}
-                                    >Recapture</Button>
-                                </div>
+                                </Alert>
+                                <Grid align="center" className={classes.padding}>
+                                    <div  >
+                                        <Button
+                                            variant="contained"
+                                            color="primary"
+
+                                            className={classes.button}
+                                            onClick={event => {
+                                                setValidity(true);
+                                                setCaptured(false);
+                                            }}
+                                        >Recapture</Button>
+                                    </div>
+                                </Grid>
+
                             </Box> : <div></div>
 
                     }

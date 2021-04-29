@@ -129,7 +129,11 @@ export default function Course() {
     const courseId = useParams().course;
     const authToken = localStorage.getItem('auth-token');
 
-    
+    var course;
+    CourseService.getCourse(courseId, authToken, true).then((courseFromDb) => {
+        console.log(courseFromDb);
+        course = courseFromDb;
+    });
 
     ExamService.getExams(courseId, authToken).then((examsFromDb) => {
         console.log(examsFromDb);
@@ -139,19 +143,14 @@ export default function Course() {
         examsFromDb.forEach((e) => {
             examData.push(e);
         })
-        
+
         for (var i = 0; i < examData.length; i++) {
             s[i] = (examData[i].startTime).toString();
             d[i] = s[i].substring(0, 10);
             t[i] = s[i].substring(11, 19);
         }
 
-        
-
         setLoading(true);
-        console.log((examData[0].startTime).toString());
-        console.log(d);
-        console.log(t);
     })
 
     const history = useHistory();
@@ -259,7 +258,7 @@ export default function Course() {
                                                 <AccessTimeIcon className={classes.iconClass} />
                                                 <Typography className={classes.margin}>
                                                     {t[i]}
-                                                    </Typography>
+                                                </Typography>
                                             </Grid>
                                         </CardContent>
 

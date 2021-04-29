@@ -23,7 +23,6 @@ import MicOffIcon from '@material-ui/icons/MicOff';
 import ArrowForwardRoundedIcon from '@material-ui/icons/ArrowForwardRounded';
 
 
-
 <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
 
 var isCreator = false;
@@ -32,6 +31,7 @@ var remoteStream;
 var examRoom;
 var peerConnections = {};
 var remoteId;
+
 
 const drawerWidth = 240;
 
@@ -56,9 +56,16 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 0.05,
     padding: theme.spacing(1),
   },
-}));
+  video: {
+    
+    borderStyle: "solid",
+    borderColor: "red",
+  }
+
 
 export default function Exam() {
+  const classes = useStyles();
+
   examRoom = useParams().exam;
   const videoRef = React.useRef(null);
   const [msg, setmsg] = React.useState('');
@@ -159,6 +166,7 @@ export default function Exam() {
       remoteVideo.autoplay = true;
       remoteVideo.id = remoteId;
       remoteVideo.width = 250;
+      remoteVideo.className = classes.video;
       videoDivision.appendChild(remoteVideo);
     }
     function handleRemoteStreamRemoved(e) {
@@ -243,7 +251,7 @@ export default function Exam() {
       </Drawer>
       <Grid container justify="start" xs style={{ paddingTop: 20, paddingLeft: 20, paddingRight: 20 }} >
         <div id="videos" >
-          <video width="250" ref={videoRef}></video>
+          <video className={classes.video} width="250" ref={videoRef}></video>
         </div>
         <Grid container style={{ paddingLeft: 90 }}>
           <Typography>

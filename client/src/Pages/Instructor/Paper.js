@@ -13,6 +13,7 @@ import Select from '@material-ui/core/Select';
 import FormControl from '@material-ui/core/FormControl';
 import Paper from '@material-ui/core/Paper';
 import CourseService from './../../services/CourseService';
+import ExamService from './../../services/ExamService';
 import { useHistory } from 'react-router-dom';
 import { Alert, AlertTitle } from '@material-ui/lab';
 
@@ -147,7 +148,7 @@ export default function SimplePaper() {
 
         console.log(exam);
 
-        const res = await CourseService.createCourse(exam, authToken);
+        const res = await ExamService.createExam(exam, authToken);
         console.log(res);
 
         console.log(typeof (res["success"]));

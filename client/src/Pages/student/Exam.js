@@ -1,18 +1,21 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Toolbar from '@material-ui/core/Toolbar';
-import logoImg from './../../assets/navbar-2.png';
-import Grid from '@material-ui/core/Grid';
-import Question from './Components/Question';
-import AppBar from '@material-ui/core/AppBar';
-import { Link } from 'react-router-dom';
-import Button from '@material-ui/core/Button';
-import Timer from './Components/Timer';
 import io from 'socket.io-client';
-import Typography from '@material-ui/core/Typography';
 import { useHistory, useParams } from 'react-router-dom';
-import Footer from '../Components/Footer';
+import { Link } from 'react-router-dom';
 
+import logoImg from './../../assets/navbar-2.png';
+import Question from './Components/Question';
+import ExamService from '../../services/ExamService';
+import Footer from '../Components/Footer';
+import Timer from './Components/Timer';
+
+import Toolbar from '@material-ui/core/Toolbar';
+import AppBar from '@material-ui/core/AppBar';
+import { makeStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+import Grid from '@material-ui/core/Grid';
+import PersonIcon from '@material-ui/icons/Person';
 import Box from '@material-ui/core/Box';
 import { Alert, AlertTitle } from '@material-ui/lab';
 
@@ -35,21 +38,32 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 100,
     width: "150px",
 
+  },
+  video: {
+    borderStyle: "solid",
+    borderColor: theme.palette.primary.main,
+  },
+  rvideo: {
+
+    borderStyle: "solid",
+    borderColor: theme.palette.secondary.main
+  },
+  avatar: {
+    borderStyle: "solid",
+    borderColor: theme.palette.secondary.main,
+    font: "1500px",
+    width: "350px",
+    height: "240px",
+    color: theme.palette.secondary.main
+  },
+  avatarText: {
+    color: theme.palette.secondary.main,
+    marginTop: 5,
+    marginBottom: 5
   }
+
 }));
 
-var questionNum = 5;
-
-var ques = ["A linear collection of data elements where the linear node is given by means of pointer is called?",
-  "In linked list each node contains a minimum of two fields. One field is data field to store the data second field is?",
-  "What would be the asymptotic time complexity to add a node at the end of singly linked list, if the pointer is initially pointing to the head of the list?",
-  "The concatenation of two lists can be performed in O(1) time. Which of the following variation of the linked list can be used?",
-  "What would be the asymptotic time complexity to insert an element at the front of the linked list (head is known)"];
-
-var questions = [];
-for (var i = 0; i < questionNum; i++) {
-  questions.push(<Question question={"Question " + i + ": " + ques[i]} qNo={i} />);
-}
 var temp = 0;
 
 var isAnswered = false;
@@ -57,6 +71,8 @@ var localStream;
 var remoteStream;
 var examRoom;
 var peerConnection;
+var questions = [];
+var exam;
 
 const socket = io("http://127.0.0.1:4001");
 
@@ -64,13 +80,12 @@ window.onbeforeunload = () => {
   socket.emit('message', 'close', examRoom);
 };
 
-
-
 export default function AutoGrid() {
 
   const videoRef = React.useRef(null);
   const remoteVideoRef = React.useRef(null);
   examRoom = useParams().exam;
+  const authToken = localStorage.getItem('auth-token');
 
   React.useEffect(() => {
 
@@ -107,9 +122,11 @@ export default function AutoGrid() {
         if (message.toggleState.checked) {
           console.log('retain')
           document.getElementById('remoteVideo').hidden = false;
+          document.getElementById('instructorAvatar').hidden = true;
         } else {
           console.log('remove')
           document.getElementById('remoteVideo').hidden = true;
+          document.getElementById('instructorAvatar').hidden = false;
         }
       }
     })
@@ -168,6 +185,9 @@ export default function AutoGrid() {
       remoteVideo.srcObject = e.stream;
       remoteVideo.play();
 
+      document.getElementById('remoteVideo').hidden = false;
+      document.getElementById('instructorAvatar').hidden = true;
+
       // remoteStream = e.stream;
       // let remoteVideo = document.createElement('video');
       // remoteVideo.srcObject = remoteStream;
@@ -206,13 +226,12 @@ export default function AutoGrid() {
       peerConnection = null;
     }
 
-
-
   }, []);
 
   const classes = useStyles();
   const [qNo, setQNo] = React.useState('');
   const [activebutton, setButton] = React.useState(true);
+  const [loading, setLoading] = React.useState(false);
 
   const history = useHistory();
   const navigateTo = (path) => history.push(path);
@@ -230,66 +249,107 @@ export default function AutoGrid() {
     setQNo(++temp);
   };
 
+  // var questionNum;
+
+  // var ques = ["A linear collection of data elements where the linear node is given by means of pointer is called?",
+  //   "In linked list each node contains a minimum of two fields. One field is data field to store the data second field is?",
+  //   "What would be the asymptotic time complexity to add a node at the end of singly linked list, if the pointer is initially pointing to the head of the list?",
+  //   "The concatenation of two lists can be performed in O(1) time. Which of the following variation of the linked list can be used?",
+  //   "What would be the asymptotic time complexity to insert an element at the front of the linked list (head is known)"];
+
+  // for (var i = 0; i < questionNum; i++) {
+  //   questions.push(<Question question={"Question " + i + ": " + ques[i]} qNo={i} />);
+  // }
+
+  ExamService.getExam(examRoom, authToken).then((examFromDb) => {
+    questions = []
+
+    exam = examFromDb[0];
+    console.log("Exam from db: ", exam);
+    exam.question.forEach((question, i) => {
+      questions.push(<Question question={"Question " + (i + 1) + ": " + question.statement} options={question.options} qNo={i} />)
+    });
+    console.log(questions);
+
+    setLoading(true);
+
+  })
 
   return (
-    <React.Fragment>
-      <AppBar position="relative">
-        <Toolbar>
-          <Grid container spacing={2} justify='space-between' alignItems='center'>
-            <div>
-              <Grid container>
-                <img src={logoImg} alt="logo" style={{ width: 40, marginRight: 10 }} />
-                <Typography style={{ color: 'white', marginTop: 5 }}>
-                  EXAMINATOR
-                          </Typography>
+    <React.Fragment >
+      {loading ?
+        <div>
+          <AppBar position="relative">
+            <Toolbar>
+              <Grid container spacing={2} justify='space-between' alignItems='center'>
+                <div>
+                  <Grid container>
+                    <img src={logoImg} alt="logo" style={{ width: 40, marginRight: 10 }} />
+                    <Typography style={{ color: 'white', marginTop: 5 }}>
+                      EXAMINATOR
+                </Typography>
+                  </Grid>
+                </div>
               </Grid>
-            </div>
-          </Grid>
-        </Toolbar>
-      </AppBar>
+            </Toolbar>
+          </AppBar>
 
-      <div className={classes.root}>
-        <Grid container spacing={3}>
-          <Grid item xs={9} style={{ paddingTop: 40 }} >
-            <Timer />
-            {questions[qNo ? qNo : 0]}
+          <div className={classes.root}>
+            <Grid container spacing={3}>
+              <Grid item xs={9} style={{ paddingTop: 40 }} >
+                <Timer duration={exam.duration} startTime={exam.startTime} />
+                {questions[qNo ? qNo : 0]}
 
-            <Box mt={5} hidden={activebutton}>
-              <Alert severity="success">
-                <AlertTitle>Thank You</AlertTitle>
+                <Box mt={5} hidden={activebutton}>
+                  <Alert severity="success">
+                    <AlertTitle>Thank You</AlertTitle>
                   Your Exam is Finished. Press Submit to Proceed.
                 </Alert>
-            </Box>
+                </Box>
 
-            <Grid container spacing={2} justify="center" style={{ paddingTop: 40 }}>
-              <Grid item>
-                <Button variant="contained" color="primary" className={classes.button} onClick={handleChange} disabled={!activebutton} >
-                  Save &amp; Next
+                <Grid container spacing={2} justify="center" style={{ paddingTop: 40 }}>
+                  <Grid item>
+                    <Button variant="contained" color="primary" className={classes.button} onClick={handleChange} disabled={!activebutton} >
+                      Save &amp; Next
                 </Button>
+                  </Grid>
+                  <Grid item>
+                    <Button variant="contained" color="secondary" className={classes.button}
+                      disabled={activebutton} onClick={event => { navigateTo(`../ExamComplete/${examRoom}`) }}>
+                      Submit
+                </Button>
+                  </Grid>
+                </Grid>
               </Grid>
-              <Grid item>
-                <Button variant="contained" color="secondary" className={classes.button}
-                  disabled={activebutton} onClick={event => { navigateTo(`../ExamComplete/${examRoom}`) }}>
-                  Submit
-                </Button>
+              <Grid container justify="right" xs style={{ paddingTop: 40 }}>
+                <div className="videos">
+
+                  <video className={classes.video} width="350" ref={videoRef}></video>
+                  <div>
+                    <Typography className={classes.avatarText} align="center" variant="h6">
+                      Student
+                </Typography>
+                  </div>
+
+                  <video id="remoteVideo" className={classes.rvideo} width="350" ref={remoteVideoRef} hidden></video>
+                  <div id="instructorAvatar">
+                    <PersonIcon className={classes.avatar} />
+                  </div>
+                  <div>
+                    <Typography className={classes.avatarText} align="center" variant="h6">
+                      Instructor
+                </Typography>
+                  </div>
+                </div>
               </Grid>
             </Grid>
-          </Grid>
-          <Grid container justify="right" xs style={{ paddingTop: 40 }}>
-            <div className="videos">
-              <video width="350" ref={videoRef}></video>
-
-              <video id="remoteVideo" width="350" ref={remoteVideoRef}>
-              </video>
-
-            </div>
-          </Grid>
-        </Grid>
-      </div>
-      {/* Footer */}
-      <Footer />
-      {/* End footer */}
-    </React.Fragment>
+          </div>
+          <Footer />
+        </div>
+        :
+        <div>Loading...</div>
+      }
+    </React.Fragment >
 
   );
 }

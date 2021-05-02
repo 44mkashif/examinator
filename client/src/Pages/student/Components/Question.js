@@ -44,10 +44,10 @@ export default function Question(props) {
                         {props.question}
                     </FormLabel>
                     <RadioGroup aria-label="answer" name="answer1" value={value} onChange={handleChange}>
-                        <FormControlLabel value={props.qNo + "1"} control={<Radio />} label="1"/>
-                        <FormControlLabel value={props.qNo + "2"} control={<Radio />} label="2" />
-                        <FormControlLabel value={props.qNo + "3"} control={<Radio />} label="3" />
-                        <FormControlLabel value={props.qNo + "4"} control={<Radio />} label="4" />
+                        <FormControlLabel value={props.options[0]} control={<Radio />} label={props.options[0]} />
+                        <FormControlLabel value={props.options[1]} control={<Radio />} label={props.options[1]} />
+                        <FormControlLabel value={props.options[2]} control={<Radio />} label={props.options[2]} />
+                        <FormControlLabel value={props.options[3]} control={<Radio />} label={props.options[3]} />
                     </RadioGroup>
                 </FormControl>
                 {/* <Grid container justify="center" >

@@ -20,6 +20,24 @@ class ExamService extends Component {
             console.log(error.response)
         }
     }
+
+    static async getExam(examId, authToken) {
+        try {
+            const res = await axios.get(`http://localhost:4000/api/student/exam/?examId=${examId}`, {
+                headers: {
+                    'auth-token': authToken
+                },
+            });
+            if (res.data.success) {
+                // console.log(res.data);
+                return res.data.exam;
+            } else {
+                console.log(res.data.msg);
+            }
+        } catch (error) {
+            console.log(error.response)
+        }
+    }
 }
 
 export default ExamService;

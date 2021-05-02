@@ -123,14 +123,6 @@ export default function Dashboard() {
 
   const navigateTo = (path) => history.push(path);
 
-  //Popper Menu Functions
-
-
-  //Popper Idhr tk he
-
-
-
-
   return (
 
     <React.Fragment>

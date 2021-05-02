@@ -4,10 +4,24 @@ import Grid from '@material-ui/core/Grid';
 import io from 'socket.io-client';
 import { useParams } from 'react-router-dom';
 import Switch from '@material-ui/core/Switch';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormControl from '@material-ui/core/FormControl';
 import { Alert, AlertTitle } from '@material-ui/lab';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Footer from '../Components/Footer';
+import { makeStyles } from '@material-ui/core/styles';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import Avatar from '@material-ui/core/Avatar';
+import List from '@material-ui/core/List';
+import Divider from '@material-ui/core/Divider';
+import MicIcon from '@material-ui/icons/Mic';
+import MicOffIcon from '@material-ui/icons/MicOff';
+import ArrowForwardRoundedIcon from '@material-ui/icons/ArrowForwardRounded';
+import VideocamIcon from '@material-ui/icons/Videocam';
 
 <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
 
@@ -18,13 +32,46 @@ var examRoom;
 var peerConnections = {};
 var remoteId;
 
+
+const drawerWidth = 240;
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: 'flex',
+  },
+  
+  drawer: {
+    width: drawerWidth,
+    flexShrink: 0,
+  },
+  drawerPaper: {
+  
+    width: drawerWidth,
+  },
+  drawerContainer: {
+    overflow: 'auto',
+  },
+  content: {
+    flexGrow: 0.05,
+    padding: theme.spacing(1),
+  },
+  video: {
+    
+    borderStyle: "solid",
+    borderColor: "red",
+  }
+}));
+
 export default function Exam() {
+  const classes = useStyles();
+
   examRoom = useParams().exam;
   const videoRef = React.useRef(null);
   const [msg, setmsg] = React.useState('');
   const [toggleState, settoggleState] = React.useState({
     checked: true,
   });
+  
 
   React.useEffect(() => {
     const socket = io("http://127.0.0.1:4001");
@@ -118,6 +165,7 @@ export default function Exam() {
       remoteVideo.autoplay = true;
       remoteVideo.id = remoteId;
       remoteVideo.width = 250;
+      remoteVideo.className = classes.video;
       videoDivision.appendChild(remoteVideo);
     }
     function handleRemoteStreamRemoved(e) {
@@ -152,39 +200,74 @@ export default function Exam() {
 
   }, [])
 
-
   return (
     <React.Fragment>
       <AppBar />
-      <Grid container justify="start" xs style={{ paddingTop: 20, paddingLeft: 20, paddingRight: 20 }} >
-        <div id="videos" >
-          <video width="250" ref={videoRef}></video>
-        </div>
-        <Grid container style={{ paddingLeft: 90 }}>
-          <Typography>
-            Camera
-                </Typography>
-        </Grid>
-        <Grid container style={{ paddingLeft: 90 }}>
-          <Switch
-            checked={toggleState.checked}
-            onChange={(e) => { settoggleState({ checked: e.target.checked }); }}
-            name="checked"
-            inputProps={{ 'aria-label': 'secondary checkbox' }}
-          />
-        </Grid>
-        <Grid container justify="start" xs style={{ paddingLeft: 10 }} >
-          {msg &&
-            <Box mt={5}>
-              <Alert severity="error">
-                <AlertTitle>Alert</AlertTitle>
-                {msg}
-              </Alert>
-            </Box>
-          }
+      <Grid container spacing={0}>
+        <Grid item justify="start" xs={9} style={{ paddingTop: 20, paddingLeft: 20, paddingRight: 20 }} >
+          <div id="videos" >
+            <video className={classes.video} width="250" ref={videoRef}></video>
+          </div>
+          <Grid container style={{ paddingLeft: 90 }}>
+            <Typography>
+              Camera
+            </Typography>
+          </Grid>
+          <Grid container style={{ paddingLeft: 90 }}>
+            <Switch
+              checked={toggleState.checked}
+              onChange={(e) => { settoggleState({ checked: e.target.checked }); }}
+              name="checked"
+              inputProps={{ 'aria-label': 'secondary checkbox' }}
+            />
+          </Grid>
+          <Grid container justify="start" xs style={{ paddingLeft: 10 }} >
+            {msg &&
+              <Box mt={5}>
+                <Alert severity="error">
+                  <AlertTitle>Alert</AlertTitle>
+                  {msg}
+                </Alert>
+              </Box>
+            }
+          </Grid>
         </Grid>
 
-      </Grid>
+        <Grid item alignItems="right" xs={3} style={{ paddingTop: 20, paddingLeft: 30 }}>
+          <div className={classes.content}>
+            <Typography variant="h6" gutterBottom>
+              Meeting Details
+            </Typography>
+          </div>
+          <Divider />
+          <div className={classes.drawerContainer}>
+            <List>
+              {['Omer Munam', 'Ahmed Ali', 'Omer Majid', 'Ahmed Ali'].map((text, index) => (
+                <ListItem button key={text}>
+                  <ListItemIcon>{index % 2 === 0 ? <Avatar>OM</Avatar> : <Avatar>AA</Avatar>}</ListItemIcon>
+                  <ListItemText primary={text} />
+                  <ListItemIcon>{index % 2 === 0 ? <MicIcon></MicIcon> : <MicOffIcon></MicOffIcon>}</ListItemIcon>
+              </ListItem>
+              ))}
+            </List>
+            <Divider />
+            <div className={classes.content}>
+              <Typography variant="h6" gutterBottom>
+                Suspiciousness Levels
+                </Typography>
+            </div>
+            <Divider />
+            <List>
+              {['Level 1', 'Level 2', 'Level 3', 'Level 4', 'Level 5'].map((text, index) => (
+                <ListItem button key={text}>
+                  <ListItemIcon>{<ArrowForwardRoundedIcon />}</ListItemIcon>
+                  <ListItemText primary={text} />
+                </ListItem>
+              ))}
+            </List>
+          </div>
+        </Grid>
+    </Grid>
       {/* Footer */}
       <Footer />
       {/* End footer */}

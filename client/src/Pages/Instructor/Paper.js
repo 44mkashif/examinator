@@ -150,21 +150,21 @@ export default function SimplePaper() {
         const res = await CourseService.createCourse(exam, authToken);
         console.log(res);
 
-        console.log(typeof (res["success"]) );
-        
-        
+        console.log(typeof (res["success"]));
+
+
 
         if (res["success"]) {
-            
+
             console.log(res["success"]);
             setChecksuccess(true);
         } else {
             setCheckfail(true);
-            error=res["msg"];
+            error = res["msg"];
             console.log(res["msg"]);
             console.log(res["success"]);
         }
-        
+
     }
 
     return (
@@ -308,16 +308,16 @@ export default function SimplePaper() {
                 </Grid>
                 <div>
 
-                    
+
                     {Checksuccess &&
                         <Alert severity="success" action={
-                        <Button color="inherit" size="small" onClick={event => { navigateTo(`/Instructor/dashboard`) }}>
+                            <Button color="inherit" size="small" onClick={event => { navigateTo(`/Instructor/dashboard`) }}>
                                 Return to Dashboard
                             </Button>
                         }>
                             <AlertTitle>Success</AlertTitle>
                             <strong> Your Exam has been successfully Scheduled </strong>
-                            </Alert>
+                        </Alert>
                     }
 
                     {

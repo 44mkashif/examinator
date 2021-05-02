@@ -116,7 +116,6 @@ const useStyles = makeStyles((theme) => ({
 
 var examData = [];
 
-var s = [];
 var d = [];
 var t = [];
 
@@ -145,9 +144,22 @@ export default function Course() {
         })
 
         for (var i = 0; i < examData.length; i++) {
-            s[i] = (examData[i].startTime).toString();
-            d[i] = s[i].substring(0, 10);
-            t[i] = s[i].substring(11, 19);
+            const date = new Date(examData[i].startTime);
+
+            var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+            var hours = date.getHours();
+            var minutes = date.getMinutes();
+            var ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            hours = hours ? hours : 12; // the hour '0' should be '12'
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+            var strTime = hours + ':' + minutes + ' ' + ampm;
+
+            console.log(strTime);
+
+            d[i] = months[date.getMonth()] + " " + date.getDate() + ", " + date.getFullYear();
+            t[i] = strTime;
         }
 
         setLoading(true);

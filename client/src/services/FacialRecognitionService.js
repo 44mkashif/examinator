@@ -16,6 +16,24 @@ class FacialRecognitionService extends Component {
             return false;
         }
     }
+
+    static async getImage(userId, authToken) {
+        try {
+            const res = await axios.get(`http://localhost:4000/api/student/get-image?userId=${userId}`, {
+                headers: {
+                    'auth-token': authToken
+                },
+            });
+            if (res.data.success) {
+                // console.log(res.data);
+                return res.data.imgURL;
+            } else {
+                console.log(res.data.msg);
+            }
+        } catch (error) {
+            console.log(error.response)
+        }
+    }
 }
 
 export default FacialRecognitionService;

@@ -10,13 +10,13 @@ const { ExamController } = require('../controllers/ExamController');
 const router = express.Router();
 
 router.get('/courses', CourseController.getCourses);
+router.get('/course', CourseController.getCourse);
 
 router.get('/exam', ExamController.getExam);
 router.get('/exams', ExamController.getExams);
 router.post('/submit-answer', ExamController.submitAnswer);
 
 router.get('/get-image', StudentController.getStudentImage);
-router.get('/exam', ExamController.getExam);
 
 router.post('/add-result', ResultController.addResult);
 router.get('/result', ResultController.getResultForStudent);

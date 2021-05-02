@@ -18,6 +18,12 @@ import Grid from '@material-ui/core/Grid';
 import PersonIcon from '@material-ui/icons/Person';
 import Box from '@material-ui/core/Box';
 import { Alert, AlertTitle } from '@material-ui/lab';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormControl from '@material-ui/core/FormControl';
+import FormLabel from '@material-ui/core/FormLabel';
+import Paper from '@material-ui/core/Paper';
 
 <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
 
@@ -26,10 +32,10 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   paper: {
-    // padding: theme.spacing(2),
-    //  textAlign: 'center',
+    padding: theme.spacing(2),
+    paddingLeft: 40,
     color: theme.palette.text.secondary,
-    // marginTop: '30px',
+    userSelect: 'none'
   },
   person: {
     width: "100%"
@@ -60,7 +66,10 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.secondary.main,
     marginTop: 5,
     marginBottom: 5
-  }
+  },
+  text: {
+    userSelect: 'none'
+  },
 
 }));
 
@@ -73,6 +82,7 @@ var examRoom;
 var peerConnection;
 var questions = [];
 var exam;
+const selectedOptions = [];
 
 const socket = io("http://127.0.0.1:4001");
 
@@ -86,6 +96,7 @@ export default function AutoGrid() {
   const remoteVideoRef = React.useRef(null);
   examRoom = useParams().exam;
   const authToken = localStorage.getItem('auth-token');
+  const studentId = localStorage.getItem('studentId');
 
   React.useEffect(() => {
 
@@ -231,22 +242,50 @@ export default function AutoGrid() {
   const classes = useStyles();
   const [qNo, setQNo] = React.useState('');
   const [activebutton, setButton] = React.useState(true);
+  const [selected, setSelected] = React.useState(true);
   const [loading, setLoading] = React.useState(false);
+  // const [selectedOption, setSelectedOption] = React.useState('');
 
   const history = useHistory();
   const navigateTo = (path) => history.push(path);
 
 
   const handleChange = () => {
+    setSelected(true);
+    submitAnswer(temp);
     // currentQues.pop();
-    console.log(questions);
+    console.log("Q: ", questions);
 
     if (qNo >= questions.length - 1 || qNo === undefined) {
       setButton(false);
     }
 
-    console.log(temp);
+    console.log("temp: ", temp);
     setQNo(++temp);
+  };
+
+  const submitAnswer = (index) => {
+    console.log(index);
+
+    var answer = {
+      questionId: exam.question[index]._id,
+      studentId: studentId,
+      markedOption: selectedOptions[index]
+    }
+    console.log(answer);
+
+    ExamService.submitAnswer(answer, authToken).then(res => {
+      console.log(res);
+    })
+  }
+
+  const handleOptionChange = (event, index) => {
+    setSelected(false);
+    console.log(event.target.value);
+    // setSelectedOption(event.target.value);
+
+    selectedOptions[index] = exam.question[index].options.indexOf(event.target.value);
+    console.log("selectedOptions", selectedOptions);
   };
 
   // var questionNum;
@@ -267,9 +306,26 @@ export default function AutoGrid() {
     exam = examFromDb[0];
     console.log("Exam from db: ", exam);
     exam.question.forEach((question, i) => {
-      questions.push(<Question question={"Question " + (i + 1) + ": " + question.statement} options={question.options} qNo={i} />)
+      // <Question question={"Question " + (i + 1) + ": " + question.statement} options={question.options} qNo={i} />
+      questions.push(
+        <div>
+          <Paper className={classes.paper}>
+            <FormControl component="fieldset">
+              <FormLabel component="legend">
+                Q{(i + 1)}: {question.statement}
+              </FormLabel>
+              <RadioGroup aria-label="answer" name="answer1" value={selectedOptions[i]} onChange={event => handleOptionChange(event, i)}>
+                <FormControlLabel value={question.options[0]} control={<Radio />} label={question.options[0]} />
+                <FormControlLabel value={question.options[1]} control={<Radio />} label={question.options[1]} />
+                <FormControlLabel value={question.options[2]} control={<Radio />} label={question.options[2]} />
+                <FormControlLabel value={question.options[3]} control={<Radio />} label={question.options[3]} />
+              </RadioGroup>
+            </FormControl>
+          </Paper>
+        </div>
+      )
     });
-    console.log(questions);
+    console.log("Ques: ", questions);
 
     setLoading(true);
 
@@ -309,7 +365,7 @@ export default function AutoGrid() {
 
                 <Grid container spacing={2} justify="center" style={{ paddingTop: 40 }}>
                   <Grid item>
-                    <Button variant="contained" color="primary" className={classes.button} onClick={handleChange} disabled={!activebutton} >
+                    <Button variant="contained" color="primary" className={classes.button} onClick={handleChange} disabled={selected} >
                       Save &amp; Next
                 </Button>
                   </Grid>

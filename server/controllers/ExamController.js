@@ -2,6 +2,7 @@
 
 const { Exam } = require('../schema/exam');
 const { Question } = require('../schema/question');
+const { Answer } = require('../schema/answer');
 
 const mongoose = require('mongoose');
 
@@ -39,7 +40,7 @@ class ExamController {
                 })
             })
             await Question.insertMany(questions);
-            return res.status(200).send({ success: true, msg: 'Exam Added Successfuly', exam: await Exam.findOne({ name: name }) });
+            return res.status(200).send({ success: true, msg: 'Exam Added Successfuly', exam: await Exam.findById({ _id: examStored._id }) });
 
 
         } catch (error) {
@@ -173,6 +174,33 @@ class ExamController {
                 return res.status(200).send({ success: true, msg: 'Exam Deleted Successfuly' });
             } else {
                 return res.status(401).send({ success: false, msg: 'Exam does not exist!' })
+            }
+
+        } catch (error) {
+            console.log(error)
+            return res.status(400).send({ success: false, msg: error });
+        }
+    }
+
+    static async submitAnswer(req, res) {
+        try {
+            let checkAnswer = await Answer.findById({ _id: req.body.questionId });
+            if (!checkAnswer) {
+
+                let questionId = req.body.questionId;
+                let studentId = req.body.studentId;
+                let markedOption = req.body.markedOption;
+
+                let answer = new Answer({
+                    questionId: mongoose.Types.ObjectId(questionId),
+                    studentId: mongoose.Types.ObjectId(studentId),
+                    markedOption: markedOption
+                });
+
+                await answer.save();
+                return res.status(200).send({ success: true, msg: 'Answer Submitted Successfuly' });
+            } else {
+                return res.status(401).send({ success: false, msg: 'Answer Already Submitted' })
             }
 
         } catch (error) {

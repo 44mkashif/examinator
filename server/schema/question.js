@@ -13,7 +13,7 @@ let questionSchema = new mongoose.Schema(
             required: true
         },
         correctOption: {
-            type: String,
+            type: Number,
             required: true
         },
         marks: {

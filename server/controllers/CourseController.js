@@ -64,9 +64,9 @@ class CourseController {
         try {
             let course = await Course.findOne({ _id: mongoose.Types.ObjectId(req.query.courseId) });
             if (course) {
-                return res.status(200).send({ success: true, msg: 'Courses Fetched Successfuly', course: course });
+                return res.status(200).send({ success: true, msg: 'Course Fetched Successfuly', course: course });
             } else {
-                return res.status(401).send({ success: false, msg: 'Courses does not exist!' })
+                return res.status(401).send({ success: false, msg: 'Course does not exist!' })
             }
 
         } catch (error) {

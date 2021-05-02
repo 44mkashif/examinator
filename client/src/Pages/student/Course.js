@@ -17,6 +17,7 @@ import ExamService from '../../services/ExamService';
 import TimerIcon from '@material-ui/icons/Timer';
 import Footer from '../Components/Footer';
 import { useParams } from 'react-router-dom';
+import CourseService from './../../services/CourseService';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -97,7 +98,14 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
+var examDates = [];
+var examTimes = [];
+
+var pExamDates = [];
+var pExamTimes = [];
+
 var examData = [];
+var prevExam = [];
 
 export default function Course() {
 
@@ -110,14 +118,69 @@ export default function Course() {
     const courseId = useParams().course;
     const authToken = localStorage.getItem('auth-token');
 
+    var course;
+
+    CourseService.getCourse(courseId, authToken, false).then((courseFromDb) => {
+        console.log(courseFromDb);
+        course = courseFromDb;
+    });
+
+    const processDate = (startTime) => {
+        const date = new Date(startTime);
+
+        var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+        var hours = date.getHours();
+        var minutes = date.getMinutes();
+        var ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12;
+        hours = hours ? hours : 12; // the hour '0' should be '12'
+        minutes = minutes < 10 ? '0' + minutes : minutes;
+
+        const strTime = hours + ':' + minutes + ' ' + ampm;
+        const strDate = months[date.getMonth()] + " " + date.getDate() + ", " + date.getFullYear();
+        return [strDate, strTime];
+    }
+
     ExamService.getExams(courseId, authToken).then((examsFromDb) => {
         console.log(examsFromDb);
 
         examData = [];
+        prevExam = [];
+        examDates = [];
+        pExamDates = [];
+        examTimes = [];
+        pExamTimes = [];
 
-        examsFromDb.forEach((e) => {
-            examData.push(e);
+        examsFromDb.forEach((exam) => {
+            const examDate = new Date(exam.startTime);
+            const duration = exam.duration;
+            examDate.setHours(examDate.getHours() + duration);
+
+            const now = new Date();
+
+            if (examDate < now) {
+                console.log("Exam date: ", examDate);
+                console.log("Today: ", now);
+
+                prevExam.push(exam);
+            } else {
+                examData.push(exam);
+            }
         })
+
+        examData.forEach(exam => {
+            const dt = processDate(exam.startTime);
+            examDates.push(dt[0]);
+            examTimes.push(dt[1]);
+        });
+
+        prevExam.forEach(exam => {
+            const dt = processDate(exam.startTime);
+            pExamDates.push(dt[0]);
+            pExamTimes.push(dt[1]);
+        });
+
         setLoading(true);
 
     })
@@ -169,14 +232,14 @@ export default function Course() {
                                             <Grid container justify="center">
                                                 <DateRangeIcon className={classes.iconClass} />
                                                 <Typography className={classes.margin}>
-                                                    12 Jan, 2021
+                                                    {examDates[i]}
                                                 </Typography>
                                             </Grid>
                                             <Grid container justify="center">
                                                 <AccessTimeIcon className={classes.iconClass} />
                                                 <Typography className={classes.margin}>
-                                                    10:00 PM
-                                                    </Typography>
+                                                    {examTimes[i]}
+                                                </Typography>
                                             </Grid>
                                         </CardContent>
                                     </ButtonBase>
@@ -194,13 +257,12 @@ export default function Course() {
                     <br />
                     <Divider variant="middle" />
                     <br />
-
-                    {/*<Grid container spacing={4} justify="center">
-                        {examData.map((exam, i) => (
+                    <Grid container spacing={4} justify="center">
+                        {prevExam.map((exam, i) => (
                             <div key={i} className={classes.card}>
                                 <Card className={classes.card} elevation="7">
                                     <ButtonBase className={classes.cardMargin}
-                                        onClick={event => { navigateTo('../instructor/course/exam') }}
+                                        onClick={event => { navigateTo(`../Course/ExamInstruction/${exam._id}`) }}
                                     >
                                         <CardContent className={classes.cardContent}>
                                             <Typography gutterBottom variant="h5" component="h2">
@@ -215,14 +277,14 @@ export default function Course() {
                                             <Grid container justify="center">
                                                 <DateRangeIcon className={classes.iconClass} />
                                                 <Typography className={classes.margin}>
-                                                    12 Jan, 2021
+                                                    {pExamDates[i]}
                                                 </Typography>
                                             </Grid>
                                             <Grid container justify="center">
                                                 <AccessTimeIcon className={classes.iconClass} />
                                                 <Typography className={classes.margin}>
-                                                    10:00 PM
-                                                    </Typography>
+                                                    {pExamTimes[i]}
+                                                </Typography>
                                             </Grid>
                                         </CardContent>
                                     </ButtonBase>
@@ -231,7 +293,7 @@ export default function Course() {
                             </div>
                         ))}
 
-                    </Grid> */}
+                    </Grid>
 
                 </Container>
             </div>

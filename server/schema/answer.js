@@ -14,6 +14,11 @@ let answerSchema = new mongoose.Schema(
             required: true,
             ref: 'students'
         },
+        examId: {
+            type: mongoose.Types.ObjectId,
+            required: true,
+            ref: 'exams'
+        },
         markedOption: {
             type: Number,
             required: true

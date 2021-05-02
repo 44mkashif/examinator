@@ -181,16 +181,23 @@ class ExamController {
 
     static async submitAnswer(req, res) {
         try {
-            let checkAnswer = await Answer.findById({ _id: req.body.questionId });
-            if (!checkAnswer) {
+            let checkAnswer = await Answer.find({ 
+                $and: [
+                    { questionId: req.body.questionId },
+                    { studentId: req.body.studentId }
+                ]
+            });
+            if (!checkAnswer[0]) {
 
                 let questionId = req.body.questionId;
                 let studentId = req.body.studentId;
+                let examId = req.body.examId;
                 let markedOption = req.body.markedOption;
 
                 let answer = new Answer({
                     questionId: mongoose.Types.ObjectId(questionId),
                     studentId: mongoose.Types.ObjectId(studentId),
+                    examId: mongoose.Types.ObjectId(examId),
                     markedOption: markedOption
                 });
 

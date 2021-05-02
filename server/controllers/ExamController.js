@@ -96,9 +96,6 @@ class ExamController {
                     }
                 },
                 {
-                    $sample: { size: 2 }
-                },
-                {
                     $group: {
                         _id: "$_id",
                         name: { $first: "$name" },

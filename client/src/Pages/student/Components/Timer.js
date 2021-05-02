@@ -29,11 +29,6 @@ const getTimeDays = (time) => (time / daySeconds) | 0;
 export default function Timer(props) {
     const stratTime = new Date(props.startTime) / 1000; // use UNIX timestamp in seconds
 
-    console.log("stratTime: ", stratTime);
-    console.log("Date.now: ", new Date() / 1000);
-    console.log("Date.now: ", new Date());
-    console.log("Props time: ", new Date(props.startTime));
-
     const durationInSecs = props.duration * 60 * 60;
 
     const endTime = stratTime + durationInSecs; // use UNIX timestamp in seconds
@@ -43,11 +38,6 @@ export default function Timer(props) {
     const remainingTime = endTime - stratTime - timeElapsed;
     const days = Math.ceil(remainingTime / daySeconds);
     const daysDuration = days * daySeconds;
-
-    console.log("Remaining Time: ", remainingTime);
-    console.log("Time elapsed: ", timeElapsed);
-    console.log("Start Time: ", stratTime);
-    console.log("End Time: ", endTime);
 
     return (
         <div className="timer">

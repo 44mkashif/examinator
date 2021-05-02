@@ -97,12 +97,13 @@ export default function Dashboard() {
     console.log(coursesFromDb);
 
     courseData = [];
-
-    coursesFromDb.forEach((c) => {
-      courseData.push(c);
-    })
-
+    if (coursesFromDb.length > 0) {
+      coursesFromDb.forEach((c) => {
+        courseData.push(c);
+      })
+    }
     setLoading(true);
+
   })
 
 

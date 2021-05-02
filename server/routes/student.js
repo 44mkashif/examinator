@@ -5,7 +5,6 @@ const { CourseController } = require('../controllers/CourseController');
 const { ExamController } = require('../controllers/ExamController');
 const { ResultController } = require('../controllers/ResultController');
 const { StudentController } = require('../controllers/StudentController');
-const { ExamController } = require('../controllers/ExamController');
 
 const router = express.Router();
 

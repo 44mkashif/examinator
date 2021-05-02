@@ -58,7 +58,7 @@ class ExamController {
                     }
                 }
             ]);
-            if (exams) {
+            if (exams[0]) {
                 return res.status(200).send({ success: true, msg: 'Exams Fetched Successfuly', exams: exams });
             } else {
                 return res.status(401).send({ success: false, msg: 'Exam does not exist!' })
@@ -109,7 +109,7 @@ class ExamController {
                     }
                 }
             ]);
-            if (exam) {
+            if (exam[0]) {
                 return res.status(200).send({ success: true, msg: 'Exam Fetched Successfuly', exam: exam });
             } else {
                 return res.status(401).send({ success: false, msg: 'Exam does not exist!' })

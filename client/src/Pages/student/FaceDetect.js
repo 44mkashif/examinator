@@ -202,7 +202,6 @@ export default function Testpage() {
         return (
             < Grid container className={classes.align} >
                 <Grid item xs={6} >
-
                     <img src={image} />
                 </Grid>
 

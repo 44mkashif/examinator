@@ -109,13 +109,6 @@ function App() {
                   >
                     Instructor Portal
                   </Button>
-                  <Button
-                    variant="contained"
-                    className={classes.button}
-                  // component={Link} to="/admin/login"
-                  >
-                    Admin Portal
-                  </Button>
                 </Grid>
               </div>
             </Grid>

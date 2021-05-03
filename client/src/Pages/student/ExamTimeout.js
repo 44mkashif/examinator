@@ -44,7 +44,7 @@ export default function StudentExamComplete() {
                 <div className={classes.root}>
                     <Grid container spacing={2} align='center' >
                         <Grid item xs={12}>
-                            <HourglassEmpty/>
+                            <HourglassEmpty />
                         </Grid>
                         <Grid item xs={12}>
 

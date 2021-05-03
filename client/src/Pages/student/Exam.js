@@ -270,6 +270,7 @@ export default function AutoGrid() {
     var answer = {
       questionId: exam.question[index]._id,
       studentId: studentId,
+      examId: examRoom,
       markedOption: selectedOptions[index]
     }
     console.log(answer);

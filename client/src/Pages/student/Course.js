@@ -185,6 +185,14 @@ export default function Course() {
 
     })
 
+    let idYouWant;
+    let propertyYouWant = "courseName";
+
+    let res = examData.filter((item) => {
+        console.log(item._id)
+        return item._id;
+    });
+
     return (
         <React.Fragment>
             <AppBar position="relative">
@@ -192,6 +200,7 @@ export default function Course() {
                     <Grid container spacing={2} justify='space-between' alignItems='center'>
                         <div>
                             <Grid container>
+                                
                                 <img src={logoImg} alt="logo" className={classes.logoImg} />
                                 <Typography variant="h6" color="inherit" noWrap>
                                     Introduction to Data Science
@@ -262,7 +271,7 @@ export default function Course() {
                             <div key={i} className={classes.card}>
                                 <Card className={classes.card} elevation="7">
                                     <ButtonBase className={classes.cardMargin}
-                                        onClick={event => { navigateTo(`../Course/ExamInstruction/${exam._id}`) }}
+                                        onClick={event => { navigateTo(`../Course/ExamPrevious/${exam._id}`) }}
                                     >
                                         <CardContent className={classes.cardContent}>
                                             <Typography gutterBottom variant="h5" component="h2">

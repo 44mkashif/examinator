@@ -256,9 +256,6 @@ export default function Course() {
                         <div>
                             <Grid container>
                                 <img src={logoImg} alt="logo" className={classes.logoImg} />
-                                <Typography variant="h6" color="inherit" noWrap>
-                                    Introduction to Data Science
-                                </Typography>
                             </Grid>
                         </div>
                         <div>

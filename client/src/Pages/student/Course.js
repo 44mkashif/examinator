@@ -86,7 +86,7 @@ const useStyles = makeStyles((theme) => ({
         paddingTop: 10
     },
     cardMargin: {
-        marginLeft: 50,
+        marginLeft: 65,
         paddingTop: 20
     },
     content: {
@@ -216,11 +216,9 @@ export default function Course() {
                     <Grid container spacing={2} justify='space-between' alignItems='center'>
                         <div>
                             <Grid container>
-                                
                                 <img src={logoImg} alt="logo" className={classes.logoImg} />
                                 <Typography variant="h6" color="inherit" noWrap>
                                    {course["courseName"]}
-                                   {/* test */}
                                 </Typography>
                             </Grid>
                         </div>

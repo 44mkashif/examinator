@@ -102,11 +102,14 @@ const useStyles = makeStyles((theme) => ({
         paddingTop: 10
     },
     cardMargin: {
-        marginLeft: 50,
+        marginLeft: 65,
         paddingTop: 20
     },
     content: {
         fullWidth: 100,
+    },
+    cardContent: {
+        justifyContent: 'center'
     },
     scheduleClass: {
         color: theme.palette.secondary.dark,
@@ -268,7 +271,6 @@ const data= [];
                                 <img src={logoImg} alt="logo" className={classes.logoImg} />
                                 <Typography variant="h6" color="inherit" noWrap>
                                     {course["courseName"]}
-                                    {/* test */}
                                 </Typography>
                             </Grid>
                         </div>
@@ -299,7 +301,7 @@ const data= [];
                                     <ButtonBase className={classes.cardMargin}
                                         onClick={event => { navigateTo(`../Course/Exam/${exam._id}`) }}
                                     >
-                                        <CardContent className={classes.cardContent}>
+                                        <CardContent justify="center">
                                             <Typography gutterBottom variant="h5" component="h2">
                                                 {exam.name}
                                             </Typography>
@@ -323,12 +325,27 @@ const data= [];
                                             </Grid>
                                         </CardContent>
                                     </ButtonBase>
+                                    <CardActions>
+                                        <Grid container spacing={2}
+                                            justify='space-between'
+                                            alignItems='center'
+                                        >
+                                            <IconButton className={classes.editClass}>
+                                                <EditIcon />
+                                            </IconButton>
+                                            <IconButton className={classes.deleteClass}>
+                                                <DeleteIcon />
+                                            </IconButton>
+                                        </Grid>
+                                    </CardActions>
                                 </Card>
 
                             </div>
                         ))}</div>}
                     </Grid>
-
+                    <br />
+                    <Divider variant="middle" />
+                    <br />
                     <Typography>
                         Previous Exams
                     </Typography>
@@ -368,19 +385,6 @@ const data= [];
                                         </CardContent>
 
                                     </ButtonBase>
-                                    <CardActions>
-                                        <Grid container spacing={2}
-                                            justify='space-between'
-                                            alignItems='center'
-                                        >
-                                            <IconButton className={classes.editClass}>
-                                                <EditIcon />
-                                            </IconButton>
-                                            <IconButton className={classes.deleteClass}>
-                                                <DeleteIcon />
-                                            </IconButton>
-                                        </Grid>
-                                    </CardActions>
                                 </Card>
 
                             </div>

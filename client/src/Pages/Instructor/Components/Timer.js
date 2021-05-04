@@ -47,7 +47,7 @@ export default function Timer(props) {
                 duration={daySeconds}
                 initialRemainingTime={remainingTime % daySeconds}
                 onComplete={(totalElapsedTime) => [
-                    
+
                     remainingTime - totalElapsedTime > hourSeconds
                 ]}
             >
@@ -74,7 +74,7 @@ export default function Timer(props) {
                 duration={minuteSeconds}
                 initialRemainingTime={remainingTime % minuteSeconds}
                 onComplete={(totalElapsedTime) => [
-                    
+
                     remainingTime - totalElapsedTime > 0
                 ]}
             >

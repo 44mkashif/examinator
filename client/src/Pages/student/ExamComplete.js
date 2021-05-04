@@ -7,7 +7,7 @@ import Grid from '@material-ui/core/Grid';
 import { Typography } from '@material-ui/core';
 import Submitted from '../../assets/Submitted.png';
 import Button from '@material-ui/core/Button';
-import { Link } from 'react-router-dom';
+import { useHistory, useParams, } from 'react-router-dom';
 import Footer from '../Components/Footer';
 
 const useStyles = makeStyles((theme) => ({
@@ -28,9 +28,16 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function StudentExamComplete() {
+function refreshComp(){
+    window.location.reload();
+}
 
+export default function StudentExamComplete() {
+    
     const classes = useStyles();
+
+    const history = useHistory();
+    const navigateTo = (path) => history.push(path);
 
     return (
 
@@ -60,7 +67,11 @@ export default function StudentExamComplete() {
                             <Button className={classes.button}
                                 variant="contained"
                                 color="primary"
-                                component={Link} to="../../Dashboard">
+                                onClick={() => {
+                                    navigateTo(`../../Dashboard`);
+                                    refreshComp();
+                                }}
+                               >
                                 Return to Dashboard
                             </Button>
                         </Grid>

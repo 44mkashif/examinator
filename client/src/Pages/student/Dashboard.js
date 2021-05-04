@@ -128,12 +128,10 @@ export default function Dashboard() {
           <Grid container spacing={2} justify='space-between' alignItems='center'>
             <div>
               <Grid container>
-                <Button component={Link} to="/Student/Dashboard">
-                  <img src={logoImg} alt="logo" style={{ width: 40, marginRight: 10 }} />
-                  <Typography className={classes.whiteColor}>
+                  <img src={logoImg} alt="logo" style={{ width: 50, marginRight: 10 }} />
+                  <Typography variant="h6" color="inherit" style={{ paddingTop: 9 }} >
                     Examinator
                   </Typography>
-                </Button>
               </Grid>
             </div>
             <div>

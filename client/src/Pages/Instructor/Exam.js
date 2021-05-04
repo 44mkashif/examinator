@@ -21,7 +21,6 @@ import Divider from '@material-ui/core/Divider';
 import MicIcon from '@material-ui/icons/Mic';
 import MicOffIcon from '@material-ui/icons/MicOff';
 import ArrowForwardRoundedIcon from '@material-ui/icons/ArrowForwardRounded';
-import VideocamIcon from '@material-ui/icons/Videocam';
 import Timer from './Components/Timer';
 import ExamService from '../../services/ExamService';
 
@@ -220,10 +219,11 @@ export default function Exam() {
   return (
     <React.Fragment>
       <AppBar />
-      <Timer duration={10} startTime={0} />
+      
       <Grid container spacing={0}>
         <Grid item justify="start" xs={9} style={{ paddingTop: 20, paddingLeft: 20, paddingRight: 20 }} >
-          <div id="videos" >
+          <Timer duration={10} startTime={0} />
+          <div id="videos" style={{ paddingTop: 20}}>
             <video className={classes.video} width="250" ref={videoRef}></video>
           </div>
           <Grid container style={{ paddingLeft: 90 }}>

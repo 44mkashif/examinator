@@ -22,6 +22,8 @@ import MicIcon from '@material-ui/icons/Mic';
 import MicOffIcon from '@material-ui/icons/MicOff';
 import ArrowForwardRoundedIcon from '@material-ui/icons/ArrowForwardRounded';
 import VideocamIcon from '@material-ui/icons/Videocam';
+import Timer from './Components/Timer';
+import ExamService from '../../services/ExamService';
 
 <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
 
@@ -71,14 +73,28 @@ export default function Exam() {
   const [toggleState, settoggleState] = React.useState({
     checked: true,
   });
-  
+  // const [examName, setExamName] = React.useState("");
+  // const [examDuration, setExamDuration] = React.useState(0);
+  // const [examStartTime, setExamStartTime] = React.useState(0);
 
   React.useEffect(() => {
     const socket = io("http://127.0.0.1:4001");
     socket.emit('on/off stream', { type: 'on/off', toggleState: toggleState }, examRoom);
   }, [toggleState])
 
+  // const authToken = localStorage.getItem('auth-token');
+  // ExamService.getExam(examRoom, authToken).then((examFromDb) => {
+  //   //  setExamName(examFromDb[0]["courseName"]);
+  //   setExamDuration(examFromDb[0]["duration"]);
+  //   setExamStartTime(examFromDb[0]["startTime"]);
+  //   console.log(examFromDb[0]);
+  //   console.log(examDuration);
+  //   console.log(examStartTime);
+  //   // exam = examFromDb[0];
+  // })
   React.useEffect(() => {
+
+
 
     const socket = io("http://127.0.0.1:4001");
     var videoDivision = document.querySelector('#videos');
@@ -200,9 +216,11 @@ export default function Exam() {
 
   }, [])
 
+
   return (
     <React.Fragment>
       <AppBar />
+      <Timer duration={10} startTime={0} />
       <Grid container spacing={0}>
         <Grid item justify="start" xs={9} style={{ paddingTop: 20, paddingLeft: 20, paddingRight: 20 }} >
           <div id="videos" >

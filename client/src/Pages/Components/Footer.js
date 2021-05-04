@@ -27,14 +27,17 @@ export default function Footer() {
     const classes = useStyles();
 
     return (
-        <footer className={classes.footer && "footer"}>
-            <Typography variant="h6" align="center" gutterBottom>
-                Examinator
-            </Typography>
-            <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
-                Smart Examination System
-            </Typography>
-            <Copyright />
-        </footer>
+        // <footer className={classes.footer && "footer"}>
+        //     <Typography variant="h6" align="center" gutterBottom>
+        //         Examinator
+        //     </Typography>
+        //     <Typography variant="subtitle1" align="center" color="textSecondary" component="p" >
+        //         Smart Examination System
+        //     </Typography>
+        //     <Copyright />
+        // </footer>
+        <div>
+            
+        </div>
     )
 };

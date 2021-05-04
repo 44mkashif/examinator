@@ -353,6 +353,7 @@ export default function AutoGrid() {
           <div className={classes.root}>
             <Grid container spacing={3}>
               <Grid item xs={9} style={{ paddingTop: 40 }} >
+                {/* <Timer duration={exam.duration} startTime={exam.startTime} /> */}
                 <Timer duration={exam.duration} startTime={exam.startTime} />
                 {questions[qNo ? qNo : 0]}
 

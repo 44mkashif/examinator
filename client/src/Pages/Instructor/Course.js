@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
@@ -126,18 +126,28 @@ var prevExam = [];
 
 var body = {}
 
-export default function Course() {
 
+
+export default function Course() {
+    const [course, setCourse] = React.useState("");
     const [loading, setLoading] = React.useState(false);
 
     const courseId = useParams().course;
     const authToken = localStorage.getItem('auth-token');
 
-    var course;
-    CourseService.getCourse(courseId, authToken, true).then((courseFromDb) => {
-        console.log(courseFromDb);
-        course = courseFromDb;
-    });
+    useEffect(() => {
+        CourseService.getCourse(courseId, authToken, false).then((courseFromDb) => {
+            console.log(courseFromDb);
+            setCourse(courseFromDb);
+            // course = courseFromDb;
+        });
+    }, []);
+
+    // var course;
+    // CourseService.getCourse(courseId, authToken, true).then((courseFromDb) => {
+    //     console.log(courseFromDb);
+    //     course = courseFromDb;
+    // });
 
     const processDate = (startTime) => {
         const date = new Date(startTime);
@@ -246,7 +256,7 @@ export default function Course() {
 
         navigateTo(`../../Instructor/Course/${courseId}/Paper`);
     }
-
+const data= [];
 
     return (
         <React.Fragment>
@@ -256,6 +266,10 @@ export default function Course() {
                         <div>
                             <Grid container>
                                 <img src={logoImg} alt="logo" className={classes.logoImg} />
+                                <Typography variant="h6" color="inherit" noWrap>
+                                    {course["courseName"]}
+                                    {/* test */}
+                                </Typography>
                             </Grid>
                         </div>
                         <div>
@@ -279,7 +293,7 @@ export default function Course() {
                     <br />
 
                     <Grid container spacing={4} justify="center">
-                        {examData.map((exam, i) => (
+                        {examData.length === 0 ? <h4>No exam found</h4> : <div> {examData.map((exam, i) => (
                             <div key={i} className={classes.card}>
                                 <Card className={classes.card} elevation="7">
                                     <ButtonBase className={classes.cardMargin}
@@ -308,25 +322,11 @@ export default function Course() {
                                                 </Typography>
                                             </Grid>
                                         </CardContent>
-
                                     </ButtonBase>
-                                    <CardActions>
-                                        <Grid container spacing={2}
-                                            justify='space-between'
-                                            alignItems='center'
-                                        >
-                                            <IconButton className={classes.editClass}>
-                                                <EditIcon />
-                                            </IconButton>
-                                            <IconButton className={classes.deleteClass}>
-                                                <DeleteIcon />
-                                            </IconButton>
-                                        </Grid>
-                                    </CardActions>
                                 </Card>
 
                             </div>
-                        ))}
+                        ))}</div>}
                     </Grid>
 
                     <Typography>

@@ -1,4 +1,4 @@
-import React, { useEffect} from 'react';
+import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
@@ -18,6 +18,9 @@ import TimerIcon from '@material-ui/icons/Timer';
 import Footer from '../Components/Footer';
 import { useParams } from 'react-router-dom';
 import CourseService from './../../services/CourseService';
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import Loader from "react-loader-spinner";
+import theme from './../../theme';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -95,6 +98,11 @@ const useStyles = makeStyles((theme) => ({
     scheduleClass: {
         color: theme.palette.secondary.dark,
         marginRight: 5
+    },
+    loader: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
     }
 }));
 
@@ -121,7 +129,7 @@ export default function Course() {
 
     // var course;
 
-    useEffect(()=> {
+    useEffect(() => {
         CourseService.getCourse(courseId, authToken, false).then((courseFromDb) => {
             console.log(courseFromDb);
             setCourse(courseFromDb);
@@ -187,7 +195,7 @@ export default function Course() {
             pExamTimes.push(dt[1]);
         });
 
-        // setLoading(true);
+        setLoading(true);
 
     })
 
@@ -199,7 +207,7 @@ export default function Course() {
         return item._id;
     });
     console.log(course, "this is the course");
-    console.log(examData, "This is exa data" );
+    console.log(examData, "This is exa data");
 
 
     // if(examData.length === 0){
@@ -211,66 +219,71 @@ export default function Course() {
 
     return (
         <React.Fragment>
-            <AppBar position="relative">
-                <Toolbar>
-                    <Grid container spacing={2} justify='space-between' alignItems='center'>
-                        <div>
-                            <Grid container>
-                                <img src={logoImg} alt="logo" className={classes.logoImg} />
-                                <Typography variant="h6" color="inherit" noWrap>
-                                   {course["courseName"]}
-                                </Typography>
+            {!loading ?
+                <Loader type="BallTriangle" className={classes.loader} color={theme.palette.primary.main} height={80} width={80} />
+                :
+                <div>
+                    <AppBar position="relative">
+                        <Toolbar>
+                            <Grid container spacing={2} justify='space-between' alignItems='center'>
+                                <div>
+                                    <Grid container>
+                                        <img src={logoImg} alt="logo" className={classes.logoImg} />
+                                        <Typography variant="h6" color="inherit" noWrap>
+                                            {course["courseName"]}
+                                        </Typography>
+                                    </Grid>
+                                </div>
                             </Grid>
-                        </div>
-                    </Grid>
-                </Toolbar>
-            </AppBar>
+                        </Toolbar>
+                    </AppBar>
 
-            <div className={classes.root}>
-                <Container className={classes.cardGrid} >
+                    <div className={classes.root}>
+                        <Container className={classes.cardGrid} >
 
-                    <Typography>
-                        Scheduled Exams
+                            <Typography>
+                                Scheduled Exams
                     </Typography>
-                    <br />
-                    <Divider variant="middle" />
-                    <br />
-                    <Grid container spacing={4} justify="center">
-                        {examData.length===0 ? <h4>No exam found</h4> : <div> {examData.map((exam, i) => (
-                            <div key={i} className={classes.card}>
-                                <Card className={classes.card} elevation="7">
-                                    <ButtonBase className={classes.cardMargin}
-                                        onClick={event => { navigateTo(`../Course/ExamInstruction/${exam._id}`) }}
-                                    >
-                                        <CardContent className={classes.cardContent}>
-                                            <Typography gutterBottom variant="h5" component="h2">
-                                                {exam.name}
-                                            </Typography>
-                                            <Grid container justify="center">
-                                                <TimerIcon className={classes.iconClass} />
-                                                <Typography className={classes.margin}>
-                                                    Duration: {exam.duration} hrs
+                            <br />
+                            <Divider variant="middle" />
+                            <br />
+                            <Grid container spacing={4} justify="center">
+                                {examData && examData.length === 0 ? <h4>No Scheduled Exams found</h4> :
+                                    <div> {examData.map((exam, i) => (
+                                        <div key={i} className={classes.card}>
+                                            <Card className={classes.card} elevation="7">
+                                                <ButtonBase className={classes.cardMargin}
+                                                    onClick={event => { navigateTo(`../Course/ExamInstruction/${exam._id}`) }}
+                                                >
+                                                    <CardContent className={classes.cardContent}>
+                                                        <Typography gutterBottom variant="h5" component="h2">
+                                                            {exam.name}
+                                                        </Typography>
+                                                        <Grid container justify="center">
+                                                            <TimerIcon className={classes.iconClass} />
+                                                            <Typography className={classes.margin}>
+                                                                Duration: {exam.duration} hrs
                                                 </Typography>
-                                            </Grid>
-                                            <Grid container justify="center">
-                                                <DateRangeIcon className={classes.iconClass} />
-                                                <Typography className={classes.margin}>
-                                                    {examDates[i]}
-                                                </Typography>
-                                            </Grid>
-                                            <Grid container justify="center">
-                                                <AccessTimeIcon className={classes.iconClass} />
-                                                <Typography className={classes.margin}>
-                                                    {examTimes[i]}
-                                                </Typography>
-                                            </Grid>
-                                        </CardContent>
-                                    </ButtonBase>
-                                </Card>
+                                                        </Grid>
+                                                        <Grid container justify="center">
+                                                            <DateRangeIcon className={classes.iconClass} />
+                                                            <Typography className={classes.margin}>
+                                                                {examDates[i]}
+                                                            </Typography>
+                                                        </Grid>
+                                                        <Grid container justify="center">
+                                                            <AccessTimeIcon className={classes.iconClass} />
+                                                            <Typography className={classes.margin}>
+                                                                {examTimes[i]}
+                                                            </Typography>
+                                                        </Grid>
+                                                    </CardContent>
+                                                </ButtonBase>
+                                            </Card>
 
-                            </div>
-                        ))}</div> }
-                        {/* {examData.map((exam, i) => (
+                                        </div>
+                                    ))}</div>}
+                                {/* {examData.map((exam, i) => (
                             <div key={i} className={classes.card}>
                                 <Card className={classes.card} elevation="7">
                                     <ButtonBase className={classes.cardMargin}
@@ -305,58 +318,59 @@ export default function Course() {
                             </div>
                         ))} */}
 
-                    </Grid>
+                            </Grid>
 
-                    <Typography>
-                        Previous Exams
-                    </Typography>
-
-                    <br />
-                    <Divider variant="middle" />
-                    <br />
-                    <Grid container spacing={4} justify="center">
-                        {prevExam.map((exam, i) => (
-                            <div key={i} className={classes.card}>
-                                <Card className={classes.card} elevation="7">
-                                    <ButtonBase className={classes.cardMargin}
-                                        onClick={event => { navigateTo(`../Course/ExamPrevious/${exam._id}`) }}
-                                    >
-                                        <CardContent className={classes.cardContent}>
-                                            <Typography gutterBottom variant="h5" component="h2">
-                                                {exam.name}
-                                            </Typography>
-                                            <Grid container justify="center">
-                                                <TimerIcon className={classes.iconClass} />
-                                                <Typography className={classes.margin}>
-                                                    Duration: {exam.duration} hrs
+                            <Typography>
+                                Previous Exams
+                            </Typography>
+                            <br />
+                            <Divider variant="middle" />
+                            <br />
+                            <Grid container spacing={4} justify="center">
+                                {prevExam.map((exam, i) => (
+                                    <div key={i} className={classes.card}>
+                                        <Card className={classes.card} elevation="7">
+                                            <ButtonBase className={classes.cardMargin}
+                                                onClick={event => { navigateTo(`../Course/ExamPrevious/${exam._id}`) }}
+                                            >
+                                                <CardContent className={classes.cardContent}>
+                                                    <Typography gutterBottom variant="h5" component="h2">
+                                                        {exam.name}
+                                                    </Typography>
+                                                    <Grid container justify="center">
+                                                        <TimerIcon className={classes.iconClass} />
+                                                        <Typography className={classes.margin}>
+                                                            Duration: {exam.duration} hrs
                                                 </Typography>
-                                            </Grid>
-                                            <Grid container justify="center">
-                                                <DateRangeIcon className={classes.iconClass} />
-                                                <Typography className={classes.margin}>
-                                                    {pExamDates[i]}
-                                                </Typography>
-                                            </Grid>
-                                            <Grid container justify="center">
-                                                <AccessTimeIcon className={classes.iconClass} />
-                                                <Typography className={classes.margin}>
-                                                    {pExamTimes[i]}
-                                                </Typography>
-                                            </Grid>
-                                        </CardContent>
-                                    </ButtonBase>
-                                </Card>
+                                                    </Grid>
+                                                    <Grid container justify="center">
+                                                        <DateRangeIcon className={classes.iconClass} />
+                                                        <Typography className={classes.margin}>
+                                                            {pExamDates[i]}
+                                                        </Typography>
+                                                    </Grid>
+                                                    <Grid container justify="center">
+                                                        <AccessTimeIcon className={classes.iconClass} />
+                                                        <Typography className={classes.margin}>
+                                                            {pExamTimes[i]}
+                                                        </Typography>
+                                                    </Grid>
+                                                </CardContent>
+                                            </ButtonBase>
+                                        </Card>
 
-                            </div>
-                        ))}
+                                    </div>
+                                ))}
 
-                    </Grid>
+                            </Grid>
 
-                </Container>
-            </div>
-            {/* Footer */}
-            <Footer />
-            {/* End footer */}
+                        </Container>
+                    </div>
+                    {/* Footer */}
+                    <Footer />
+                    {/* End footer */}
+                </div>
+            }
         </React.Fragment>
     );
 }

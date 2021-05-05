@@ -28,30 +28,7 @@ import Test from './Pages/TestPage';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { GuardProvider, GuardedRoute } from 'react-router-guards'
 
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      light: '#52eff7',
-      main: '#4aabb1',
-      dark: '#0b979e',
-      contrastText: '#fff',
-    },
-    secondary: {
-      light: '#659294',
-      main: '#4a7a7d',
-      dark: '#386163',
-      contrastText: '#fff',
-    },
-    error: {
-      light: '#f6685e',
-      main: '#f44336',
-      dark: '#aa2e25',
-      contrastText: '#fff',
-    },
-    type: 'light'
-  },
-  fontFamily: 'fontsource-roboto' // as an aside, highly recommend importing roboto font for Material UI projects! Looks really nice
-});
+import theme from './theme';
 
 const authGuard = (to, from, next) => {
   if (localStorage.getItem('auth-token')) {
@@ -102,7 +79,7 @@ ReactDOM.render(
           <GuardedRoute path="/Student/Course/ExamPrevious/:exam" exact component={ExamPrevious} meta={{ auth: true, role: 'student' }} />
           <GuardedRoute path="/Student/FaceDetect/:exam" exact component={FaceDetect} meta={{ auth: true, role: 'student' }} />
           <GuardedRoute path="/Student/ExamWait/:exam" exact component={ExamWait} meta={{ auth: true, role: 'student' }} />
-          
+
           <Route path="/test" exact component={Test} />
 
 

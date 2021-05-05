@@ -20,6 +20,10 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import AuthService from '../../services/AuthService';
 import CourseService from '../../services/CourseService';
 import Footer from '../Components/Footer';
+import theme from './../../theme';
+
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import Loader from "react-loader-spinner";
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -69,6 +73,11 @@ const useStyles = makeStyles((theme) => ({
   },
   avatar: {
     backgroundColor: theme.palette.primary.main
+  },
+  loader: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
   }
 }));
 
@@ -113,70 +122,68 @@ export default function Dashboard() {
 
   const navigateTo = (path) => history.push(path);
 
-  //Popper Menu Functions
-
-
-  //Popper Idhr tk he
-
   return (
 
     <React.Fragment>
       <CssBaseline />
-
-      <AppBar position="relative">
-        <Toolbar>
-          <Grid container spacing={2} justify='space-between' alignItems='center'>
-            <div>
-              <Grid container>
-                  <img src={logoImg} alt="logo" style={{ width: 50, marginRight: 10 }} />
-                  <Typography variant="h6" color="inherit" style={{ paddingTop: 9 }} >
-                    Examinator
+      {!loading ?
+        <Loader type="BallTriangle" className={classes.loader} color={theme.palette.primary.main} height={80} width={80} />
+        :
+        <div>
+          <AppBar position="relative">
+            <Toolbar>
+              <Grid container spacing={2} justify='space-between' alignItems='center'>
+                <div>
+                  <Grid container>
+                    <img src={logoImg} alt="logo" style={{ width: 50, marginRight: 10 }} />
+                    <Typography variant="h6" color="inherit" style={{ paddingTop: 9 }} >
+                      Examinator
                   </Typography>
-              </Grid>
-            </div>
-            <div>
-              <Button raised className={classes.button} onClick={logout}>
-                <ExitToAppIcon className={classes.extendedIcon} />
-                <Typography className={classes.buttonText}>
-                  Log Out
+                  </Grid>
+                </div>
+                <div>
+                  <Button raised className={classes.button} onClick={logout}>
+                    <ExitToAppIcon className={classes.extendedIcon} />
+                    <Typography className={classes.buttonText}>
+                      Log Out
                 </Typography>
-              </Button>
-            </div>
-          </Grid>
-        </Toolbar>
-      </AppBar>
-      <main>
-        <Container className={classes.cardGrid}>
+                  </Button>
+                </div>
+              </Grid>
+            </Toolbar>
+          </AppBar>
+          <main>
+            <Container className={classes.cardGrid}>
 
-          <Grid container spacing={2} justify="center">
-            {courseData.map((course, c) => (
-              <div key={c} className={classes.card}>
-                <ButtonBase
-                  onClick={event => { navigateTo(`../Student/Course/${course._id}`) }}
-                >
-                  <Card className={classes.card}>
-                    <CardHeader
-                      avatar={
-                        <Avatar className={classes.avatar}>
-                          {course.courseCode[0] + course.courseCode[1]}
-                        </Avatar>
-                      }
-                      title={course.courseName}
-                      subheader={course.courseCode}
-                    />
-                    <CardMedia
-                      className={classes.cardMedia}
-                    />
-                  </Card>
-                </ButtonBase>
-              </div>
-            ))}
-          </Grid>
-        </Container>
-      </main>
-      {/* Footer */}
-      <Footer />
-      {/* End footer */}
+              <Grid container spacing={2} justify="center">
+                {courseData.map((course, c) => (
+                  <div key={c} className={classes.card}>
+                    <ButtonBase
+                      onClick={event => { navigateTo(`../Student/Course/${course._id}`) }}
+                    >
+                      <Card className={classes.card}>
+                        <CardHeader
+                          avatar={
+                            <Avatar className={classes.avatar}>
+                              {course.courseCode[0] + course.courseCode[1]}
+                            </Avatar>
+                          }
+                          title={course.courseName}
+                          subheader={course.courseCode}
+                        />
+                        <CardMedia
+                          className={classes.cardMedia}
+                        />
+                      </Card>
+                    </ButtonBase>
+                  </div>
+                ))}
+              </Grid>
+            </Container>
+          </main>
+          <Footer />
+        </div>
+      }
     </React.Fragment>
   );
 }

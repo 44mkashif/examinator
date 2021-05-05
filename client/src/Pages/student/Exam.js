@@ -24,6 +24,9 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import Paper from '@material-ui/core/Paper';
+import theme from './../../theme';
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import Loader from "react-loader-spinner";
 
 <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
 
@@ -70,7 +73,11 @@ const useStyles = makeStyles((theme) => ({
   text: {
     userSelect: 'none'
   },
-
+  loader: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
+  }
 }));
 
 var temp = 0;
@@ -306,6 +313,20 @@ export default function AutoGrid() {
 
     exam = examFromDb[0];
     console.log("Exam from db: ", exam);
+
+    const examDate = new Date(exam.startTime);
+    const duration = exam.duration;
+    examDate.setHours(examDate.getHours() + duration);
+
+    const now = new Date();
+
+    if (examDate < now) {
+      console.log("Exam date: ", examDate);
+      console.log("Today: ", now);
+      console.log("Exam over");
+      navigateTo(`../ExamComplete/${examRoom}`);
+    }
+
     exam.question.forEach((question, i) => {
       // <Question question={"Question " + (i + 1) + ": " + question.statement} options={question.options} qNo={i} />
       questions.push(
@@ -334,7 +355,9 @@ export default function AutoGrid() {
 
   return (
     <React.Fragment >
-      {loading ?
+      {!loading ?
+        <Loader type="BallTriangle" className={classes.loader} color={theme.palette.primary.main} height={80} width={80} />
+        :
         <div>
           <AppBar position="relative">
             <Toolbar>
@@ -355,7 +378,7 @@ export default function AutoGrid() {
             <Grid container spacing={3}>
               <Grid item xs={9} style={{ paddingTop: 40 }} >
                 {/* <Timer duration={exam.duration} startTime={exam.startTime} /> */}
-                <Timer duration={exam.duration} startTime={exam.startTime} />
+                <Timer duration={exam.duration} startTime={exam.startTime} examRoom={examRoom} />
                 {questions[qNo ? qNo : 0]}
 
                 <Box mt={5} hidden={activebutton}>
@@ -404,8 +427,6 @@ export default function AutoGrid() {
           </div>
           <Footer />
         </div>
-        :
-        <div>Loading...</div>
       }
     </React.Fragment >
 

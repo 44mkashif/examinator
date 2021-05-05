@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-export default function Testpage() {
+export default function Result() {
 
     const studentId = localStorage.getItem('studentId');
     const authToken = localStorage.getItem('auth-token');
@@ -71,7 +71,7 @@ export default function Testpage() {
             <AppBar />
             <CssBaseline />
             <Container fixed>
-                
+                <div>Chudri styling kro</div>
             </Container>
         </React.Fragment>
     )

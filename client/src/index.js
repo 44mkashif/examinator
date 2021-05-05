@@ -13,7 +13,7 @@ import StudentExamInstruction from './Pages/Student/ExamInstruction';
 import StudentExamComplete from './Pages/Student/ExamComplete';
 import FaceDetect from './Pages/Student/FaceDetect';
 import ExamWait from './Pages/Student/ExamWait';
-import ExamPrevious from './Pages/Student/ExamPrevious';
+import Result from './Pages/Student/Result';
 
 import InstructorLogin from './Pages/Instructor/Login';
 import InstructorDashboard from './Pages/Instructor/Dashboard';
@@ -76,7 +76,7 @@ ReactDOM.render(
           <GuardedRoute path="/Student/Course/Exam/:exam" exact component={StudentExam} meta={{ auth: true, role: 'student' }} />
           <GuardedRoute path="/Student/Course/ExamInstruction/:exam" exact component={StudentExamInstruction} meta={{ auth: true, role: 'student' }} />
           <GuardedRoute path="/Student/Course/ExamComplete/:exam" exact component={StudentExamComplete} meta={{ auth: true, role: 'student' }} />
-          <GuardedRoute path="/Student/Course/ExamPrevious/:exam" exact component={ExamPrevious} meta={{ auth: true, role: 'student' }} />
+          <GuardedRoute path="/Student/Course/Result/:exam" exact component={Result} meta={{ auth: true, role: 'student' }} />
           <GuardedRoute path="/Student/FaceDetect/:exam" exact component={FaceDetect} meta={{ auth: true, role: 'student' }} />
           <GuardedRoute path="/Student/ExamWait/:exam" exact component={ExamWait} meta={{ auth: true, role: 'student' }} />
 

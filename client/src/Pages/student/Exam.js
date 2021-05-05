@@ -2,13 +2,11 @@ import React from 'react';
 import io from 'socket.io-client';
 import { useHistory, useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-
 import logoImg from './../../assets/navbar-2.png';
 import Question from './Components/Question';
 import ExamService from '../../services/ExamService';
 import Footer from '../Components/Footer';
 import Timer from './Components/Timer';
-
 import Toolbar from '@material-ui/core/Toolbar';
 import AppBar from '@material-ui/core/AppBar';
 import { makeStyles } from '@material-ui/core/styles';
@@ -76,8 +74,10 @@ const useStyles = makeStyles((theme) => ({
   loader: {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    marginTop: '350px'
   }
+
 }));
 
 var temp = 0;
@@ -366,8 +366,8 @@ export default function AutoGrid() {
                   <Grid container>
                     <img src={logoImg} alt="logo" style={{ width: 40, marginRight: 10 }} />
                     <Typography style={{ color: 'white', marginTop: 5 }}>
-                      EXAMINATOR
-                </Typography>
+                      {exam.name}
+                    </Typography>
                   </Grid>
                 </div>
               </Grid>
@@ -378,27 +378,27 @@ export default function AutoGrid() {
             <Grid container spacing={3}>
               <Grid item xs={9} style={{ paddingTop: 40 }} >
                 {/* <Timer duration={exam.duration} startTime={exam.startTime} /> */}
-                <Timer duration={exam.duration} startTime={exam.startTime} examRoom={examRoom} />
+                <Timer duration={exam.duration} startTime={exam.startTime} />
                 {questions[qNo ? qNo : 0]}
 
                 <Box mt={5} hidden={activebutton}>
                   <Alert severity="success">
                     <AlertTitle>Thank You</AlertTitle>
-                  Your Exam is Finished. Press Submit to Proceed.
-                </Alert>
+                    Your Exam is Finished. Press Submit to Proceed.
+                  </Alert>
                 </Box>
 
                 <Grid container spacing={2} justify="center" style={{ paddingTop: 40 }}>
                   <Grid item>
                     <Button variant="contained" color="primary" className={classes.button} onClick={handleChange} disabled={selected} >
                       Save &amp; Next
-                </Button>
+                  </Button>
                   </Grid>
                   <Grid item>
                     <Button variant="contained" color="secondary" className={classes.button}
                       disabled={activebutton} onClick={event => { navigateTo(`../ExamComplete/${examRoom}`) }}>
                       Submit
-                </Button>
+                  </Button>
                   </Grid>
                 </Grid>
               </Grid>
@@ -409,7 +409,7 @@ export default function AutoGrid() {
                   <div>
                     <Typography className={classes.avatarText} align="center" variant="h6">
                       Student
-                </Typography>
+                  </Typography>
                   </div>
 
                   <video id="remoteVideo" className={classes.rvideo} width="350" ref={remoteVideoRef} hidden></video>
@@ -419,7 +419,7 @@ export default function AutoGrid() {
                   <div>
                     <Typography className={classes.avatarText} align="center" variant="h6">
                       Instructor
-                </Typography>
+                  </Typography>
                   </div>
                 </div>
               </Grid>

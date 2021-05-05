@@ -21,7 +21,6 @@ import AuthService from '../../services/AuthService';
 import CourseService from '../../services/CourseService';
 import Footer from '../Components/Footer';
 import theme from './../../theme';
-
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Loader from "react-loader-spinner";
 
@@ -77,7 +76,8 @@ const useStyles = makeStyles((theme) => ({
   loader: {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    marginTop: '350px'
   }
 }));
 
@@ -134,11 +134,15 @@ export default function Dashboard() {
             <Toolbar>
               <Grid container spacing={2} justify='space-between' alignItems='center'>
                 <div>
-                  <Grid container>
-                    <img src={logoImg} alt="logo" style={{ width: 50, marginRight: 10 }} />
-                    <Typography variant="h6" color="inherit" style={{ paddingTop: 9 }} >
-                      Examinator
-                  </Typography>
+                  <Grid container spacing={2} justify='space-between' alignItems='center'>
+                    <div>
+                      <Button >              
+                         <img src={logoImg} alt="logo" style={{ width: 40, marginRight: 10 }} />
+                          <Typography className={classes.whiteColor}>
+                            EXAMINATOR
+                          </Typography>
+                        </Button>
+                    </div>
                   </Grid>
                 </div>
                 <div>

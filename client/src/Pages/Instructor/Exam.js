@@ -4,9 +4,8 @@ import Grid from '@material-ui/core/Grid';
 import io from 'socket.io-client';
 import { useParams } from 'react-router-dom';
 import Switch from '@material-ui/core/Switch';
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormControl from '@material-ui/core/FormControl';
+import logoImg from './../../assets/navbar-2.png';
+import Toolbar from '@material-ui/core/Toolbar';
 import { Alert, AlertTitle } from '@material-ui/lab';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
@@ -40,13 +39,13 @@ const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
   },
-
+  
   drawer: {
     width: drawerWidth,
     flexShrink: 0,
   },
   drawerPaper: {
-
+  
     width: drawerWidth,
   },
   drawerContainer: {
@@ -57,17 +56,14 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(1),
   },
   video: {
-
+    
     borderStyle: "solid",
     borderColor: "red",
   }
 }));
 
-var exam;
-
 export default function Exam() {
   const classes = useStyles();
-  const [loading, setLoading] = React.useState(false);
 
   examRoom = useParams().exam;
   const videoRef = React.useRef(null);
@@ -84,21 +80,16 @@ export default function Exam() {
     socket.emit('on/off stream', { type: 'on/off', toggleState: toggleState }, examRoom);
   }, [toggleState])
 
-  const authToken = localStorage.getItem('auth-token');
-  ExamService.getExam(examRoom, authToken, true).then((examFromDb) => {
-    exam = examFromDb[0];
-    console.log("Exam from db: ", exam);
-
-    setLoading(true);
-    //  setExamName(examFromDb[0]["courseName"]);
-    // setExamDuration(examFromDb[0]["duration"]);
-    // setExamStartTime(examFromDb[0]["startTime"]);
-    // console.log(examFromDb[0]);
-    // console.log(examDuration);
-    // console.log(examStartTime);
-    // exam = examFromDb[0];
-  })
-
+  // const authToken = localStorage.getItem('auth-token');
+  // ExamService.getExam(examRoom, authToken).then((examFromDb) => {
+  //   //  setExamName(examFromDb[0]["courseName"]);
+  //   setExamDuration(examFromDb[0]["duration"]);
+  //   setExamStartTime(examFromDb[0]["startTime"]);
+  //   console.log(examFromDb[0]);
+  //   console.log(examDuration);
+  //   console.log(examStartTime);
+  //   // exam = examFromDb[0];
+  // })
   React.useEffect(() => {
 
 
@@ -226,82 +217,89 @@ export default function Exam() {
 
   return (
     <React.Fragment>
-      {!loading ? <div>Loading</div>
-        :
-        <div>
-          <AppBar />
-
-          <Grid container spacing={0}>
-            <Grid item justify="start" xs={9} style={{ paddingTop: 20, paddingLeft: 20, paddingRight: 20 }} >
-              <Timer duration={exam.duration} startTime={exam.startTime} />
-              <div id="videos" style={{ paddingTop: 20 }}>
-                <video className={classes.video} width="250" ref={videoRef}></video>
-              </div>
-              <Grid container style={{ paddingLeft: 90 }}>
-                <Typography>
-                  Camera
-            </Typography>
-              </Grid>
-              <Grid container style={{ paddingLeft: 90 }}>
-                <Switch
-                  checked={toggleState.checked}
-                  onChange={(e) => { settoggleState({ checked: e.target.checked }); }}
-                  name="checked"
-                  inputProps={{ 'aria-label': 'secondary checkbox' }}
-                />
-              </Grid>
-              <Grid container justify="start" xs style={{ paddingLeft: 10 }} >
-                {msg &&
-                  <Box mt={5}>
-                    <Alert severity="error">
-                      <AlertTitle>Alert</AlertTitle>
-                      {msg}
-                    </Alert>
-                  </Box>
-                }
-              </Grid>
-            </Grid>
-
-            <Grid item alignItems="right" xs={3} style={{ paddingTop: 20, paddingLeft: 30 }}>
-              <div className={classes.content}>
-                <Typography variant="h6" gutterBottom>
-                  Meeting Details
-            </Typography>
-              </div>
-              <Divider />
-              <div className={classes.drawerContainer}>
-                <List>
-                  {['Omer Munam', 'Ahmed Ali', 'Omer Majid', 'Ahmed Ali'].map((text, index) => (
-                    <ListItem button key={text}>
-                      <ListItemIcon>{index % 2 === 0 ? <Avatar>OM</Avatar> : <Avatar>AA</Avatar>}</ListItemIcon>
-                      <ListItemText primary={text} />
-                      <ListItemIcon>{index % 2 === 0 ? <MicIcon></MicIcon> : <MicOffIcon></MicOffIcon>}</ListItemIcon>
-                    </ListItem>
-                  ))}
-                </List>
-                <Divider />
-                <div className={classes.content}>
-                  <Typography variant="h6" gutterBottom>
-                    Suspiciousness Levels
-                </Typography>
-                </div>
-                <Divider />
-                <List>
-                  {['Level 1', 'Level 2', 'Level 3', 'Level 4', 'Level 5'].map((text, index) => (
-                    <ListItem button key={text}>
-                      <ListItemIcon>{<ArrowForwardRoundedIcon />}</ListItemIcon>
-                      <ListItemText primary={text} />
-                    </ListItem>
-                  ))}
-                </List>
-              </div>
-            </Grid>
+      <AppBar position="relative">
+        <Toolbar>
+          <Grid container spacing={2} justify='space-between' alignItems='center'>
+            <div>
+              <Grid container>
+                <img src={logoImg} alt="logo" className={classes.logoImg} />
+                  <Typography variant="h6" color="inherit"  noWrap>
+                    Examinator
+                  </Typography>
+                </Grid>
+            </div>
           </Grid>
-          {/* Footer */}
-          <Footer />
-          {/* End footer */}
-        </div>
-      }
+        </Toolbar>
+      </AppBar>      
+      <Grid container spacing={0}>
+        <Grid item justify="start" xs={9} style={{ paddingTop: 20, paddingLeft: 20, paddingRight: 20 }} >
+          <Timer duration={10} startTime={0} />
+          <div id="videos" style={{ paddingTop: 20}}>
+            <video className={classes.video} width="250" ref={videoRef}></video>
+          </div>
+          <Grid container style={{ paddingLeft: 90 }}>
+            <Typography>
+              Camera
+            </Typography>
+          </Grid>
+          <Grid container style={{ paddingLeft: 90 }}>
+            <Switch
+              checked={toggleState.checked}
+              onChange={(e) => { settoggleState({ checked: e.target.checked }); }}
+              name="checked"
+              inputProps={{ 'aria-label': 'secondary checkbox' }}
+            />
+          </Grid>
+          <Grid container justify="start" xs style={{ paddingLeft: 10 }} >
+            {msg &&
+              <Box mt={5}>
+                <Alert severity="error">
+                  <AlertTitle>Alert</AlertTitle>
+                  {msg}
+                </Alert>
+              </Box>
+            }
+          </Grid>
+        </Grid>
+
+        <Grid item alignItems="right" xs={3} style={{ paddingTop: 20, paddingLeft: 30 }}>
+          <div className={classes.content}>
+            <Typography variant="h6" gutterBottom>
+              Meeting Details
+            </Typography>
+          </div>
+          <Divider />
+          <div className={classes.drawerContainer}>
+            <List>
+              {['Omer Munam', 'Ahmed Ali', 'Omer Majid', 'Ahmed Ali'].map((text, index) => (
+                <ListItem button key={text}>
+                  <ListItemIcon>{index % 2 === 0 ? <Avatar>OM</Avatar> : <Avatar>AA</Avatar>}</ListItemIcon>
+                  <ListItemText primary={text} />
+                  <ListItemIcon>{index % 2 === 0 ? <MicIcon></MicIcon> : <MicOffIcon></MicOffIcon>}</ListItemIcon>
+              </ListItem>
+              ))}
+            </List>
+            <Divider />
+            <div className={classes.content}>
+              <Typography variant="h6" gutterBottom>
+                Suspiciousness Levels
+                </Typography>
+            </div>
+            <Divider />
+            <List>
+              {['Level 1', 'Level 2', 'Level 3', 'Level 4', 'Level 5'].map((text, index) => (
+                <ListItem button key={text}>
+                  <ListItemIcon>{<ArrowForwardRoundedIcon />}</ListItemIcon>
+                  <ListItemText primary={text} />
+                </ListItem>
+              ))}
+            </List>
+          </div>
+        </Grid>
+    </Grid>
+      {/* Footer */}
+      <Footer />
+      {/* End footer */}
     </React.Fragment>
   )
 }

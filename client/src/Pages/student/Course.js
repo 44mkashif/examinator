@@ -199,9 +199,6 @@ export default function Course() {
 
     })
 
-    let idYouWant;
-    let propertyYouWant = "courseName";
-
     let res = examData.filter((item) => {
         console.log(item._id)
         return item._id;
@@ -331,7 +328,7 @@ export default function Course() {
                                     <div key={i} className={classes.card}>
                                         <Card className={classes.card} elevation="7">
                                             <ButtonBase className={classes.cardMargin}
-                                                onClick={event => { navigateTo(`../Course/ExamPrevious/${exam._id}`) }}
+                                                onClick={event => { navigateTo(`../Course/Result/${exam._id}`) }}
                                             >
                                                 <CardContent className={classes.cardContent}>
                                                     <Typography gutterBottom variant="h5" component="h2">

@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
@@ -259,7 +259,7 @@ export default function Course() {
 
         navigateTo(`../../Instructor/Course/${courseId}/Paper`);
     }
-const data= [];
+    const data = [];
 
     return (
         <React.Fragment>
@@ -295,7 +295,7 @@ const data= [];
                     <br />
 
                     <Grid container spacing={4} justify="center">
-                        {examData.length === 0 ? <h4>No exam found</h4> : <div> {examData.map((exam, i) => (
+                        {examData.length === 0 ? <h4>No Scheduled Exams found</h4> : <div> {examData.map((exam, i) => (
                             <div key={i} className={classes.card}>
                                 <Card className={classes.card} elevation="7">
                                     <ButtonBase className={classes.cardMargin}

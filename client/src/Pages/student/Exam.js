@@ -2,13 +2,11 @@ import React from 'react';
 import io from 'socket.io-client';
 import { useHistory, useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-
 import logoImg from './../../assets/navbar-2.png';
 import Question from './Components/Question';
 import ExamService from '../../services/ExamService';
 import Footer from '../Components/Footer';
 import Timer from './Components/Timer';
-
 import Toolbar from '@material-ui/core/Toolbar';
 import AppBar from '@material-ui/core/AppBar';
 import { makeStyles } from '@material-ui/core/styles';
@@ -24,6 +22,10 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import Paper from '@material-ui/core/Paper';
+import theme from './../../theme';
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import Loader from "react-loader-spinner";
+
 
 <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
 
@@ -70,6 +72,12 @@ const useStyles = makeStyles((theme) => ({
   text: {
     userSelect: 'none'
   },
+  loader: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginTop: '350px'
+  }
 
 }));
 
@@ -334,78 +342,78 @@ export default function AutoGrid() {
 
   return (
     <React.Fragment >
-      {loading ?
-        <div>
-          <AppBar position="relative">
-            <Toolbar>
-              <Grid container spacing={2} justify='space-between' alignItems='center'>
-                <div>
-                  <Grid container>
-                    <img src={logoImg} alt="logo" style={{ width: 40, marginRight: 10 }} />
-                    <Typography style={{ color: 'white', marginTop: 5 }}>
-                      EXAMINATOR
-                </Typography>
-                  </Grid>
-                </div>
-              </Grid>
-            </Toolbar>
-          </AppBar>
+      {!loading ?
+        <Loader type="BallTriangle" className={classes.loader} color={theme.palette.primary.main} height={80} width={80} />
+        :
+          <div>
+            <AppBar position="relative">
+              <Toolbar>
+                <Grid container spacing={2} justify='space-between' alignItems='center'>
+                  <div>
+                    <Grid container>
+                      <img src={logoImg} alt="logo" style={{ width: 40, marginRight: 10 }} />
+                      <Typography style={{ color: 'white', marginTop: 5 }}>
+                        {exam.name}
+                  </Typography>
+                    </Grid>
+                  </div>
+                </Grid>
+              </Toolbar>
+            </AppBar>
 
-          <div className={classes.root}>
-            <Grid container spacing={3}>
-              <Grid item xs={9} style={{ paddingTop: 40 }} >
-                {/* <Timer duration={exam.duration} startTime={exam.startTime} /> */}
-                <Timer duration={exam.duration} startTime={exam.startTime} />
-                {questions[qNo ? qNo : 0]}
+            <div className={classes.root}>
+              <Grid container spacing={3}>
+                <Grid item xs={9} style={{ paddingTop: 40 }} >
+                  {/* <Timer duration={exam.duration} startTime={exam.startTime} /> */}
+                  <Timer duration={exam.duration} startTime={exam.startTime} />
+                  {questions[qNo ? qNo : 0]}
 
-                <Box mt={5} hidden={activebutton}>
-                  <Alert severity="success">
-                    <AlertTitle>Thank You</AlertTitle>
-                  Your Exam is Finished. Press Submit to Proceed.
-                </Alert>
-                </Box>
+                  <Box mt={5} hidden={activebutton}>
+                    <Alert severity="success">
+                      <AlertTitle>Thank You</AlertTitle>
+                    Your Exam is Finished. Press Submit to Proceed.
+                  </Alert>
+                  </Box>
 
-                <Grid container spacing={2} justify="center" style={{ paddingTop: 40 }}>
-                  <Grid item>
-                    <Button variant="contained" color="primary" className={classes.button} onClick={handleChange} disabled={selected} >
-                      Save &amp; Next
-                </Button>
-                  </Grid>
-                  <Grid item>
-                    <Button variant="contained" color="secondary" className={classes.button}
-                      disabled={activebutton} onClick={event => { navigateTo(`../ExamComplete/${examRoom}`) }}>
-                      Submit
-                </Button>
+                  <Grid container spacing={2} justify="center" style={{ paddingTop: 40 }}>
+                    <Grid item>
+                      <Button variant="contained" color="primary" className={classes.button} onClick={handleChange} disabled={selected} >
+                        Save &amp; Next
+                  </Button>
+                    </Grid>
+                    <Grid item>
+                      <Button variant="contained" color="secondary" className={classes.button}
+                        disabled={activebutton} onClick={event => { navigateTo(`../ExamComplete/${examRoom}`) }}>
+                        Submit
+                  </Button>
+                    </Grid>
                   </Grid>
                 </Grid>
-              </Grid>
-              <Grid container justify="right" xs style={{ paddingTop: 40 }}>
-                <div className="videos">
+                <Grid container justify="right" xs style={{ paddingTop: 40 }}>
+                  <div className="videos">
 
-                  <video className={classes.video} width="350" ref={videoRef}></video>
-                  <div>
-                    <Typography className={classes.avatarText} align="center" variant="h6">
-                      Student
-                </Typography>
-                  </div>
+                    <video className={classes.video} width="350" ref={videoRef}></video>
+                    <div>
+                      <Typography className={classes.avatarText} align="center" variant="h6">
+                        Student
+                  </Typography>
+                    </div>
 
-                  <video id="remoteVideo" className={classes.rvideo} width="350" ref={remoteVideoRef} hidden></video>
-                  <div id="instructorAvatar">
-                    <PersonIcon className={classes.avatar} />
+                    <video id="remoteVideo" className={classes.rvideo} width="350" ref={remoteVideoRef} hidden></video>
+                    <div id="instructorAvatar">
+                      <PersonIcon className={classes.avatar} />
+                    </div>
+                    <div>
+                      <Typography className={classes.avatarText} align="center" variant="h6">
+                        Instructor
+                  </Typography>
+                    </div>
                   </div>
-                  <div>
-                    <Typography className={classes.avatarText} align="center" variant="h6">
-                      Instructor
-                </Typography>
-                  </div>
-                </div>
+                </Grid>
               </Grid>
-            </Grid>
+            </div>
+            <Footer />
           </div>
-          <Footer />
-        </div>
-        :
-        <div>Loading...</div>
       }
     </React.Fragment >
 

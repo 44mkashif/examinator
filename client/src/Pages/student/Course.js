@@ -102,7 +102,8 @@ const useStyles = makeStyles((theme) => ({
     loader: {
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        marginTop: '350px'
     }
 }));
 

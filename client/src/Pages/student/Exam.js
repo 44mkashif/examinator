@@ -301,7 +301,7 @@ export default function AutoGrid() {
   //   questions.push(<Question question={"Question " + i + ": " + ques[i]} qNo={i} />);
   // }
 
-  ExamService.getExam(examRoom, authToken).then((examFromDb) => {
+  ExamService.getExam(examRoom, authToken, false).then((examFromDb) => {
     questions = []
 
     exam = examFromDb[0];

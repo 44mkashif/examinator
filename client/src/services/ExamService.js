@@ -21,9 +21,16 @@ class ExamService extends Component {
         }
     }
 
-    static async getExam(examId, authToken) {
+    static async getExam(examId, authToken, isInstructor) {
+        var api = "";
+        if (isInstructor) {
+            api = "instructor";
+        } else {
+            api = "student";
+        }
+
         try {
-            const res = await axios.get(`http://localhost:4000/api/student/exam/?examId=${examId}`, {
+            const res = await axios.get(`http://localhost:4000/api/${api}/exam/?examId=${examId}`, {
                 headers: {
                     'auth-token': authToken
                 },

@@ -103,7 +103,7 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: '350px',
+        marginTop: '350px'
     }
 }));
 

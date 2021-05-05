@@ -21,7 +21,6 @@ import CourseService from './../../services/CourseService';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Loader from "react-loader-spinner";
 import theme from './../../theme';
-import Button from '@material-ui/core/Button';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -100,14 +99,10 @@ const useStyles = makeStyles((theme) => ({
         color: theme.palette.secondary.dark,
         marginRight: 5
     },
-    whiteColor: {
-        color: theme.palette.primary.contrastText
-    },
     loader: {
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'center',
-        marginTop: '350px'
+        justifyContent: 'center'
     }
 }));
 
@@ -204,12 +199,15 @@ export default function Course() {
 
     })
 
-    let res = examData.filter((item) => {
-        console.log(item._id)
-        return item._id;
-    });
-    console.log(course, "this is the course");
-    console.log(examData, "This is exa data");
+    // let idYouWant;
+    // let propertyYouWant = "courseName";
+
+    // let res = examData.filter((item) => {
+    //     console.log(item._id)
+    //     return item._id;
+    // });
+    // console.log(course, "this is the course");
+    // console.log(examData, "This is exa data");
 
 
     // if(examData.length === 0){
@@ -227,16 +225,15 @@ export default function Course() {
                 <div>
                     <AppBar position="relative">
                         <Toolbar>
-                        <Grid container spacing={2} justify='space-between' alignItems='center'>
-                            <div>
-                                <Button >
-                                    
-                                    <img src={logoImg} alt="logo" style={{ width: 40, marginRight: 10 }} />
-                                    <Typography className={classes.whiteColor}>
-                                    {course["courseName"]}
-                                    </Typography>
-                                </Button>
-                            </div>
+                            <Grid container spacing={2} justify='space-between' alignItems='center'>
+                                <div>
+                                    <Grid container>
+                                        <img src={logoImg} alt="logo" className={classes.logoImg} />
+                                        <Typography variant="h6" color="inherit" noWrap>
+                                            {course["courseName"]}
+                                        </Typography>
+                                    </Grid>
+                                </div>
                             </Grid>
                         </Toolbar>
                     </AppBar>
@@ -246,7 +243,7 @@ export default function Course() {
 
                             <Typography>
                                 Scheduled Exams
-                            </Typography>
+                    </Typography>
                             <br />
                             <Divider variant="middle" />
                             <br />

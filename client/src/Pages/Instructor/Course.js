@@ -151,15 +151,9 @@ export default function Course() {
         CourseService.getCourse(courseId, authToken, false).then((courseFromDb) => {
             console.log(courseFromDb);
             setCourse(courseFromDb);
-            // course = courseFromDb;
         });
     }, []);
 
-    // var course;
-    // CourseService.getCourse(courseId, authToken, true).then((courseFromDb) => {
-    //     console.log(courseFromDb);
-    //     course = courseFromDb;
-    // });
 
     const processDate = (startTime) => {
         const date = new Date(startTime);
@@ -367,11 +361,11 @@ export default function Course() {
                         <br />
 
                         <Grid container spacing={4} justify="center">
-                            {prevExam.map((exam, i) => (
+                                {prevExam.length === 0 ? <h4>No previous Exam yet</h4> : <div> {prevExam.map((exam, i) => (
                                 <div key={i} className={classes.card}>
                                     <Card className={classes.card} elevation="7">
                                         <ButtonBase className={classes.cardMargin}
-                                            onClick={event => { navigateTo(`../Course/Exam/${exam._id}`) }}
+                                            onClick={event => { navigateTo(`../Course/Exam/Result/${exam._id}`) }}
                                         >
                                             <CardContent className={classes.cardContent}>
                                                 <Typography gutterBottom variant="h5" component="h2">
@@ -401,7 +395,7 @@ export default function Course() {
                                     </Card>
 
                                 </div>
-                            ))}
+                            ))}</div> }
                         </Grid>
 
                     </Container>

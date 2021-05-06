@@ -212,6 +212,27 @@ class ExamController {
             return res.status(400).send({ success: false, msg: error });
         }
     }
+
+    static async getAnswers(req, res) {
+        try {
+            let answers = await Answer.find({
+                $and: [
+                    { examId: mongoose.Types.ObjectId(req.query.examId) },
+                    { studentId: mongoose.Types.ObjectId(req.query.studentId) }
+                ]
+            });
+
+            if(answers[0]) {
+                return res.status(200).send({ success: true, msg: 'Answers Fetched Successfuly', answers: answers });
+            } else {
+                return res.status(401).send({ success: false, msg: 'Answers not found' })
+            }
+
+        } catch (error) {
+            console.log(error)
+            return res.status(400).send({ success: false, msg: error });
+        }
+    }
 }
 
 module.exports = { ExamController }

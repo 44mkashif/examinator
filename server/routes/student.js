@@ -14,6 +14,7 @@ router.get('/course', CourseController.getCourse);
 router.get('/exam', ExamController.getExam);
 router.get('/exams', ExamController.getExams);
 router.post('/submit-answer', ExamController.submitAnswer);
+router.get('/get-answers', ExamController.getAnswers);
 
 router.get('/get-image', StudentController.getStudentImage);
 

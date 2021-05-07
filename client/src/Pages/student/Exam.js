@@ -1,17 +1,31 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
-import Question from './Components/Question';
-import AppBar from './Components/AppBar';
-import personImg from './../../assets/person.png';
-import Button from '@material-ui/core/Button';
-import Timer from './Components/Timer';
 import io from 'socket.io-client';
 import { useHistory, useParams } from 'react-router-dom';
-
+import { Link } from 'react-router-dom';
+import logoImg from './../../assets/navbar-2.png';
+import Question from './Components/Question';
+import ExamService from '../../services/ExamService';
+import ResultService from '../../services/ResultService';
+import Footer from '../Components/Footer';
+import Timer from './Components/Timer';
+import Toolbar from '@material-ui/core/Toolbar';
+import AppBar from '@material-ui/core/AppBar';
+import { makeStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+import Grid from '@material-ui/core/Grid';
+import PersonIcon from '@material-ui/icons/Person';
 import Box from '@material-ui/core/Box';
 import { Alert, AlertTitle } from '@material-ui/lab';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormControl from '@material-ui/core/FormControl';
+import FormLabel from '@material-ui/core/FormLabel';
+import Paper from '@material-ui/core/Paper';
+import theme from './../../theme';
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import Loader from "react-loader-spinner";
 
 <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
 
@@ -20,10 +34,10 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   paper: {
-    // padding: theme.spacing(2),
-    //  textAlign: 'center',
+    padding: theme.spacing(2),
+    paddingLeft: 40,
     color: theme.palette.text.secondary,
-    // marginTop: '30px',
+    userSelect: 'none'
   },
   person: {
     width: "100%"
@@ -32,21 +46,41 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 100,
     width: "150px",
 
+  },
+  video: {
+    borderStyle: "solid",
+    borderColor: theme.palette.primary.main,
+  },
+  rvideo: {
+
+    borderStyle: "solid",
+    borderColor: theme.palette.secondary.main
+  },
+  avatar: {
+    borderStyle: "solid",
+    borderColor: theme.palette.secondary.main,
+    font: "1500px",
+    width: "350px",
+    height: "240px",
+    color: theme.palette.secondary.main
+  },
+  avatarText: {
+    color: theme.palette.secondary.main,
+    marginTop: 5,
+    marginBottom: 5
+  },
+  text: {
+    userSelect: 'none'
+  },
+  loader: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: '350px'
   }
+
 }));
 
-var questionNum = 5;
-
-var ques = ["A linear collection of data elements where the linear node is given by means of pointer is called?",
-  "In linked list each node contains a minimum of two fields. One field is data field to store the data second field is?",
-  "What would be the asymptotic time complexity to add a node at the end of singly linked list, if the pointer is initially pointing to the head of the list?",
-  "The concatenation of two lists can be performed in O(1) time. Which of the following variation of the linked list can be used?",
-  "What would be the asymptotic time complexity to insert an element at the front of the linked list (head is known)"];
-
-var questions = [];
-for (var i = 0; i < questionNum; i++) {
-  questions.push(<Question question={"Question " + i + ": " + ques[i]} qNo={i} />);
-}
 var temp = 0;
 
 var isAnswered = false;
@@ -54,6 +88,10 @@ var localStream;
 var remoteStream;
 var examRoom;
 var peerConnection;
+var questions = [];
+var exam;
+var submittedAnswers = [];
+const selectedOptions = [];
 
 const socket = io("http://127.0.0.1:4001");
 
@@ -61,13 +99,13 @@ window.onbeforeunload = () => {
   socket.emit('message', 'close', examRoom);
 };
 
-
-
 export default function AutoGrid() {
 
   const videoRef = React.useRef(null);
   const remoteVideoRef = React.useRef(null);
   examRoom = useParams().exam;
+  const authToken = localStorage.getItem('auth-token');
+  const studentId = localStorage.getItem('studentId');
 
   React.useEffect(() => {
 
@@ -104,9 +142,11 @@ export default function AutoGrid() {
         if (message.toggleState.checked) {
           console.log('retain')
           document.getElementById('remoteVideo').hidden = false;
+          document.getElementById('instructorAvatar').hidden = true;
         } else {
           console.log('remove')
           document.getElementById('remoteVideo').hidden = true;
+          document.getElementById('instructorAvatar').hidden = false;
         }
       }
     })
@@ -165,6 +205,9 @@ export default function AutoGrid() {
       remoteVideo.srcObject = e.stream;
       remoteVideo.play();
 
+      document.getElementById('remoteVideo').hidden = false;
+      document.getElementById('instructorAvatar').hidden = true;
+
       // remoteStream = e.stream;
       // let remoteVideo = document.createElement('video');
       // remoteVideo.srcObject = remoteStream;
@@ -203,71 +246,240 @@ export default function AutoGrid() {
       peerConnection = null;
     }
 
-
-
   }, []);
 
   const classes = useStyles();
   const [qNo, setQNo] = React.useState('');
   const [activebutton, setButton] = React.useState(true);
+  const [selected, setSelected] = React.useState(true);
+  const [loading, setLoading] = React.useState(false);
+  // const [selectedOption, setSelectedOption] = React.useState('');
 
   const history = useHistory();
   const navigateTo = (path) => history.push(path);
 
 
   const handleChange = () => {
+    setSelected(true);
+    submitAnswer(temp);
     // currentQues.pop();
-    console.log(questions);
+    console.log("Q: ", questions);
 
     if (qNo >= questions.length - 1 || qNo === undefined) {
       setButton(false);
     }
 
-    console.log(temp);
+    console.log("temp: ", temp);
     setQNo(++temp);
   };
 
+  const submitAnswer = (index) => {
+    console.log(index);
+
+    var answer = {
+      questionId: exam.question[index]._id,
+      studentId: studentId,
+      examId: examRoom,
+      markedOption: selectedOptions[index]
+    }
+    console.log(answer);
+
+    ExamService.submitAnswer(answer, authToken).then(res => {
+      console.log(res);
+    })
+  }
+
+  const submitExam = () => {
+    //Fetch answers and submit result
+    submittedAnswers = [];
+    setLoading(false);
+
+    ResultService.getAnswers(examRoom, studentId, authToken).then(res => {
+      submittedAnswers = res;
+
+      var questions = exam.question;
+      var answers = [];
+
+      console.log("Student Answers: ", submittedAnswers);
+      console.log("Questions: ", questions);
+
+      submittedAnswers.forEach(answer => {
+        questions.forEach(question => {
+          if (question._id === answer.questionId) {
+            answers.push({
+              qId: question._id,
+              marks: question.marks,
+              correctOption: question.correctOption,
+              markedOption: answer.markedOption
+            })
+          }
+        });
+      });
+
+      var result = {
+        examId: examRoom,
+        studentId: studentId,
+        totalMarks: exam.totalMarks,
+        obtainedMarks: 0
+      }
+      answers.forEach(answer => {
+        if (answer.markedOption == answer.correctOption) {
+          result.obtainedMarks += answer.marks;
+        }
+      });
+
+      console.log("Result: ", result);
+      ResultService.addResult(result, authToken).then(res => {
+        console.log(res);
+        setLoading(true);
+        navigateTo(`../ExamComplete/${examRoom}`);
+      })
+    })
+
+  }
+
+  const handleOptionChange = (event, index) => {
+    setSelected(false);
+    console.log(event.target.value);
+    // setSelectedOption(event.target.value);
+
+    selectedOptions[index] = exam.question[index].options.indexOf(event.target.value);
+    console.log("selectedOptions", selectedOptions);
+  };
+
+  // var questionNum;
+
+  // var ques = ["A linear collection of data elements where the linear node is given by means of pointer is called?",
+  //   "In linked list each node contains a minimum of two fields. One field is data field to store the data second field is?",
+  //   "What would be the asymptotic time complexity to add a node at the end of singly linked list, if the pointer is initially pointing to the head of the list?",
+  //   "The concatenation of two lists can be performed in O(1) time. Which of the following variation of the linked list can be used?",
+  //   "What would be the asymptotic time complexity to insert an element at the front of the linked list (head is known)"];
+
+  // for (var i = 0; i < questionNum; i++) {
+  //   questions.push(<Question question={"Question " + i + ": " + ques[i]} qNo={i} />);
+  // }
+
+  ExamService.getExam(examRoom, authToken, false).then((examFromDb) => {
+    questions = []
+
+    exam = examFromDb[0];
+    console.log("Exam from db: ", exam);
+
+    const examDate = new Date(exam.startTime);
+    const duration = exam.duration;
+    examDate.setHours(examDate.getHours() + duration);
+
+    const now = new Date();
+
+    if (examDate < now) {
+      console.log("Exam date: ", examDate);
+      console.log("Today: ", now);
+      console.log("Exam over");
+      navigateTo(`../ExamComplete/${examRoom}`);
+    }
+
+    exam.question.forEach((question, i) => {
+      // <Question question={"Question " + (i + 1) + ": " + question.statement} options={question.options} qNo={i} />
+      questions.push(
+        <div>
+          <Paper className={classes.paper}>
+            <FormControl component="fieldset">
+              <FormLabel component="legend">
+                Q{(i + 1)}: {question.statement}
+              </FormLabel>
+              <RadioGroup aria-label="answer" name="answer1" value={selectedOptions[i]} onChange={event => handleOptionChange(event, i)}>
+                <FormControlLabel value={question.options[0]} control={<Radio />} label={question.options[0]} />
+                <FormControlLabel value={question.options[1]} control={<Radio />} label={question.options[1]} />
+                <FormControlLabel value={question.options[2]} control={<Radio />} label={question.options[2]} />
+                <FormControlLabel value={question.options[3]} control={<Radio />} label={question.options[3]} />
+              </RadioGroup>
+            </FormControl>
+          </Paper>
+        </div>
+      )
+    });
+    console.log("Ques: ", questions);
+
+    setLoading(true);
+
+  })
 
   return (
-    <React.Fragment>
-      <AppBar />
-
-      <div className={classes.root}>
-        <Grid container spacing={3}>
-          <Grid item xs={9} style={{ paddingTop: 40 }} >
-            <Timer />
-            {questions[qNo ? qNo : 0]}
-
-            <Box mt={5} hidden={activebutton}>
-              <Alert severity="success">
-                <AlertTitle>Thank You</AlertTitle>
-                  Your Exam is Finished. Press Submit to Proceed.
-                </Alert>
-            </Box>
-
-            <Grid container spacing={2} justify="center" style={{ paddingTop: 40 }}>
-              <Grid item>
-                <Button variant="contained" color="primary" className={classes.button} onClick={handleChange} disabled={!activebutton} >
-                  Save &amp; Next
-                </Button>
+    <React.Fragment >
+      {!loading ?
+        <Loader type="BallTriangle" className={classes.loader} color={theme.palette.primary.main} height={80} width={80} />
+        :
+        <div>
+          <AppBar position="relative">
+            <Toolbar>
+              <Grid container spacing={2} justify='space-between' alignItems='center'>
+                <div>
+                  <Grid container>
+                    <img src={logoImg} alt="logo" style={{ width: 40, marginRight: 10 }} />
+                    <Typography style={{ color: 'white', marginTop: 5 }}>
+                      {exam.name}
+                    </Typography>
+                  </Grid>
+                </div>
               </Grid>
-              <Grid item>
-                <Button variant="contained" color="secondary" className={classes.button}
-                  disabled={activebutton} onClick={event => { navigateTo('../ExamComplete') }}>
-                  Submit
-                </Button>
+            </Toolbar>
+          </AppBar>
+
+          <div className={classes.root}>
+            <Grid container spacing={3}>
+              <Grid item xs={9} style={{ paddingTop: 40 }} >
+                {/* <Timer duration={exam.duration} startTime={exam.startTime} /> */}
+                <Timer duration={exam.duration} startTime={exam.startTime} />
+                {questions[qNo ? qNo : 0]}
+
+                <Box mt={5} hidden={activebutton}>
+                  <Alert severity="success">
+                    <AlertTitle>Thank You</AlertTitle>
+                    Your Exam is Finished. Press Submit to Proceed.
+                  </Alert>
+                </Box>
+
+                <Grid container spacing={2} justify="center" style={{ paddingTop: 40 }}>
+                  <Grid item>
+                    <Button variant="contained" color="primary" className={classes.button} onClick={handleChange} disabled={selected} >
+                      Save &amp; Next
+                  </Button>
+                  </Grid>
+                  <Grid item>
+                    <Button variant="contained" color="secondary" className={classes.button}
+                      disabled={activebutton} onClick={submitExam}>
+                      Submit
+                  </Button>
+                  </Grid>
+                </Grid>
+              </Grid>
+              <Grid container justify="right" xs style={{ paddingTop: 40 }}>
+                <div className="videos">
+
+                  <video className={classes.video} width="350" ref={videoRef}></video>
+                  <div>
+                    <Typography className={classes.avatarText} align="center" variant="h6">
+                      Student
+                  </Typography>
+                  </div>
+
+                  <video id="remoteVideo" className={classes.rvideo} width="350" ref={remoteVideoRef} hidden></video>
+                  <div id="instructorAvatar">
+                    <PersonIcon className={classes.avatar} />
+                  </div>
+                  <div>
+                    <Typography className={classes.avatarText} align="center" variant="h6">
+                      Instructor
+                  </Typography>
+                  </div>
+                </div>
               </Grid>
             </Grid>
-          </Grid>
-          <Grid container justify="right" xs style={{ paddingTop: 40 }}>
-            <div className="videos">
-              <video width="350" ref={videoRef}></video>
-              <video id="remoteVideo" width="350" ref={remoteVideoRef}></video>
-            </div>
-          </Grid>
-        </Grid>
-      </div>
-    </React.Fragment>
+          </div>
+          <Footer />
+        </div>
+      }
+    </React.Fragment >
 
   );
 }

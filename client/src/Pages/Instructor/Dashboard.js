@@ -19,7 +19,10 @@ import { Link } from 'react-router-dom';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import AuthService from '../../services/AuthService';
 import CourseService from '../../services/CourseService';
-
+import Footer from '../Components/Footer';
+import theme from './../../theme';
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import Loader from "react-loader-spinner";
 
 
 function Copyright() {
@@ -62,10 +65,6 @@ const useStyles = makeStyles((theme) => ({
   cardContent: {
     flexGrow: 1,
   },
-  footer: {
-    backgroundColor: theme.palette.background.paper,
-    padding: theme.spacing(6),
-  },
   logoImg: {
     width: 35,
     marginRight: 10
@@ -83,6 +82,15 @@ const useStyles = makeStyles((theme) => ({
   },
   whiteColor: {
     color: theme.palette.primary.contrastText
+  },
+  avatar: {
+    backgroundColor: theme.palette.primary.main
+  },
+  loader: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: '350px'
   }
 }));
 
@@ -124,88 +132,81 @@ export default function Dashboard() {
 
   const navigateTo = (path) => history.push(path);
 
-  //Popper Menu Functions
-
-
-  //Popper Idhr tk he
-
- 
-  
-
   return (
 
     <React.Fragment>
       <CssBaseline />
+      {!loading ?
+        <Loader type="BallTriangle" className={classes.loader} color={theme.palette.primary.main} height={80} width={80} />
+        :
+        <div>
 
-      <AppBar position="relative">
-        <Toolbar>
-          <Grid container spacing={2} justify='space-between' alignItems='center'>
-            <div>
-              <Button component={Link} to="/student/dashboard">
-                <img src={logoImg} alt="logo" style={{ width: 40, marginRight: 10 }} />
-                <Typography className={classes.whiteColor}>
-                  Examinator
-                </Typography>
-              </Button>
-            </div>
-            <div>
+        
+          <AppBar position="relative">
+            <Toolbar>
+              <Grid container spacing={2} justify='space-between' alignItems='center'>
+                <div>
+                  <Button >
+                    <img src={logoImg} alt="logo" style={{ width: 40, marginRight: 10 }} />
+                    <Typography className={classes.whiteColor}>
+                      Examinator
+                    </Typography>
+                  </Button>
+                </div>
+                <div>
 
-              <Button raised className={classes.button} onClick={logout}>
-                <ExitToAppIcon className={classes.extendedIcon} />
-                <Typography className={classes.buttonText}>
-                  Log Out
-                </Typography>
-              </Button>
-            </div>
-          </Grid>
-        </Toolbar>
-      </AppBar>
+                  <Button raised className={classes.button} onClick={logout}>
+                    <ExitToAppIcon className={classes.extendedIcon} />
+                    <Typography className={classes.buttonText}>
+                      Log Out
+                    </Typography>
+                  </Button>
+                </div>
+              </Grid>
+            </Toolbar>
+          </AppBar>
 
-      {/* <div>
-        <Fab variant="extended" onClick={addCourse} color="primary" aria-label="add" className={classes.margin} >
-          <AddCircleIcon className={classes.extendedIcon} />
-          Add Course
-        </Fab>
-      </div> */}
-      <main>
-        <Container className={classes.cardGrid}>
-          <Grid container spacing={2} justify="center">
-            {courseData.map((course, c) => (
-              <div key={c} className={classes.card}>
-                <ButtonBase
-                  onClick={event => { navigateTo('../instructor/course?id=1') }}
-                >
-                  <Card className={classes.card} elevation={7}>
-                    <CardHeader
-                      avatar={
-                        <Avatar className={classes.avatar}>
-                          
-                        </Avatar>
-                      }
-                      title={course.courseName}
-                      subheader={course.courseCode}
-                    />
-                    <CardMedia
-                      className={classes.cardMedia}
-                    />
-                  </Card>
-                </ButtonBase>
-              </div>
-            ))}
-          </Grid>
-        </Container>
-      </main>
-      {/* Footer */}
-      <footer className={classes.footer}>
-        <Typography variant="h6" align="center" gutterBottom>
-          Examinator
-        </Typography>
-        <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
-          Smart Examination System
-        </Typography>
-        <Copyright />
-      </footer>
-      {/* End footer */}
-    </React.Fragment >
+          {/* <div>
+            <Fab variant="extended" onClick={addCourse} color="primary" aria-label="add" className={classes.margin} >
+              <AddCircleIcon className={classes.extendedIcon} />
+              Add Course
+            </Fab>
+          </div> */}
+          <main>
+            <Container className={classes.cardGrid}>
+              <Grid container spacing={2} justify="center">
+                {courseData.map((course, c) => (
+                  <div key={c} className={classes.card}>
+                    <ButtonBase
+                      onClick={event => { navigateTo(`../Instructor/Course/${course._id}`) }}
+                    >
+                      <Card className={classes.card} elevation={7}>
+                        <CardHeader
+                          avatar={
+                            <Avatar className={classes.avatar}>
+                              {course.courseCode[0] + course.courseCode[1]}
+                            </Avatar>
+                          }
+                          title={course.courseName}
+                          subheader={course.courseCode}
+                        />
+                        <CardMedia
+                          className={classes.cardMedia}
+                        />
+                      </Card>
+                      
+                    </ButtonBase>
+                  </div>
+                ))}
+              </Grid>
+            </Container>
+          </main>
+          {/* Footer */}
+          <Footer />
+          {/* End footer */}
+        </div>
+      }
+      </React.Fragment >
+    
   );
 }

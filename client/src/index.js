@@ -11,42 +11,26 @@ import StudentCourse from './Pages/Student/Course';
 import StudentExam from './Pages/Student/Exam';
 import StudentExamInstruction from './Pages/Student/ExamInstruction';
 import StudentExamComplete from './Pages/Student/ExamComplete';
+import FaceDetect from './Pages/Student/FaceDetect';
+import ExamWait from './Pages/Student/ExamWait';
+import ExamTimeout from './Pages/Student/ExamTimeout';
+import ExamAlreadySubmitted from './Pages/Student/ExamAlreadySubmitted';
 
 import InstructorLogin from './Pages/Instructor/Login';
 import InstructorDashboard from './Pages/Instructor/Dashboard';
 import InstructorCourse from './Pages/Instructor/Course';
 import InstructorPaper from './Pages/Instructor/Paper';
 import InstructorExam from './Pages/Instructor/Exam';
+import ExamResult from './Pages/Instructor/Result';
+
+
 
 import Test from './Pages/TestPage';
 
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { GuardProvider, GuardedRoute } from 'react-router-guards'
 
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      light: '#52eff7',
-      main: '#4aabb1',
-      dark: '#0b979e',
-      contrastText: '#fff',
-    },
-    secondary: {
-      light: '#659294',
-      main: '#4a7a7d',
-      dark: '#386163',
-      contrastText: '#fff',
-    },
-    error: {
-      light: '#f6685e',
-      main: '#f44336',
-      dark: '#aa2e25',
-      contrastText: '#fff',
-    },
-    type: 'light'
-  },
-  fontFamily: 'fontsource-roboto' // as an aside, highly recommend importing roboto font for Material UI projects! Looks really nice
-});
+import theme from './theme';
 
 const authGuard = (to, from, next) => {
   if (localStorage.getItem('auth-token')) {
@@ -90,17 +74,24 @@ ReactDOM.render(
           <GuardedRoute path="/" exact component={App} />
           <GuardedRoute path="/Student/Login" exact component={StudentLogin} />
           <GuardedRoute path="/Student/Dashboard" exact component={StudentDashboard} meta={{ auth: true, role: 'student' }} />
-          <GuardedRoute path="/Student/Course" exact component={StudentCourse} meta={{ auth: true, role: 'student' }} />
+          <GuardedRoute path="/Student/Course/:course" exact component={StudentCourse} meta={{ auth: true, role: 'student' }} />
           <GuardedRoute path="/Student/Course/Exam/:exam" exact component={StudentExam} meta={{ auth: true, role: 'student' }} />
           <GuardedRoute path="/Student/Course/ExamInstruction/:exam" exact component={StudentExamInstruction} meta={{ auth: true, role: 'student' }} />
-          <GuardedRoute path="/Student/Course/ExamComplete" exact component={StudentExamComplete} meta={{ auth: true, role: 'student' }} />
+          <GuardedRoute path="/Student/Course/ExamComplete/:exam" exact component={StudentExamComplete} meta={{ auth: true, role: 'student' }} />
+          <GuardedRoute path="/Student/FaceDetect/:exam" exact component={FaceDetect} meta={{ auth: true, role: 'student' }} />
+          <GuardedRoute path="/Student/ExamWait/:exam" exact component={ExamWait} meta={{ auth: true, role: 'student' }} />
+          <GuardedRoute path="/Student/ExamTimeout/:exam" exact component={ExamTimeout} meta={{ auth: true, role: 'student' }} />
+          <GuardedRoute path="/Student/ExamAlreadySubmitted/:exam" exact component={ExamAlreadySubmitted} meta={{ auth: true, role: 'student' }} />
+
           <Route path="/test" exact component={Test} />
+
 
           <GuardedRoute path="/Instructor/Login" exact component={InstructorLogin} />
           <GuardedRoute path="/Instructor/Dashboard" exact component={InstructorDashboard} meta={{ auth: true, role: 'instructor' }} />
-          <GuardedRoute path="/Instructor/Course" exact component={InstructorCourse} meta={{ auth: true, role: 'instructor' }} />
-          <GuardedRoute path="/Instructor/Course/Paper" exact component={InstructorPaper} meta={{ auth: true, role: 'instructor' }} />
+          <GuardedRoute path="/Instructor/Course/:course" exact component={InstructorCourse} meta={{ auth: true, role: 'instructor' }} />
+          <GuardedRoute path="/Instructor/Course/:course/Paper" exact component={InstructorPaper} meta={{ auth: true, role: 'instructor' }} />
           <GuardedRoute path="/Instructor/Course/Exam/:exam" exact component={InstructorExam} meta={{ auth: true, role: 'instructor' }} />
+          <GuardedRoute path="/Instructor/Course/:course/Exam/Result/:exam" exact component={ExamResult} meta={{ auth: true, role: 'instructor' }} />
 
         </Switch>
       </GuardProvider>

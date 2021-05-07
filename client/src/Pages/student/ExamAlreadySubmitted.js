@@ -7,9 +7,8 @@ import Grid from '@material-ui/core/Grid';
 import { Typography } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
-import Footer from './Components/Footer';
-import HourglassEmptyIcon from '@material-ui/icons/HourglassEmpty';
-import HourglassEmpty from '@material-ui/icons/HourglassEmpty';
+import Footer from '../Components/Footer';
+import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -29,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function StudentExamComplete() {
+export default function ExamAlreadySubmitted() {
 
     const classes = useStyles();
 
@@ -43,25 +42,19 @@ export default function StudentExamComplete() {
             <Container fixed>
                 <div className={classes.root}>
                     <Grid container spacing={2} align='center' >
-                        <Grid item xs={12}>
-                            <HourglassEmpty/>
-                        </Grid>
-                        <Grid item xs={12}>
-
-                            <Typography>
-                                Your ran out of time!
-                                </Typography>
+                        <Grid xs={12}>
+                            <CheckCircleOutlineIcon />
                         </Grid>
                         <Grid xs={12}>
                             <Typography>
-                                Your Exam have been Submitted
+                                Your exam has already been submitted.
                                 </Typography>
                         </Grid>
                         <Grid xs={12} className={classes.margin}>
                             <Button className={classes.button}
                                 variant="contained"
                                 color="primary"
-                                component={Link} to="../../Dashboard">
+                                component={Link} to="../Dashboard">
                                 Return to Dashboard
                             </Button>
                         </Grid>

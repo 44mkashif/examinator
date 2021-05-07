@@ -7,8 +7,7 @@ import Grid from '@material-ui/core/Grid';
 import { Typography } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
-import Footer from './Components/Footer';
-import HourglassEmptyIcon from '@material-ui/icons/HourglassEmpty';
+import Footer from '../Components/Footer';
 import HourglassEmpty from '@material-ui/icons/HourglassEmpty';
 
 const useStyles = makeStyles((theme) => ({
@@ -44,7 +43,7 @@ export default function StudentExamComplete() {
                 <div className={classes.root}>
                     <Grid container spacing={2} align='center' >
                         <Grid item xs={12}>
-                            <HourglassEmpty/>
+                            <HourglassEmpty />
                         </Grid>
                         <Grid item xs={12}>
 

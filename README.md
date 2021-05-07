@@ -9,13 +9,19 @@ Examinator is a smart examination system developed to assist in invigilation of 
 # Navigate to the server directory
 cd server
 
-# Install dependencies for server
+# Install dependencies for Express server
 npm install
 
-# Install dependencies for client
+# Install dependencies for React client
 npm run client-install
 
-# Run the client & server with concurrently
+# Install dependencies for WebRTC Server
+npm run webrtc-install
+
+# Install dependencies for Flask Server
+npm run flask-install
+
+# Run the React client, Express, WebRTC and Flask Servers with concurrently
 npm run dev
 
 # Run the Express server only
@@ -24,5 +30,14 @@ npm run server
 # Run the React client only
 npm run client
 
-# Server runs on http://localhost:4000 and client on http://localhost:3000
+# Run the WebRTC Server only
+npm run webrtc
+
+# Run the Flask Server only
+npm run flask
+
+# Express Server Port:  4000 
+# React client Port:    3000
+# WebRTC Server Port:   4001
+# Flask Server Port:    5000
 ```

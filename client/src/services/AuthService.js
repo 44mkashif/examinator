@@ -13,11 +13,11 @@ class AuthService extends Component {
         localStorage.setItem('studentName', res.data.student.fName + ' ' + res.data.student.lName);
         localStorage.setItem('auth-token', res.data.token);
         localStorage.setItem('role', 'student');
-        window.location.href = '/student/dashboard';
+        window.location.href = '/Student/Dashboard';
       }
     } catch (error) {
-      console.log(error.response.data);
-      return error.response.data;
+      console.log(error.response.data.msg);
+      return error.response.data.msg;
     }
   }
 
@@ -30,7 +30,7 @@ class AuthService extends Component {
         localStorage.setItem('instructorName', res.data.instructor.fName + ' ' + res.data.instructor.lName);
         localStorage.setItem('auth-token', res.data.token);
         localStorage.setItem('role', 'instructor');
-        window.location.href = '/instructor/dashboard';
+        window.location.href = '/Instructor/Dashboard';
       }
     } catch (error) {
       console.log(error.response.data.msg);

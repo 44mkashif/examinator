@@ -61,6 +61,11 @@ const useStyles = makeStyles((theme) => ({
   text: {
     color: '#fff',
     margin: theme.spacing(0, 0, 5),
+  },
+  padding:{
+    paddingLeft: '90px',
+    paddingRight: '90px'
+
   }
 }));
 
@@ -79,8 +84,8 @@ function App() {
   return (
     <div className="App">
       <Grid container component="main">
-        <Grid xs={12} sm={7} className={classes.leftContainer}>
-          <Grid container justify="left" className={classes.root}>
+        <Grid xs={12} sm={7} className={classes.leftContainer} >
+          <Grid container justify="left" className={classes.root} >
             {/* <CssBaseline /> */}
             <Grid item elevation={6} className={`${!isMobile ? classes.round : classes.mobile}`}>
               <div className={`${!isMobile ? classes.paper : ""}`}>
@@ -94,11 +99,11 @@ function App() {
                     EXAMINATOR
                   </Typography>
                 </Grid>
-                <Grid container justify="center" >
+                <Grid container justify="center" className={classes.padding}>
                   <Button
                     variant="contained"
                     className={classes.button}
-                    component={Link} to="/student/login"
+                    component={Link} to="/Student/Login"
                   >
                     Student Portal
                   </Button>
@@ -109,13 +114,7 @@ function App() {
                   >
                     Instructor Portal
                   </Button>
-                  <Button
-                    variant="contained"
-                    className={classes.button}
-                  // component={Link} to="/admin/login"
-                  >
-                    Admin Portal
-                  </Button>
+                  
                 </Grid>
               </div>
             </Grid>

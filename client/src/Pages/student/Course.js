@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
@@ -14,8 +14,16 @@ import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import DateRangeIcon from '@material-ui/icons/DateRange';
 import Divider from '@material-ui/core/Divider';
 import ExamService from '../../services/ExamService';
+import ResultService from '../../services/ResultService';
 import TimerIcon from '@material-ui/icons/Timer';
-
+import Footer from '../Components/Footer';
+import { useParams } from 'react-router-dom';
+import CourseService from './../../services/CourseService';
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import Loader from "react-loader-spinner";
+import theme from './../../theme';
+import AddIcon from '@material-ui/icons/Add';
+import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -84,7 +92,7 @@ const useStyles = makeStyles((theme) => ({
         paddingTop: 10
     },
     cardMargin: {
-        marginLeft: 50,
+        marginLeft: 65,
         paddingTop: 20
     },
     content: {
@@ -93,149 +101,262 @@ const useStyles = makeStyles((theme) => ({
     scheduleClass: {
         color: theme.palette.secondary.dark,
         marginRight: 5
+    },
+    loader: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: '350px'
     }
 }));
 
-var examData = [];
+var examDates = [];
+var examTimes = [];
 
-const courseId = "603ea3d760c6ed3f3880dff3"; //TODO: current course id
-const authToken = localStorage.getItem('auth-token');
+var pExamDates = [];
+var pExamTimes = [];
+
+var examData = [];
+var prevExam = [];
 
 export default function Course() {
 
+    const [course, setCourse] = React.useState("");
     const history = useHistory();
     const navigateTo = (path) => history.push(path);
     const classes = useStyles();
 
     const [loading, setLoading] = React.useState(false);
+    // const [errorMessage, setErrorMessage] = React.useState(false);
+    const courseId = useParams().course;
+    const authToken = localStorage.getItem('auth-token');
+    const studentId = localStorage.getItem('studentId');
 
+    // var course;
 
-    ExamService.getExams(courseId, authToken).then((examsFromDb) => {
-        console.log(examsFromDb);
+    useEffect(() => {
+        CourseService.getCourse(courseId, authToken, false).then((courseFromDb) => {
+            // console.log("Course From Db: ", courseFromDb);
+            setCourse(courseFromDb);
+            // course = courseFromDb;
+        });
 
-        examData = [];
+        ExamService.getExams(courseId, authToken).then((examsFromDb) => {
+            // console.log("Exams from db: ", examsFromDb);
 
-        examsFromDb.forEach((e) => {
-            examData.push(e);
-        })
-        setLoading(true);
+            examData = [];
+            prevExam = [];
+            examDates = [];
+            pExamDates = [];
+            examTimes = [];
+            pExamTimes = [];
 
-    })
+            examsFromDb.forEach((exam) => {
+                const examDate = new Date(exam.startTime);
+                const duration = exam.duration;
+                examDate.setHours(examDate.getHours() + duration);
+
+                const now = new Date();
+
+                if (examDate < now) {
+                    // console.log("Exam date: ", examDate);
+                    // console.log("Today: ", now);
+                    prevExam.push(exam);
+                } else {
+                    examData.push(exam);
+                }
+
+            });
+
+            examData.forEach(exam => {
+                const dt = processDate(exam.startTime);
+                examDates.push(dt[0]);
+                examTimes.push(dt[1]);
+            });
+
+            prevExam.forEach(exam => {
+                const dt = processDate(exam.startTime);
+                pExamDates.push(dt[0]);
+                pExamTimes.push(dt[1]);
+            });
+
+            // console.log("Prev Exams: ", prevExam);
+            // console.log("Exams: ", examData);
+
+            examData.forEach(exam => {
+                ResultService.getResult(exam._id, studentId, authToken).then(res => {
+                    if (res) {
+                        exam.submitted = true;
+                    }
+                })
+            });
+
+            prevExam.forEach(exam => {
+                ResultService.getResult(exam._id, studentId, authToken).then(res => {
+                    if (res) {
+                        exam.result = res[0];
+                        exam.submitted = true;
+                    }
+                    // console.log("prevExam a: ", prevExam);
+                    setLoading(true);
+                })
+            });
+            // console.log("prevExam b: ", prevExam);
+
+        });
+
+    }, []);
+
+    const processDate = (startTime) => {
+        const date = new Date(startTime);
+
+        var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+        var hours = date.getHours();
+        var minutes = date.getMinutes();
+        var ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12;
+        hours = hours ? hours : 12; // the hour '0' should be '12'
+        minutes = minutes < 10 ? '0' + minutes : minutes;
+
+        const strTime = hours + ':' + minutes + ' ' + ampm;
+        const strDate = months[date.getMonth()] + " " + date.getDate() + ", " + date.getFullYear();
+        return [strDate, strTime];
+    }
+
+    const examClicked = (event, exam) => {
+        console.log("Exam clicked", exam)
+        if (!exam.submitted) {
+            navigateTo(`../Course/ExamInstruction/${exam._id}`)
+        }
+        else {
+            navigateTo(`../../Student/ExamAlreadySubmitted/${exam._id}`)
+        }
+    }
 
     return (
         <React.Fragment>
-            <AppBar position="relative">
-                <Toolbar>
-                    <Grid container spacing={2} justify='space-between' alignItems='center'>
-                        <div>
-                            <Grid container>
-                                <img src={logoImg} alt="logo" className={classes.logoImg} />
-                                <Typography variant="h6" color="inherit" noWrap>
-                                    Introduction to Data Science
-                                </Typography>
+            {!loading ?
+                <Loader type="BallTriangle" className={classes.loader} color={theme.palette.primary.main} height={80} width={80} />
+                :
+                <div>
+                    <AppBar position="relative">
+                        <Toolbar>
+                            <Grid container spacing={2} justify='space-between' alignItems='center'>
+                                <div>
+                                    <Grid container>
+                                        <img src={logoImg} alt="logo" className={classes.logoImg} />
+                                        <Typography variant="h6" color="inherit" noWrap>
+                                            {course["courseName"]}
+                                        </Typography>
+                                    </Grid>
+                                </div>
                             </Grid>
-                        </div>
-                    </Grid>
-                </Toolbar>
-            </AppBar>
+                        </Toolbar>
+                    </AppBar>
 
-            <div className={classes.root}>
-                <Container className={classes.cardGrid} >
+                    <div className={classes.root}>
+                        <Container className={classes.cardGrid} >
 
-                    <Typography>
-                        Scheduled Exams
+                            <Typography>
+                                Scheduled Exams
                     </Typography>
-                    <br />
-                    <Divider variant="middle" />
-                    <br />
+                            <br />
+                            <Divider variant="middle" />
+                            <br />
+                            <Grid container spacing={4} justify="center">
+                                {examData && examData.length === 0 ? <h4>No Scheduled Exams found</h4> :
+                                    <div> {examData.map((exam, i) => (
+                                        <div key={i} className={classes.card}>
+                                            <Card className={classes.card} elevation="7">
+                                                <ButtonBase className={classes.cardMargin}
+                                                    onClick={event => examClicked(event, exam)}
+                                                >
+                                                    <CardContent className={classes.cardContent}>
+                                                        <Typography gutterBottom variant="h5" component="h2">
+                                                            {exam.name}
+                                                        </Typography>
+                                                        <Grid container justify="center">
+                                                            <TimerIcon className={classes.iconClass} />
+                                                            <Typography className={classes.margin}>
+                                                                Duration: {exam.duration} hrs
+                                                            </Typography>
+                                                        </Grid>
+                                                        <Grid container justify="center">
+                                                            <DateRangeIcon className={classes.iconClass} />
+                                                            <Typography className={classes.margin}>
+                                                                {examDates[i]}
+                                                            </Typography>
+                                                        </Grid>
+                                                        <Grid container justify="center">
+                                                            <AccessTimeIcon className={classes.iconClass} />
+                                                            <Typography className={classes.margin}>
+                                                                {examTimes[i]}
+                                                            </Typography>
+                                                        </Grid>
+                                                    </CardContent>
+                                                </ButtonBase>
+                                            </Card>
 
-                    <Grid container spacing={4} justify="center">
-                        {examData.map((exam, i) => (
-                            <div key={i} className={classes.card}>
-                                <Card className={classes.card} elevation="7">
-                                    <ButtonBase className={classes.cardMargin}
-                                        onClick={event => { navigateTo(`../student/course/ExamInstruction/:${exam._id}`) }}
-                                    >
-                                        <CardContent className={classes.cardContent}>
-                                            <Typography gutterBottom variant="h5" component="h2">
-                                                {exam.name}
-                                            </Typography>
-                                            <Grid container justify="center">
-                                                <TimerIcon className={classes.iconClass} />
-                                                <Typography className={classes.margin}>
-                                                    Duration: {exam.duration} hrs
-                                                </Typography>
-                                            </Grid>
-                                            <Grid container justify="center">
-                                                <DateRangeIcon className={classes.iconClass} />
-                                                <Typography className={classes.margin}>
-                                                    12 Jan, 2021
-                                                </Typography>
-                                            </Grid>
-                                            <Grid container justify="center">
-                                                <AccessTimeIcon className={classes.iconClass} />
-                                                <Typography className={classes.margin}>
-                                                    10:00 PM
+                                        </div>
+                                    ))}</div>}
+                            </Grid>
+
+                            <Typography>
+                                Previous Exams
+                            </Typography>
+                            <br />
+                            <Divider variant="middle" />
+                            <br />
+                            <Grid container spacing={4} justify="center">
+                                {prevExam.length === 0 ? <h4>No previous Exam yet</h4> : <div>{prevExam.map((exam, i) => (
+                                    <div key={i} className={classes.card}>
+                                        <Card className={classes.card} elevation="7">
+                                            <CardContent className={classes.cardContent}>
+                                                <Grid container justify="center">
+                                                    <Typography gutterBottom variant="h5" component="h2">
+                                                        {exam.name}
                                                     </Typography>
-                                            </Grid>
-                                        </CardContent>
-                                    </ButtonBase>
-                                </Card>
-
-                            </div>
-                        ))}
-
-                    </Grid>
-
-                    <Typography>
-                        Previous Exams
-                    </Typography>
-
-                    <br />
-                    <Divider variant="middle" />
-                    <br />
-
-                    {/*<Grid container spacing={4} justify="center">
-                        {examData.map((exam, i) => (
-                            <div key={i} className={classes.card}>
-                                <Card className={classes.card} elevation="7">
-                                    <ButtonBase className={classes.cardMargin}
-                                        onClick={event => { navigateTo('../instructor/course/exam') }}
-                                    >
-                                        <CardContent className={classes.cardContent}>
-                                            <Typography gutterBottom variant="h5" component="h2">
-                                                {exam.name}
-                                            </Typography>
-                                            <Grid container justify="center">
-                                                <TimerIcon className={classes.iconClass} />
-                                                <Typography className={classes.margin}>
-                                                    Duration: {exam.duration} hrs
-                                                </Typography>
-                                            </Grid>
-                                            <Grid container justify="center">
-                                                <DateRangeIcon className={classes.iconClass} />
-                                                <Typography className={classes.margin}>
-                                                    12 Jan, 2021
-                                                </Typography>
-                                            </Grid>
-                                            <Grid container justify="center">
-                                                <AccessTimeIcon className={classes.iconClass} />
-                                                <Typography className={classes.margin}>
-                                                    10:00 PM
+                                                </Grid>
+                                                <Grid container justify="center">
+                                                    <DateRangeIcon className={classes.iconClass} />
+                                                    <Typography className={classes.margin}>
+                                                        {pExamDates[i]}
                                                     </Typography>
-                                            </Grid>
-                                        </CardContent>
-                                    </ButtonBase>
-                                </Card>
+                                                </Grid>
+                                                {exam.submitted && exam.result ?
+                                                    <div>
+                                                        <Grid container justify="center">
+                                                            <AddIcon className={classes.iconClass} />
+                                                            <Typography className={classes.margin}>
+                                                                Total Marks: {exam.result.totalMarks}
+                                                            </Typography>
+                                                        </Grid>
+                                                        <Grid container justify="center">
+                                                            <AssignmentTurnedInIcon className={classes.iconClass} />
+                                                            <Typography className={classes.margin}>
+                                                                Obtained Marks: {exam.result.obtainedMarks}
+                                                            </Typography>
+                                                        </Grid>
+                                                    </div>
+                                                    :
+                                                    <div>Not submitted</div>
+                                                }
+                                            </CardContent>
+                                        </Card>
 
-                            </div>
-                        ))}
+                                    </div>
+                                ))}</div>}
 
-                    </Grid> */}
+                            </Grid>
 
-                </Container>
-            </div>
-
+                        </Container>
+                    </div>
+                    {/* Footer */}
+                    <Footer />
+                    {/* End footer */}
+                </div>
+            }
         </React.Fragment>
     );
 }

@@ -265,7 +265,19 @@ export default function Course() {
 
         navigateTo(`../../Instructor/Course/${courseId}/Paper`);
     }
-    const data = [];
+
+    const deleteExam = (event, examId) => {
+        // console.log(examId);
+        ExamService.deleteExam(examId, authToken).then(res => {
+            console.log(res);
+
+            // if (res.success)
+            //Print message deleted
+            //Reload page
+            // else
+            //Print error message
+        })
+    }
 
     return (
         <React.Fragment>
@@ -314,7 +326,7 @@ export default function Course() {
                                         <div key={i} className={classes.cardDiv}>
                                             <Card className={classes.card} elevation="7">
                                                 <ButtonBase className={classes.cardMargin}
-                                                    onClick={event => { navigateTo(`../ Course / Exam / ${exam._id}`) }}
+                                                    onClick={event => { navigateTo(`../Course/Exam/${exam._id}`) }}
                                                 >
                                                     <CardContent justify="center">
                                                         <Typography gutterBottom variant="h5" component="h2">
@@ -348,7 +360,7 @@ export default function Course() {
                                                         <IconButton className={classes.editClass}>
                                                             <EditIcon />
                                                         </IconButton>
-                                                        <IconButton className={classes.deleteClass}>
+                                                        <IconButton className={classes.deleteClass} onClick={event => deleteExam(event, exam._id)}>
                                                             <DeleteIcon />
                                                         </IconButton>
                                                     </Grid>
@@ -380,7 +392,7 @@ export default function Course() {
                                         <div key={i} className={classes.cardDiv}>
                                             <Card className={classes.card} elevation="7">
                                                 <ButtonBase className={classes.cardMargin}
-                                                    onClick={event => { navigateTo(`../ Course / ${courseId} / Exam / Result / ${exam._id}`) }}
+                                                    onClick={event => { navigateTo(`../Course/${courseId}/Exam/Result/${exam._id}`) }}
                                                 >
                                                     <CardContent className={classes.cardContent}>
                                                         <Typography gutterBottom variant="h5" component="h2">

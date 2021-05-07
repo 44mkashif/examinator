@@ -38,7 +38,7 @@ class ResultService extends Component {
         }
     }
 
-    static async getResults(examId, studentId, authToken) {
+    static async getResult(examId, studentId, authToken) {
         try {
             const res = await axios.get(`http://localhost:4000/api/student/result/?examId=${examId}&studentId=${studentId}`, {
                 headers: {
@@ -56,6 +56,23 @@ class ResultService extends Component {
         }
     }
 
+    static async getResults(examId, authToken) {
+        try {
+            const res = await axios.get(`http://localhost:4000/api/instructor/results/?examId=${examId}`, {
+                headers: {
+                    'auth-token': authToken
+                },
+            });
+            if (res.data.success) {
+                console.log(res.data);
+                return res.data.result;
+            } else {
+                console.log(res.data.msg);
+            }
+        } catch (error) {
+            console.log(error.response)
+        }
+    }
 
 }
 

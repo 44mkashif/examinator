@@ -26,6 +26,7 @@ import DateFnsUtils from '@date-io/date-fns';
 import Footer from '../Components/Footer';
 import { useParams } from 'react-router-dom';
 import CourseService from './../../services/CourseService';
+import ResultService from './../../services/ResultService';
 import Divider from '@material-ui/core/Divider';
 import theme from './../../theme';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
@@ -152,6 +153,45 @@ export default function Course() {
             console.log(courseFromDb);
             setCourse(courseFromDb);
         });
+        ExamService.getExams(courseId, authToken).then((examsFromDb) => {
+            examData = [];
+            prevExam = [];
+            examDates = [];
+            pExamDates = [];
+            examTimes = [];
+            pExamTimes = [];
+
+            examsFromDb.forEach((exam) => {
+                const examDate = new Date(exam.startTime);
+                const duration = exam.duration;
+                examDate.setHours(examDate.getHours() + duration);
+
+                const now = new Date();
+
+                if (examDate < now) {
+                    console.log("Exam date: ", examDate);
+                    console.log("Today: ", now);
+
+                    prevExam.push(exam);
+                } else {
+                    examData.push(exam);
+                }
+            })
+
+            examData.forEach(exam => {
+                const dt = processDate(exam.startTime);
+                examDates.push(dt[0]);
+                examTimes.push(dt[1]);
+            });
+
+            prevExam.forEach(exam => {
+                const dt = processDate(exam.startTime);
+                pExamDates.push(dt[0]);
+                pExamTimes.push(dt[1]);
+            });
+
+            setLoading(true);
+        });
     }, []);
 
 
@@ -171,46 +211,6 @@ export default function Course() {
         const strDate = months[date.getMonth()] + " " + date.getDate() + ", " + date.getFullYear();
         return [strDate, strTime];
     }
-
-    ExamService.getExams(courseId, authToken).then((examsFromDb) => {
-        examData = [];
-        prevExam = [];
-        examDates = [];
-        pExamDates = [];
-        examTimes = [];
-        pExamTimes = [];
-
-        examsFromDb.forEach((exam) => {
-            const examDate = new Date(exam.startTime);
-            const duration = exam.duration;
-            examDate.setHours(examDate.getHours() + duration);
-
-            const now = new Date();
-
-            if (examDate < now) {
-                console.log("Exam date: ", examDate);
-                console.log("Today: ", now);
-
-                prevExam.push(exam);
-            } else {
-                examData.push(exam);
-            }
-        })
-
-        examData.forEach(exam => {
-            const dt = processDate(exam.startTime);
-            examDates.push(dt[0]);
-            examTimes.push(dt[1]);
-        });
-
-        prevExam.forEach(exam => {
-            const dt = processDate(exam.startTime);
-            pExamDates.push(dt[0]);
-            pExamTimes.push(dt[1]);
-        });
-
-        setLoading(true);
-    })
 
     const history = useHistory();
     const navigateTo = (path) => history.push({
@@ -267,268 +267,268 @@ export default function Course() {
     return (
         <React.Fragment>
             {!loading ?
-            <Loader type="BallTriangle" className={classes.loader} color={theme.palette.primary.main} height={80} width={80} />
-            :
-            <div>
-                <AppBar position="relative">
-                    <Toolbar>
-                        <Grid container spacing={2} justify='space-between' alignItems='center'>
-                            <div>
-                                <Grid container>
-                                    <img src={logoImg} alt="logo" className={classes.logoImg} />
-                                    <Typography variant="h6" color="inherit" noWrap>
-                                        {course["courseName"]}
+                <Loader type="BallTriangle" className={classes.loader} color={theme.palette.primary.main} height={80} width={80} />
+                :
+                <div>
+                    <AppBar position="relative">
+                        <Toolbar>
+                            <Grid container spacing={2} justify='space-between' alignItems='center'>
+                                <div>
+                                    <Grid container>
+                                        <img src={logoImg} alt="logo" className={classes.logoImg} />
+                                        <Typography variant="h6" color="inherit" noWrap>
+                                            {course["courseName"]}
+                                        </Typography>
+                                    </Grid>
+                                </div>
+                                <div>
+                                    <Button raised className={classes.button} onClick={handleOpenMenu}>
+                                        <AccessTimeIcon className={classes.scheduleIcon} />
+                                        <Typography className={classes.buttonText} >
+                                            Schedule Exam
                                     </Typography>
-                                </Grid>
-                            </div>
-                            <div>
-                                <Button raised className={classes.button} onClick={handleOpenMenu}>
-                                    <AccessTimeIcon className={classes.scheduleIcon} />
-                                    <Typography className={classes.buttonText} >
-                                        Schedule Exam
-                                    </Typography>
-                                </Button>
-                            </div>
-                        </Grid>
-                    </Toolbar>
-                </AppBar>
-                <div className={classes.root}>
-                    <Container className={classes.cardGrid}>
-                        <Typography>
-                            Scheduled Exams
+                                    </Button>
+                                </div>
+                            </Grid>
+                        </Toolbar>
+                    </AppBar>
+                    <div className={classes.root}>
+                        <Container className={classes.cardGrid}>
+                            <Typography>
+                                Scheduled Exams
                         </Typography>
-                        <br />
-                        <Divider variant="middle" />
-                        <br />
+                            <br />
+                            <Divider variant="middle" />
+                            <br />
 
-                        <Grid container spacing={4} justify="center">
-                            {examData.length === 0 ? <h4>No Scheduled Exams found</h4> : <div> {examData.map((exam, i) => (
-                                <div key={i} className={classes.card}>
-                                    <Card className={classes.card} elevation="7">
-                                        <ButtonBase className={classes.cardMargin}
-                                            onClick={event => { navigateTo(`../Course/Exam/${exam._id}`) }}
-                                        >
-                                            <CardContent justify="center">
-                                                <Typography gutterBottom variant="h5" component="h2">
-                                                    {exam.name}
-                                                </Typography>
-                                                <Grid container justify="center">
-                                                    <TimerIcon className={classes.iconClass} />
-                                                    <Typography className={classes.margin}>
-                                                        Duration: {exam.duration} hrs
-                                                    </Typography>
-                                                </Grid>
-                                                <Grid container justify="center">
-                                                    <DateRangeIcon className={classes.iconClass} />
-                                                    <Typography className={classes.margin}>
-                                                        {examDates[i]}
-                                                    </Typography>
-                                                </Grid>
-                                                <Grid container justify="center">
-                                                    <AccessTimeIcon className={classes.iconClass} />
-                                                    <Typography className={classes.margin}>
-                                                        {examTimes[i]}
-                                                    </Typography>
-                                                </Grid>
-                                            </CardContent>
-                                        </ButtonBase>
-                                        <CardActions>
-                                            <Grid container spacing={2}
-                                                justify='space-between'
-                                                alignItems='center'
+                            <Grid container spacing={4} justify="center">
+                                {examData.length === 0 ? <h4>No Scheduled Exams found</h4> : <div> {examData.map((exam, i) => (
+                                    <div key={i} className={classes.card}>
+                                        <Card className={classes.card} elevation="7">
+                                            <ButtonBase className={classes.cardMargin}
+                                                onClick={event => { navigateTo(`../Course/Exam/${exam._id}`) }}
                                             >
-                                                <IconButton className={classes.editClass}>
-                                                    <EditIcon />
-                                                </IconButton>
-                                                <IconButton className={classes.deleteClass}>
-                                                    <DeleteIcon />
-                                                </IconButton>
-                                            </Grid>
-                                        </CardActions>
-                                    </Card>
+                                                <CardContent justify="center">
+                                                    <Typography gutterBottom variant="h5" component="h2">
+                                                        {exam.name}
+                                                    </Typography>
+                                                    <Grid container justify="center">
+                                                        <TimerIcon className={classes.iconClass} />
+                                                        <Typography className={classes.margin}>
+                                                            Duration: {exam.duration} hrs
+                                                    </Typography>
+                                                    </Grid>
+                                                    <Grid container justify="center">
+                                                        <DateRangeIcon className={classes.iconClass} />
+                                                        <Typography className={classes.margin}>
+                                                            {examDates[i]}
+                                                        </Typography>
+                                                    </Grid>
+                                                    <Grid container justify="center">
+                                                        <AccessTimeIcon className={classes.iconClass} />
+                                                        <Typography className={classes.margin}>
+                                                            {examTimes[i]}
+                                                        </Typography>
+                                                    </Grid>
+                                                </CardContent>
+                                            </ButtonBase>
+                                            <CardActions>
+                                                <Grid container spacing={2}
+                                                    justify='space-between'
+                                                    alignItems='center'
+                                                >
+                                                    <IconButton className={classes.editClass}>
+                                                        <EditIcon />
+                                                    </IconButton>
+                                                    <IconButton className={classes.deleteClass}>
+                                                        <DeleteIcon />
+                                                    </IconButton>
+                                                </Grid>
+                                            </CardActions>
+                                        </Card>
 
-                                </div>
-                            ))}</div>}
-                        </Grid>
-                        <br />
-                        <Divider variant="middle" />
-                        <br />
-                        <Typography>
-                            Previous Exams
+                                    </div>
+                                ))}</div>}
+                            </Grid>
+                            <br />
+                            <Divider variant="middle" />
+                            <br />
+                            <Typography>
+                                Previous Exams
                         </Typography>
-                        <br />
-                        <Divider variant="middle" />
-                        <br />
+                            <br />
+                            <Divider variant="middle" />
+                            <br />
 
-                        <Grid container spacing={4} justify="center">
+                            <Grid container spacing={4} justify="center">
                                 {prevExam.length === 0 ? <h4>No previous Exam yet</h4> : <div> {prevExam.map((exam, i) => (
-                                <div key={i} className={classes.card}>
-                                    <Card className={classes.card} elevation="7">
-                                        <ButtonBase className={classes.cardMargin}
-                                            onClick={event => { navigateTo(`../Course/Exam/Result/${exam._id}`) }}
+                                    <div key={i} className={classes.card}>
+                                        <Card className={classes.card} elevation="7">
+                                            <ButtonBase className={classes.cardMargin}
+                                                onClick={event => { navigateTo(`../Course/${courseId}/Exam/Result/${exam._id}`) }}
+                                            >
+                                                <CardContent className={classes.cardContent}>
+                                                    <Typography gutterBottom variant="h5" component="h2">
+                                                        {exam.name}
+                                                    </Typography>
+                                                    <Grid container justify="center">
+                                                        <TimerIcon className={classes.iconClass} />
+                                                        <Typography className={classes.margin}>
+                                                            Duration: {exam.duration} hrs
+                                                    </Typography>
+                                                    </Grid>
+                                                    <Grid container justify="center">
+                                                        <DateRangeIcon className={classes.iconClass} />
+                                                        <Typography className={classes.margin}>
+                                                            {pExamDates[i]}
+                                                        </Typography>
+                                                    </Grid>
+                                                    <Grid container justify="center">
+                                                        <AccessTimeIcon className={classes.iconClass} />
+                                                        <Typography className={classes.margin}>
+                                                            {pExamTimes[i]}
+                                                        </Typography>
+                                                    </Grid>
+                                                </CardContent>
+
+                                            </ButtonBase>
+                                        </Card>
+
+                                    </div>
+                                ))}</div>}
+                            </Grid>
+
+                        </Container>
+                    </div>
+                    <Modal
+                        aria-labelledby="transition-modal-title"
+                        aria-describedby="transition-modal-description"
+                        className={classes.modal}
+                        open={openMenu}
+                        onClose={handleCloseMenu}
+                        closeAfterTransition
+                        BackdropComponent={Backdrop}
+                        BackdropProps={{
+                            timeout: 500,
+                        }}
+                    >
+                        <Fade in={openMenu}>
+                            <div className={classes.paper}>
+                                <h2 id="transition-modal-title">Schedule Exam</h2>
+                                <form className={classes.form} onSubmit={createCourse}>
+                                    <TextField
+                                        className={classes.textField}
+                                        variant="outlined"
+                                        margin="normal"
+                                        required
+                                        fullWidth
+                                        id="standard-basic"
+                                        label="Exam Name"
+                                        autoComplete="off"
+                                        autoFocus
+                                        name="name"
+                                        onChange={onChangeExamName}
+                                    />
+                                    <Grid container justify='center' alignItems='center'>
+                                        <Grid item xs={6} style={{ paddingRight: 10 }}>
+                                            <TextField
+                                                className={classes.textField}
+                                                variant="outlined"
+                                                margin="normal"
+                                                required
+                                                fullWidth
+                                                id="standard-basic"
+                                                label="No of Questions"
+                                                type='number'
+                                                autoComplete="off"
+                                                name="qCount"
+                                                onChange={onChangeQNo}
+                                            />
+                                        </Grid>
+                                        <Grid item xs={6} style={{ paddingLeft: 10 }}>
+                                            <TextField
+                                                className={classes.textField}
+                                                variant="outlined"
+                                                margin="normal"
+                                                required
+                                                fullWidth
+                                                id="standard-basic"
+                                                label="Duration"
+                                                autoComplete="off"
+                                                name="duration"
+                                                onChange={onChangeDuration}
+                                            />
+                                        </Grid>
+                                    </Grid>
+                                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                        <Grid container justify='space-between' alignItems='center'>
+                                            <div style={{ paddingRight: 10 }}>
+                                                <KeyboardDatePicker
+                                                    margin="normal"
+                                                    id="date-picker-dialog"
+                                                    label="Exam Date"
+                                                    format="MM/dd/yyyy"
+                                                    name="date"
+                                                    className={classes.textField}
+                                                    inputVariant="outlined"
+                                                    value={selectedDate}
+                                                    onChange={handleDateChange}
+                                                    KeyboardButtonProps={{
+                                                        'aria-label': 'change date',
+                                                    }}
+                                                />
+                                            </div>
+                                            <div style={{ paddingLeft: 10 }}>
+                                                <KeyboardTimePicker
+                                                    margin="normal"
+                                                    id="time-picker"
+                                                    label="Exam Time"
+                                                    name="time"
+                                                    inputVariant="outlined"
+                                                    className={classes.textField}
+                                                    value={selectedDate}
+                                                    onChange={handleDateChange}
+                                                    KeyboardButtonProps={{
+                                                        'aria-label': 'change time',
+                                                    }}
+                                                />
+                                            </div>
+
+
+                                        </Grid>
+                                    </MuiPickersUtilsProvider>
+                                    <br />
+                                    <Grid container spacing={2} justify='space-between' alignItems='center'>
+                                        <Button
+                                            variant="contained"
+                                            color="secondary.dark"
+                                            className={classes.button}
+                                            style={{ width: '48%' }}
+                                            onClick={handleCloseMenu}
                                         >
-                                            <CardContent className={classes.cardContent}>
-                                                <Typography gutterBottom variant="h5" component="h2">
-                                                    {exam.name}
-                                                </Typography>
-                                                <Grid container justify="center">
-                                                    <TimerIcon className={classes.iconClass} />
-                                                    <Typography className={classes.margin}>
-                                                        Duration: {exam.duration} hrs
-                                                    </Typography>
-                                                </Grid>
-                                                <Grid container justify="center">
-                                                    <DateRangeIcon className={classes.iconClass} />
-                                                    <Typography className={classes.margin}>
-                                                        {pExamDates[i]}
-                                                    </Typography>
-                                                </Grid>
-                                                <Grid container justify="center">
-                                                    <AccessTimeIcon className={classes.iconClass} />
-                                                    <Typography className={classes.margin}>
-                                                        {pExamTimes[i]}
-                                                    </Typography>
-                                                </Grid>
-                                            </CardContent>
+                                            Close
+                                    </Button>
+                                        <Button
+                                            variant="contained"
+                                            color="primary"
+                                            style={{ width: '48%' }}
+                                            type="submit"
+                                            className={classes.button}
+                                        // onClick={createCourse}
+                                        >
+                                            Save
+                                    </Button>
+                                    </Grid>
+                                </form>
 
-                                        </ButtonBase>
-                                    </Card>
-
-                                </div>
-                            ))}</div> }
-                        </Grid>
-
-                    </Container>
+                            </div>
+                        </Fade>
+                    </Modal>
+                    {/* Footer */}
+                    <Footer />
+                    {/* End footer */}
                 </div>
-                <Modal
-                    aria-labelledby="transition-modal-title"
-                    aria-describedby="transition-modal-description"
-                    className={classes.modal}
-                    open={openMenu}
-                    onClose={handleCloseMenu}
-                    closeAfterTransition
-                    BackdropComponent={Backdrop}
-                    BackdropProps={{
-                        timeout: 500,
-                    }}
-                >
-                    <Fade in={openMenu}>
-                        <div className={classes.paper}>
-                            <h2 id="transition-modal-title">Schedule Exam</h2>
-                            <form className={classes.form} onSubmit={createCourse}>
-                                <TextField
-                                    className={classes.textField}
-                                    variant="outlined"
-                                    margin="normal"
-                                    required
-                                    fullWidth
-                                    id="standard-basic"
-                                    label="Exam Name"
-                                    autoComplete="off"
-                                    autoFocus
-                                    name="name"
-                                    onChange={onChangeExamName}
-                                />
-                                <Grid container justify='center' alignItems='center'>
-                                    <Grid item xs={6} style={{ paddingRight: 10 }}>
-                                        <TextField
-                                            className={classes.textField}
-                                            variant="outlined"
-                                            margin="normal"
-                                            required
-                                            fullWidth
-                                            id="standard-basic"
-                                            label="No of Questions"
-                                            type='number'
-                                            autoComplete="off"
-                                            name="qCount"
-                                            onChange={onChangeQNo}
-                                        />
-                                    </Grid>
-                                    <Grid item xs={6} style={{ paddingLeft: 10 }}>
-                                        <TextField
-                                            className={classes.textField}
-                                            variant="outlined"
-                                            margin="normal"
-                                            required
-                                            fullWidth
-                                            id="standard-basic"
-                                            label="Duration"
-                                            autoComplete="off"
-                                            name="duration"
-                                            onChange={onChangeDuration}
-                                        />
-                                    </Grid>
-                                </Grid>
-                                <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                    <Grid container justify='space-between' alignItems='center'>
-                                        <div style={{ paddingRight: 10 }}>
-                                            <KeyboardDatePicker
-                                                margin="normal"
-                                                id="date-picker-dialog"
-                                                label="Exam Date"
-                                                format="MM/dd/yyyy"
-                                                name="date"
-                                                className={classes.textField}
-                                                inputVariant="outlined"
-                                                value={selectedDate}
-                                                onChange={handleDateChange}
-                                                KeyboardButtonProps={{
-                                                    'aria-label': 'change date',
-                                                }}
-                                            />
-                                        </div>
-                                        <div style={{ paddingLeft: 10 }}>
-                                            <KeyboardTimePicker
-                                                margin="normal"
-                                                id="time-picker"
-                                                label="Exam Time"
-                                                name="time"
-                                                inputVariant="outlined"
-                                                className={classes.textField}
-                                                value={selectedDate}
-                                                onChange={handleDateChange}
-                                                KeyboardButtonProps={{
-                                                    'aria-label': 'change time',
-                                                }}
-                                            />
-                                        </div>
-
-
-                                    </Grid>
-                                </MuiPickersUtilsProvider>
-                                <br />
-                                <Grid container spacing={2} justify='space-between' alignItems='center'>
-                                    <Button
-                                        variant="contained"
-                                        color="secondary.dark"
-                                        className={classes.button}
-                                        style={{ width: '48%' }}
-                                        onClick={handleCloseMenu}
-                                    >
-                                        Close
-                                    </Button>
-                                    <Button
-                                        variant="contained"
-                                        color="primary"
-                                        style={{ width: '48%' }}
-                                        type="submit"
-                                        className={classes.button}
-                                    // onClick={createCourse}
-                                    >
-                                        Save
-                                    </Button>
-                                </Grid>
-                            </form>
-
-                        </div>
-                    </Fade>
-                </Modal>
-                {/* Footer */}
-                <Footer />
-                {/* End footer */}
-            </div>
-        }   
+            }
         </React.Fragment>
     );
 }

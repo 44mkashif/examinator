@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import logoImg from './../../assets/navbar-2.png';
 import Question from './Components/Question';
 import ExamService from '../../services/ExamService';
+import ResultService from '../../services/ResultService';
 import Footer from '../Components/Footer';
 import Timer from './Components/Timer';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -89,6 +90,7 @@ var examRoom;
 var peerConnection;
 var questions = [];
 var exam;
+var submittedAnswers = [];
 const selectedOptions = [];
 
 const socket = io("http://127.0.0.1:4001");
@@ -287,6 +289,55 @@ export default function AutoGrid() {
     })
   }
 
+  const submitExam = () => {
+    //Fetch answers and submit result
+    submittedAnswers = [];
+    setLoading(false);
+
+    ResultService.getAnswers(examRoom, studentId, authToken).then(res => {
+      submittedAnswers = res;
+
+      var questions = exam.question;
+      var answers = [];
+
+      console.log("Student Answers: ", submittedAnswers);
+      console.log("Questions: ", questions);
+
+      submittedAnswers.forEach(answer => {
+        questions.forEach(question => {
+          if (question._id === answer.questionId) {
+            answers.push({
+              qId: question._id,
+              marks: question.marks,
+              correctOption: question.correctOption,
+              markedOption: answer.markedOption
+            })
+          }
+        });
+      });
+
+      var result = {
+        examId: examRoom,
+        studentId: studentId,
+        totalMarks: exam.totalMarks,
+        obtainedMarks: 0
+      }
+      answers.forEach(answer => {
+        if (answer.markedOption == answer.correctOption) {
+          result.obtainedMarks += answer.marks;
+        }
+      });
+
+      console.log("Result: ", result);
+      ResultService.addResult(result, authToken).then(res => {
+        console.log(res);
+        setLoading(true);
+        navigateTo(`../ExamComplete/${examRoom}`);
+      })
+    })
+
+  }
+
   const handleOptionChange = (event, index) => {
     setSelected(false);
     console.log(event.target.value);
@@ -396,7 +447,7 @@ export default function AutoGrid() {
                   </Grid>
                   <Grid item>
                     <Button variant="contained" color="secondary" className={classes.button}
-                      disabled={activebutton} onClick={event => { navigateTo(`../ExamComplete/${examRoom}`) }}>
+                      disabled={activebutton} onClick={submitExam}>
                       Submit
                   </Button>
                   </Grid>

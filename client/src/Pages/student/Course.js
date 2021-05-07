@@ -14,6 +14,7 @@ import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import DateRangeIcon from '@material-ui/icons/DateRange';
 import Divider from '@material-ui/core/Divider';
 import ExamService from '../../services/ExamService';
+import ResultService from '../../services/ResultService';
 import TimerIcon from '@material-ui/icons/Timer';
 import Footer from '../Components/Footer';
 import { useParams } from 'react-router-dom';
@@ -129,18 +130,82 @@ export default function Course() {
     // const [errorMessage, setErrorMessage] = React.useState(false);
     const courseId = useParams().course;
     const authToken = localStorage.getItem('auth-token');
+    const studentId = localStorage.getItem('studentId');
 
     // var course;
 
     useEffect(() => {
         CourseService.getCourse(courseId, authToken, false).then((courseFromDb) => {
-            console.log(courseFromDb);
+            console.log("Course From Db: ", courseFromDb);
             setCourse(courseFromDb);
             // course = courseFromDb;
         });
+
+        ExamService.getExams(courseId, authToken).then((examsFromDb) => {
+            console.log("Exams from db: ", examsFromDb);
+
+            examData = [];
+            prevExam = [];
+            examDates = [];
+            pExamDates = [];
+            examTimes = [];
+            pExamTimes = [];
+
+            examsFromDb.forEach((exam) => {
+                const examDate = new Date(exam.startTime);
+                const duration = exam.duration;
+                examDate.setHours(examDate.getHours() + duration);
+
+                const now = new Date();
+
+                if (examDate < now) {
+                    console.log("Exam date: ", examDate);
+                    console.log("Today: ", now);
+                    prevExam.push(exam);
+                } else {
+                    examData.push(exam);
+                }
+
+            });
+
+            examData.forEach(exam => {
+                const dt = processDate(exam.startTime);
+                examDates.push(dt[0]);
+                examTimes.push(dt[1]);
+            });
+
+            prevExam.forEach(exam => {
+                const dt = processDate(exam.startTime);
+                pExamDates.push(dt[0]);
+                pExamTimes.push(dt[1]);
+            });
+
+            console.log("Prev Exams: ", prevExam);
+            console.log("Exams: ", examData);
+
+            examData.forEach(exam => {
+                ResultService.getResults(exam._id, studentId, authToken).then(res => {
+                    if (res) {
+                        exam.submitted = true;
+                    }
+                })
+            });
+
+            prevExam.forEach(exam => {
+                ResultService.getResults(exam._id, studentId, authToken).then(res => {
+                    if (res) {
+                        exam.result = res[0];
+                        exam.submitted = true;
+                    }
+                    console.log("prevExam a: ", prevExam);
+                    setLoading(true);
+                })
+            });
+            // console.log("prevExam b: ", prevExam);
+
+        });
+
     }, []);
-
-
 
     const processDate = (startTime) => {
         const date = new Date(startTime);
@@ -159,48 +224,16 @@ export default function Course() {
         return [strDate, strTime];
     }
 
-    ExamService.getExams(courseId, authToken).then((examsFromDb) => {
-        console.log(examsFromDb);
+    const examClicked = (event, exam) => {
+        console.log("Exam clicked", exam)
+        if (!exam.submitted) {
+            navigateTo(`../Course/ExamInstruction/${exam._id}`)
+        }
+        else {
+            navigateTo(`../../Student/ExamAlreadySubmitted/${exam._id}`)
+        }
+    }
 
-        examData = [];
-        prevExam = [];
-        examDates = [];
-        pExamDates = [];
-        examTimes = [];
-        pExamTimes = [];
-
-        examsFromDb.forEach((exam) => {
-            const examDate = new Date(exam.startTime);
-            const duration = exam.duration;
-            examDate.setHours(examDate.getHours() + duration);
-
-            const now = new Date();
-
-            if (examDate < now) {
-                console.log("Exam date: ", examDate);
-                console.log("Today: ", now);
-
-                prevExam.push(exam);
-            } else {
-                examData.push(exam);
-            }
-        })
-
-        examData.forEach(exam => {
-            const dt = processDate(exam.startTime);
-            examDates.push(dt[0]);
-            examTimes.push(dt[1]);
-        });
-
-        prevExam.forEach(exam => {
-            const dt = processDate(exam.startTime);
-            pExamDates.push(dt[0]);
-            pExamTimes.push(dt[1]);
-        });
-
-        setLoading(true);
-
-    })
 
     // let idYouWant;
     // let propertyYouWant = "courseName";
@@ -218,8 +251,6 @@ export default function Course() {
     // }
     // let courseName;
     // for()
-    console.log(examData.length, "lenght of exam data");
-    const data = [];
 
     return (
         <React.Fragment>
@@ -257,7 +288,7 @@ export default function Course() {
                                         <div key={i} className={classes.card}>
                                             <Card className={classes.card} elevation="7">
                                                 <ButtonBase className={classes.cardMargin}
-                                                    onClick={event => { navigateTo(`../Course/ExamInstruction/${exam._id}`) }}
+                                                    onClick={event => examClicked(event, exam)}
                                                 >
                                                     <CardContent className={classes.cardContent}>
                                                         <Typography gutterBottom variant="h5" component="h2">
@@ -267,7 +298,7 @@ export default function Course() {
                                                             <TimerIcon className={classes.iconClass} />
                                                             <Typography className={classes.margin}>
                                                                 Duration: {exam.duration} hrs
-                                                </Typography>
+                                                            </Typography>
                                                         </Grid>
                                                         <Grid container justify="center">
                                                             <DateRangeIcon className={classes.iconClass} />
@@ -288,7 +319,7 @@ export default function Course() {
                                         </div>
                                     ))}</div>}
                             </Grid>
-                            
+
                             <Typography>
                                 Previous Exams
                             </Typography>
@@ -299,30 +330,37 @@ export default function Course() {
                                 {prevExam.length === 0 ? <h4>No previous Exam yet</h4> : <div>{prevExam.map((exam, i) => (
                                     <div key={i} className={classes.card}>
                                         <Card className={classes.card} elevation="7">
-                                                <CardContent className={classes.cardContent}>
+                                            <CardContent className={classes.cardContent}>
+                                                <Grid container justify="center">
                                                     <Typography gutterBottom variant="h5" component="h2">
                                                         {exam.name}
                                                     </Typography>
-                                                    <Grid container justify="center">
-                                                        <DateRangeIcon className={classes.iconClass} />
-                                                        <Typography className={classes.margin}>
-                                                            {pExamDates[i]}
-                                                        </Typography>
-                                                    </Grid>
-                                                    <Grid container justify="center">
-                                                        <AddIcon className={classes.iconClass} />
-                                                        <Typography className={classes.margin}>
-                                                            Total Marks: 30
+                                                </Grid>
+                                                <Grid container justify="center">
+                                                    <DateRangeIcon className={classes.iconClass} />
+                                                    <Typography className={classes.margin}>
+                                                        {pExamDates[i]}
+                                                    </Typography>
+                                                </Grid>
+                                                {exam.submitted && exam.result ?
+                                                    <div>
+                                                        <Grid container justify="center">
+                                                            <AddIcon className={classes.iconClass} />
+                                                            <Typography className={classes.margin}>
+                                                                Total Marks: {exam.result.totalMarks}
                                                             </Typography>
-                                                    </Grid>
-                                                    
-                                                    <Grid container justify="center">
-                                                        <AssignmentTurnedInIcon className={classes.iconClass} />
-                                                        <Typography className={classes.margin}>
-                                                            Obtained Marks: 20
+                                                        </Grid>
+                                                        <Grid container justify="center">
+                                                            <AssignmentTurnedInIcon className={classes.iconClass} />
+                                                            <Typography className={classes.margin}>
+                                                                Obtained Marks: {exam.result.obtainedMarks}
                                                             </Typography>
-                                                    </Grid>
-                                                </CardContent>
+                                                        </Grid>
+                                                    </div>
+                                                    :
+                                                    <div>Not submitted</div>
+                                                }
+                                            </CardContent>
                                         </Card>
 
                                     </div>

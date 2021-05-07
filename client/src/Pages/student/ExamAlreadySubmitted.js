@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function StudentExamComplete() {
+export default function ExamAlreadySubmitted() {
 
     const classes = useStyles();
 

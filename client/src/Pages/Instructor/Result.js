@@ -126,13 +126,17 @@ export default function Result() {
 
             students = [];
 
-            results.forEach(result => {
-                StudentService.getStudent(result.studentId, authToken).then(student => {
-                    students.push(student);
-                    console.log("students: ", students);
-                    setLoading(true);
-                })
-            });
+            if (results && results.length > 0) {
+                results.forEach(result => {
+                    StudentService.getStudent(result.studentId, authToken).then(student => {
+                        students.push(student);
+                        console.log("students: ", students);
+                        setLoading(true);
+                    })
+                });
+            } else {
+                setLoading(true);
+            }
         })
 
     }, []);

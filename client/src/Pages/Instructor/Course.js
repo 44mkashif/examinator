@@ -81,9 +81,13 @@ const useStyles = makeStyles((theme) => ({
     },
     card: {
         width: 300,
-        margin: theme.spacing(1, 3, 2),
+        // margin: theme.spacing(1, 3, 2),
+        backgroundColor: theme.palette.primary.bg,
         // display: 'flex',
         // flexDirection: 'column',
+    },
+    cardDiv: {
+        padding: "10px"
     },
     editClass: {
         color: theme.palette.secondary.dark
@@ -113,7 +117,7 @@ const useStyles = makeStyles((theme) => ({
         fullWidth: 100,
     },
     cardContent: {
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
     scheduleClass: {
         color: theme.palette.secondary.dark,
@@ -301,102 +305,115 @@ export default function Course() {
                             <Divider variant="middle" />
                             <br />
 
-                            <Grid container spacing={4} justify="center">
-                                {examData.length === 0 ? <h4>No Scheduled Exams found</h4> : <div> {examData.map((exam, i) => (
-                                    <div key={i} className={classes.card}>
-                                        <Card className={classes.card} elevation="7">
-                                            <ButtonBase className={classes.cardMargin}
-                                                onClick={event => { navigateTo(`../Course/Exam/${exam._id}`) }}
-                                            >
-                                                <CardContent justify="center">
-                                                    <Typography gutterBottom variant="h5" component="h2">
-                                                        {exam.name}
-                                                    </Typography>
-                                                    <Grid container justify="center">
-                                                        <TimerIcon className={classes.iconClass} />
-                                                        <Typography className={classes.margin}>
-                                                            Duration: {exam.duration} hrs
-                                                    </Typography>
-                                                    </Grid>
-                                                    <Grid container justify="center">
-                                                        <DateRangeIcon className={classes.iconClass} />
-                                                        <Typography className={classes.margin}>
-                                                            {examDates[i]}
-                                                        </Typography>
-                                                    </Grid>
-                                                    <Grid container justify="center">
-                                                        <AccessTimeIcon className={classes.iconClass} />
-                                                        <Typography className={classes.margin}>
-                                                            {examTimes[i]}
-                                                        </Typography>
-                                                    </Grid>
-                                                </CardContent>
-                                            </ButtonBase>
-                                            <CardActions>
-                                                <Grid container spacing={2}
-                                                    justify='space-between'
-                                                    alignItems='center'
+                            {examData.length === 0 ?
+                                <Grid container spacing={4} justify="center">
+                                    <h4>No Scheduled Exams found</h4>
+                                </Grid>
+                                :
+                                <Grid container spacing={4} justify="center">
+                                    {examData.map((exam, i) => (
+                                        <div key={i} className={classes.cardDiv}>
+                                            <Card className={classes.card} elevation="7">
+                                                <ButtonBase className={classes.cardMargin}
+                                                    onClick={event => { navigateTo(`../Course/Exam/${exam._id}`) }}
                                                 >
-                                                    <IconButton className={classes.editClass}>
-                                                        <EditIcon />
-                                                    </IconButton>
-                                                    <IconButton className={classes.deleteClass}>
-                                                        <DeleteIcon />
-                                                    </IconButton>
-                                                </Grid>
-                                            </CardActions>
-                                        </Card>
+                                                    <CardContent justify="center">
+                                                        <Typography gutterBottom variant="h5" component="h2">
+                                                            {exam.name}
+                                                        </Typography>
+                                                        <Grid container justify="center">
+                                                            <TimerIcon className={classes.iconClass} />
+                                                            <Typography className={classes.margin}>
+                                                                Duration: {exam.duration} hrs
+                                                    </Typography>
+                                                        </Grid>
+                                                        <Grid container justify="center">
+                                                            <DateRangeIcon className={classes.iconClass} />
+                                                            <Typography className={classes.margin}>
+                                                                {examDates[i]}
+                                                            </Typography>
+                                                        </Grid>
+                                                        <Grid container justify="center">
+                                                            <AccessTimeIcon className={classes.iconClass} />
+                                                            <Typography className={classes.margin}>
+                                                                {examTimes[i]}
+                                                            </Typography>
+                                                        </Grid>
+                                                    </CardContent>
+                                                </ButtonBase>
+                                                <CardActions>
+                                                    <Grid container spacing={2}
+                                                        justify='space-between'
+                                                        alignItems='center'
+                                                    >
+                                                        <IconButton className={classes.editClass}>
+                                                            <EditIcon />
+                                                        </IconButton>
+                                                        <IconButton className={classes.deleteClass}>
+                                                            <DeleteIcon />
+                                                        </IconButton>
+                                                    </Grid>
+                                                </CardActions>
+                                            </Card>
 
-                                    </div>
-                                ))}</div>}
-                            </Grid>
+                                        </div>
+                                    ))}
+                                </Grid>
+                            }
+
                             <br />
                             <Divider variant="middle" />
                             <br />
                             <Typography>
                                 Previous Exams
-                        </Typography>
+                            </Typography>
+
                             <br />
                             <Divider variant="middle" />
                             <br />
 
-                            <Grid container spacing={4} justify="center">
-                                {prevExam.length === 0 ? <h4>No previous Exam yet</h4> : <div> {prevExam.map((exam, i) => (
-                                    <div key={i} className={classes.card}>
-                                        <Card className={classes.card} elevation="7">
-                                            <ButtonBase className={classes.cardMargin}
-                                                onClick={event => { navigateTo(`../Course/${courseId}/Exam/Result/${exam._id}`) }}
-                                            >
-                                                <CardContent className={classes.cardContent}>
-                                                    <Typography gutterBottom variant="h5" component="h2">
-                                                        {exam.name}
-                                                    </Typography>
-                                                    <Grid container justify="center">
-                                                        <TimerIcon className={classes.iconClass} />
-                                                        <Typography className={classes.margin}>
-                                                            Duration: {exam.duration} hrs
-                                                    </Typography>
-                                                    </Grid>
-                                                    <Grid container justify="center">
-                                                        <DateRangeIcon className={classes.iconClass} />
-                                                        <Typography className={classes.margin}>
-                                                            {pExamDates[i]}
+                            {prevExam.length === 0 ?
+                                <Grid container spacing={4} justify="center">
+                                    <h4>No previous Exam yet</h4>
+                                </Grid>
+                                :
+                                <Grid container spacing={4} justify="center">
+                                    {prevExam.map((exam, i) => (
+                                        <div key={i} className={classes.cardDiv}>
+                                            <Card className={classes.card} elevation="7">
+                                                <ButtonBase className={classes.cardMargin}
+                                                    onClick={event => { navigateTo(`../Course/${courseId}/Exam/Result/${exam._id}`) }}
+                                                >
+                                                    <CardContent className={classes.cardContent}>
+                                                        <Typography gutterBottom variant="h5" component="h2">
+                                                            {exam.name}
                                                         </Typography>
-                                                    </Grid>
-                                                    <Grid container justify="center">
-                                                        <AccessTimeIcon className={classes.iconClass} />
-                                                        <Typography className={classes.margin}>
-                                                            {pExamTimes[i]}
-                                                        </Typography>
-                                                    </Grid>
-                                                </CardContent>
+                                                        <Grid container justify="center">
+                                                            <TimerIcon className={classes.iconClass} />
+                                                            <Typography className={classes.margin}>
+                                                                Duration: {exam.duration} hrs
+                                                    </Typography>
+                                                        </Grid>
+                                                        <Grid container justify="center">
+                                                            <DateRangeIcon className={classes.iconClass} />
+                                                            <Typography className={classes.margin}>
+                                                                {pExamDates[i]}
+                                                            </Typography>
+                                                        </Grid>
+                                                        <Grid container justify="center">
+                                                            <AccessTimeIcon className={classes.iconClass} />
+                                                            <Typography className={classes.margin}>
+                                                                {pExamTimes[i]}
+                                                            </Typography>
+                                                        </Grid>
+                                                    </CardContent>
 
-                                            </ButtonBase>
-                                        </Card>
+                                                </ButtonBase>
+                                            </Card>
 
-                                    </div>
-                                ))}</div>}
-                            </Grid>
+                                        </div>
+                                    ))}
+                                </Grid>}
 
                         </Container>
                     </div>

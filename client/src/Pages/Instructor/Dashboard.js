@@ -58,6 +58,9 @@ const useStyles = makeStyles((theme) => ({
     // display: 'flex',
     // flexDirection: 'column',
   },
+  cardHeader: {
+    backgroundColor: theme.palette.primary.bg,
+  },
   cardMedia: {
     paddingTop: '56.25%', // 16:9
     backgroundImage: `url(${courseImage})`,
@@ -141,7 +144,7 @@ export default function Dashboard() {
         :
         <div>
 
-        
+
           <AppBar position="relative">
             <Toolbar>
               <Grid container spacing={2} justify='space-between' alignItems='center'>
@@ -180,7 +183,7 @@ export default function Dashboard() {
                     <ButtonBase
                       onClick={event => { navigateTo(`../Instructor/Course/${course._id}`) }}
                     >
-                      <Card className={classes.card} elevation={7}>
+                      <Card className={classes.card} elevation={10}>
                         <CardHeader
                           avatar={
                             <Avatar className={classes.avatar}>
@@ -189,12 +192,13 @@ export default function Dashboard() {
                           }
                           title={course.courseName}
                           subheader={course.courseCode}
+                          className={classes.cardHeader}
                         />
                         <CardMedia
                           className={classes.cardMedia}
                         />
                       </Card>
-                      
+
                     </ButtonBase>
                   </div>
                 ))}
@@ -206,7 +210,7 @@ export default function Dashboard() {
           {/* End footer */}
         </div>
       }
-      </React.Fragment >
-    
+    </React.Fragment >
+
   );
 }

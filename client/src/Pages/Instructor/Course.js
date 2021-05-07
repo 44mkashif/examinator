@@ -81,13 +81,11 @@ const useStyles = makeStyles((theme) => ({
     },
     card: {
         width: 300,
-        // margin: theme.spacing(1, 3, 2),
-        backgroundColor: theme.palette.primary.bg,
-        // display: 'flex',
-        // flexDirection: 'column',
+        border: `1px solid ${theme.palette.primary.dark}`,
+        borderRadius: "10px"
     },
     cardDiv: {
-        padding: "10px"
+        padding: "10px",
     },
     editClass: {
         color: theme.palette.secondary.dark

@@ -41,10 +41,14 @@ const useStyles = makeStyles((theme) => ({
   },
   card: {
     width: 300,
-    // paddingTop: "10px",
-    margin: theme.spacing(3, 3),
+    // margin: theme.spacing(1, 3, 2),
+    border: `1px solid ${theme.palette.primary.dark}`,
+    borderRadius: "10px"
     // display: 'flex',
     // flexDirection: 'column',
+  },
+  cardDiv: {
+    padding: "10px",
   },
   cardMedia: {
     paddingTop: '56.25%', // 16:9
@@ -162,7 +166,7 @@ export default function Dashboard() {
 
               <Grid container spacing={2} justify="center">
                 {courseData.map((course, c) => (
-                  <div key={c} className={classes.card}>
+                  <div key={c} className={classes.cardDiv}>
                     <ButtonBase
                       onClick={event => { navigateTo(`../Student/Course/${course._id}`) }}
                     >

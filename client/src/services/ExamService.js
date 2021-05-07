@@ -81,6 +81,22 @@ class ExamService extends Component {
         }
     }
 
+    static async deleteExam(examId, authToken) {
+        try {
+            const res = await axios.delete(`http://localhost:4000/api/instructor/exam?examId=${examId}`, {
+                headers: {
+                    'auth-token': authToken
+                },
+            });
+            if (res.data.success) {
+                console.log(res);
+                return res.data;
+            }
+        } catch (error) {
+            console.log(error.response.data);
+            return error.response.data;
+        }
+    }
 
 }
 

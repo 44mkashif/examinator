@@ -41,7 +41,8 @@ const useStyles = makeStyles((theme) => ({
   },
   card: {
     width: 300,
-    margin: theme.spacing(0, 3, 3),
+    // paddingTop: "10px",
+    margin: theme.spacing(3, 3),
     // display: 'flex',
     // flexDirection: 'column',
   },
@@ -136,12 +137,12 @@ export default function Dashboard() {
                 <div>
                   <Grid container spacing={2} justify='space-between' alignItems='center'>
                     <div>
-                      <Button >              
-                         <img src={logoImg} alt="logo" style={{ width: 40, marginRight: 10 }} />
-                          <Typography className={classes.whiteColor}>
-                            EXAMINATOR
+                      <Button >
+                        <img src={logoImg} alt="logo" style={{ width: 40, marginRight: 10 }} />
+                        <Typography className={classes.whiteColor}>
+                          EXAMINATOR
                           </Typography>
-                        </Button>
+                      </Button>
                     </div>
                   </Grid>
                 </div>
@@ -165,7 +166,7 @@ export default function Dashboard() {
                     <ButtonBase
                       onClick={event => { navigateTo(`../Student/Course/${course._id}`) }}
                     >
-                      <Card className={classes.card}>
+                      <Card className={classes.card} elevation={10}>
                         <CardHeader
                           avatar={
                             <Avatar className={classes.avatar}>

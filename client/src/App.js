@@ -51,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
   button: {
     margin: theme.spacing(5, 3, 5),
     height: '5vh',
-    width: '25vh',
+    width: '28vh',
     borderWidth: '3px',
     boxShadow: '2px 2px 5px',
     borderRadius: 100,
@@ -62,7 +62,7 @@ const useStyles = makeStyles((theme) => ({
     color: '#fff',
     margin: theme.spacing(0, 0, 5),
   },
-  padding:{
+  padding: {
     paddingLeft: '90px',
     paddingRight: '90px'
 
@@ -114,7 +114,7 @@ function App() {
                   >
                     Instructor Portal
                   </Button>
-                  
+
                 </Grid>
               </div>
             </Grid>

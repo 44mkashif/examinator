@@ -160,7 +160,7 @@ export default function Result() {
                                     <Grid container>
                                         <img src={logoImg} alt="logo" className={classes.logoImg} />
                                         <Typography variant="h6" color="inherit" noWrap>
-                                            {course ? course.courseName : "EXAMINATOR"}
+                                            {course ? course.courseName.toUpperCase() : "EXAMINATOR"}
                                         </Typography>
                                     </Grid>
                                 </div>

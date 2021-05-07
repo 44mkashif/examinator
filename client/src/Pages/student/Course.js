@@ -249,7 +249,7 @@ export default function Course() {
                                     <Grid container>
                                         <img src={logoImg} alt="logo" className={classes.logoImg} />
                                         <Typography variant="h6" color="inherit" noWrap>
-                                            {course["courseName"]}
+                                            {course ? course["courseName"].toUpperCase() : "EXAMINATOR"}
                                         </Typography>
                                     </Grid>
                                 </div>

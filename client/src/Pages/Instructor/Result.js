@@ -12,6 +12,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import CourseService from './../../services/CourseService';
 import ResultService from './../../services/ResultService';
+import StudentService from './../../services/StudentService';
 import theme from './../../theme';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Loader from "react-loader-spinner";
@@ -84,6 +85,7 @@ const useStyles = makeStyles((theme) => ({
 var examRoom;
 var course;
 var results;
+var students = [];
 
 const processDate = (date) => {
     date = new Date(date);
@@ -121,8 +123,18 @@ export default function Result() {
         ResultService.getResults(examRoom, authToken).then(res => {
             console.log(res);
             results = res;
-            setLoading(true);
+
+            students = [];
+
+            results.forEach(result => {
+                StudentService.getStudent(result.studentId, authToken).then(student => {
+                    students.push(student);
+                    console.log("students: ", students);
+                    setLoading(true);
+                })
+            });
         })
+
     }, []);
 
 
@@ -166,12 +178,12 @@ export default function Result() {
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
-                                        {results.map((result) => (
+                                        {results.map((result, i) => (
                                             <TableRow key={result.studentId}>
                                                 <TableCell component="th" scope="row">
-                                                    {result.studentId}
+                                                    {students[i].fName} {students[i].lName}
                                                 </TableCell>
-                                                <TableCell align="center">{result.studentId}</TableCell>
+                                                <TableCell align="center">{students[i].regNo}</TableCell>
                                                 <TableCell align="center">{result.obtainedMarks}</TableCell>
                                                 <TableCell align="center">{result.totalMarks}</TableCell>
                                                 <TableCell align="right">{processDate(result.createdAt)}</TableCell>

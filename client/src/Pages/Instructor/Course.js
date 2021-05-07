@@ -267,16 +267,17 @@ export default function Course() {
     }
 
     const deleteExam = (event, examId) => {
-        // console.log(examId);
-        ExamService.deleteExam(examId, authToken).then(res => {
-            console.log(res);
+        if (window.confirm('Are you sure you wish to delete this item?')) {
+            ExamService.deleteExam(examId, authToken).then(res => {
+                console.log(res);
 
-            // if (res.success)
-            //Print message deleted
-            //Reload page
-            // else
-            //Print error message
-        })
+                // if (res.success)
+                //Print message deleted
+                //Reload page
+                // else
+                //Print error message
+            })
+        }
     }
 
     return (
@@ -292,7 +293,7 @@ export default function Course() {
                                     <Grid container>
                                         <img src={logoImg} alt="logo" className={classes.logoImg} />
                                         <Typography variant="h6" color="inherit" noWrap>
-                                            {course["courseName"]}
+                                            {course ? course["courseName"].toUpperCase() : "EXAMINATOR"}
                                         </Typography>
                                     </Grid>
                                 </div>

@@ -1,5 +1,5 @@
 import React from 'react';
-import AppBar from './Components/AppBar';
+import AppBar from '@material-ui/core/AppBar';
 import Grid from '@material-ui/core/Grid';
 import io from 'socket.io-client';
 import { useParams } from 'react-router-dom';
@@ -90,27 +90,25 @@ export default function Exam() {
   React.useEffect(() => {
     const socket = io("http://127.0.0.1:4001");
     socket.emit('on/off stream', { type: 'on/off', toggleState: toggleState }, examRoom);
+
+    ExamService.getExam(examRoom, authToken, true).then((examFromDb) => {
+      exam = examFromDb[0];
+      console.log("Exam from db: ", exam);
+
+      setLoading(true);
+      //  setExamName(examFromDb[0]["courseName"]);
+      // setExamDuration(examFromDb[0]["duration"]);
+      // setExamStartTime(examFromDb[0]["startTime"]);
+      // console.log(examFromDb[0]);
+      // console.log(examDuration);
+      // console.log(examStartTime);
+      // exam = examFromDb[0];
+    });
   }, [toggleState])
 
   const authToken = localStorage.getItem('auth-token');
-  ExamService.getExam(examRoom, authToken, true).then((examFromDb) => {
-    exam = examFromDb[0];
-    console.log("Exam from db: ", exam);
-
-    setLoading(true);
-    //  setExamName(examFromDb[0]["courseName"]);
-    // setExamDuration(examFromDb[0]["duration"]);
-    // setExamStartTime(examFromDb[0]["startTime"]);
-    // console.log(examFromDb[0]);
-    // console.log(examDuration);
-    // console.log(examStartTime);
-    // exam = examFromDb[0];
-  })
 
   React.useEffect(() => {
-
-
-
     const socket = io("http://127.0.0.1:4001");
     var videoDivision = document.querySelector('#videos');
 
@@ -242,15 +240,16 @@ export default function Exam() {
               <Grid container spacing={2} justify='space-between' alignItems='center'>
                 <div>
                   <Grid container>
-                    <img src={logoImg} alt="logo" className={classes.logoImg} />
-                    <Typography variant="h6" color="inherit" noWrap>
-                      Examinator
-                  </Typography>
+                    <img src={logoImg} alt="logo" style={{ width: 40, marginRight: 10 }} />
+                    <Typography style={{ color: 'white', marginTop: 5 }}>
+                      {exam ? exam.name.toUpperCase() : "EXAMINATOR"}
+                    </Typography>
                   </Grid>
                 </div>
               </Grid>
             </Toolbar>
           </AppBar>
+
           <Grid container spacing={0}>
             <Grid item justify="start" xs={9} style={{ paddingTop: 20, paddingLeft: 20, paddingRight: 20 }} >
               <Timer duration={exam.duration} startTime={exam.startTime} />

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import Avatar from '@material-ui/core/Avatar';
@@ -121,16 +121,18 @@ export default function Dashboard() {
   const classes = useStyles();
   const [loading, setLoading] = React.useState(false);
 
-  CourseService.getCourses(instructorId, authToken).then((coursesFromDb) => {
-    console.log(coursesFromDb);
+  useEffect(() => {
+    CourseService.getCourses(instructorId, authToken).then((coursesFromDb) => {
+      console.log(coursesFromDb);
 
-    courseData = [];
+      courseData = [];
 
-    coursesFromDb.forEach((c) => {
-      courseData.push(c);
-    })
-    setLoading(true);
-  })
+      coursesFromDb.forEach((c) => {
+        courseData.push(c);
+      })
+      setLoading(true);
+    });
+  }, []);
 
   //Routing Functions
   const history = useHistory();

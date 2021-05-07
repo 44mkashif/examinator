@@ -246,6 +246,51 @@ export default function AutoGrid() {
       peerConnection = null;
     }
 
+    ExamService.getExam(examRoom, authToken, false).then((examFromDb) => {
+      questions = []
+
+      exam = examFromDb[0];
+      console.log("Exam from db: ", exam);
+
+      const examDate = new Date(exam.startTime);
+      const duration = exam.duration;
+      examDate.setHours(examDate.getHours() + duration);
+
+      const now = new Date();
+
+      if (examDate < now) {
+        console.log("Exam date: ", examDate);
+        console.log("Today: ", now);
+        console.log("Exam over");
+        navigateTo(`../ExamComplete/${examRoom}`);
+      }
+
+      exam.question.forEach((question, i) => {
+        // <Question question={"Question " + (i + 1) + ": " + question.statement} options={question.options} qNo={i} />
+        questions.push(
+          <div>
+            <Paper className={classes.paper}>
+              <FormControl component="fieldset">
+                <FormLabel component="legend">
+                  Q{(i + 1)}: {question.statement}
+                </FormLabel>
+                <RadioGroup aria-label="answer" name="answer1" value={selectedOptions[i]} onChange={event => handleOptionChange(event, i)}>
+                  <FormControlLabel value={question.options[0]} control={<Radio />} label={question.options[0]} />
+                  <FormControlLabel value={question.options[1]} control={<Radio />} label={question.options[1]} />
+                  <FormControlLabel value={question.options[2]} control={<Radio />} label={question.options[2]} />
+                  <FormControlLabel value={question.options[3]} control={<Radio />} label={question.options[3]} />
+                </RadioGroup>
+              </FormControl>
+            </Paper>
+          </div>
+        )
+      });
+      console.log("Ques: ", questions);
+
+      setLoading(true);
+
+    });
+
   }, []);
 
   const classes = useStyles();
@@ -359,51 +404,6 @@ export default function AutoGrid() {
   //   questions.push(<Question question={"Question " + i + ": " + ques[i]} qNo={i} />);
   // }
 
-  ExamService.getExam(examRoom, authToken, false).then((examFromDb) => {
-    questions = []
-
-    exam = examFromDb[0];
-    console.log("Exam from db: ", exam);
-
-    const examDate = new Date(exam.startTime);
-    const duration = exam.duration;
-    examDate.setHours(examDate.getHours() + duration);
-
-    const now = new Date();
-
-    if (examDate < now) {
-      console.log("Exam date: ", examDate);
-      console.log("Today: ", now);
-      console.log("Exam over");
-      navigateTo(`../ExamComplete/${examRoom}`);
-    }
-
-    exam.question.forEach((question, i) => {
-      // <Question question={"Question " + (i + 1) + ": " + question.statement} options={question.options} qNo={i} />
-      questions.push(
-        <div>
-          <Paper className={classes.paper}>
-            <FormControl component="fieldset">
-              <FormLabel component="legend">
-                Q{(i + 1)}: {question.statement}
-              </FormLabel>
-              <RadioGroup aria-label="answer" name="answer1" value={selectedOptions[i]} onChange={event => handleOptionChange(event, i)}>
-                <FormControlLabel value={question.options[0]} control={<Radio />} label={question.options[0]} />
-                <FormControlLabel value={question.options[1]} control={<Radio />} label={question.options[1]} />
-                <FormControlLabel value={question.options[2]} control={<Radio />} label={question.options[2]} />
-                <FormControlLabel value={question.options[3]} control={<Radio />} label={question.options[3]} />
-              </RadioGroup>
-            </FormControl>
-          </Paper>
-        </div>
-      )
-    });
-    console.log("Ques: ", questions);
-
-    setLoading(true);
-
-  })
-
   return (
     <React.Fragment >
       {!loading ?
@@ -417,7 +417,7 @@ export default function AutoGrid() {
                   <Grid container>
                     <img src={logoImg} alt="logo" style={{ width: 40, marginRight: 10 }} />
                     <Typography style={{ color: 'white', marginTop: 5 }}>
-                      {exam.name}
+                      {exam ? exam.name.toUpperCase() : "EXAMINATOR"}
                     </Typography>
                   </Grid>
                 </div>

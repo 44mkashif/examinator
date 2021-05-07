@@ -55,10 +55,11 @@ const useStyles = makeStyles((theme) => ({
     },
     paper: {
         backgroundColor: theme.palette.background.paper,
-        border: '2px solid #000',
+        border: `2px solid ${theme.palette.primary.main}`,
         boxShadow: theme.shadows[5],
         padding: theme.spacing(2, 4, 3),
     },
+
     button: {
         borderRadius: 100,
         padding: 10
@@ -313,7 +314,7 @@ export default function Course() {
                                         <div key={i} className={classes.cardDiv}>
                                             <Card className={classes.card} elevation="7">
                                                 <ButtonBase className={classes.cardMargin}
-                                                    onClick={event => { navigateTo(`../Course/Exam/${exam._id}`) }}
+                                                    onClick={event => { navigateTo(`../ Course / Exam / ${exam._id}`) }}
                                                 >
                                                     <CardContent justify="center">
                                                         <Typography gutterBottom variant="h5" component="h2">
@@ -379,7 +380,7 @@ export default function Course() {
                                         <div key={i} className={classes.cardDiv}>
                                             <Card className={classes.card} elevation="7">
                                                 <ButtonBase className={classes.cardMargin}
-                                                    onClick={event => { navigateTo(`../Course/${courseId}/Exam/Result/${exam._id}`) }}
+                                                    onClick={event => { navigateTo(`../ Course / ${courseId} / Exam / Result / ${exam._id}`) }}
                                                 >
                                                     <CardContent className={classes.cardContent}>
                                                         <Typography gutterBottom variant="h5" component="h2">

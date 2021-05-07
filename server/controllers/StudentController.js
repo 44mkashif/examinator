@@ -38,6 +38,21 @@ class StudentController {
         }
     }
 
+    static async getStudentDetails(req, res) {
+        try {
+            let student = await Student.findById({ _id: req.query.studentId });
+            if(student) {
+                return res.status(200).send({ success: true, msg: 'Student Details fetched Successfuly', student: student });
+            } else {
+                res.status(401).send({ success: false, msg: 'Student does not exist!' })
+            }
+            
+        } catch (error) {
+            console.log(error)
+            return res.status(400).send({ success: false, msg: error });
+        }
+    }
+
     static async getStudentImage(req, res) {
         try {
             let student = await Student.findById({ _id: req.query.userId });

@@ -24,6 +24,10 @@ let examSchema = new mongoose.Schema(
         totalMarks: {
             type: Number,
             required: true
+        },
+        hallCreated: {
+            type: Boolean,
+            default: false
         }
     },
     {

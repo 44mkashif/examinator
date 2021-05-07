@@ -54,12 +54,14 @@ const useStyles = makeStyles((theme) => ({
   },
   card: {
     width: 300,
-    margin: theme.spacing(1, 3, 2),
+    // margin: theme.spacing(1, 3, 2),
+    border: `1px solid ${theme.palette.primary.dark}`,
+    borderRadius: "10px"
     // display: 'flex',
     // flexDirection: 'column',
   },
-  cardHeader: {
-    backgroundColor: theme.palette.primary.bg,
+  cardDiv: {
+    padding: "10px",
   },
   cardMedia: {
     paddingTop: '56.25%', // 16:9
@@ -179,7 +181,7 @@ export default function Dashboard() {
             <Container className={classes.cardGrid}>
               <Grid container spacing={2} justify="center">
                 {courseData.map((course, c) => (
-                  <div key={c} className={classes.card}>
+                  <div key={c} className={classes.cardDiv}>
                     <ButtonBase
                       onClick={event => { navigateTo(`../Instructor/Course/${course._id}`) }}
                     >

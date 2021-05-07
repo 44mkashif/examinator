@@ -67,9 +67,11 @@ const useStyles = makeStyles((theme) => ({
     },
     card: {
         width: 300,
-        margin: theme.spacing(1, 3, 2),
-        // display: 'flex',
-        // flexDirection: 'column',
+        border: `1px solid ${theme.palette.primary.dark}`,
+        borderRadius: "10px"
+    },
+    cardDiv: {
+        padding: "10px",
     },
     editClass: {
         color: theme.palette.secondary.dark
@@ -264,10 +266,16 @@ export default function Course() {
                             <br />
                             <Divider variant="middle" />
                             <br />
-                            <Grid container spacing={4} justify="center">
-                                {examData && examData.length === 0 ? <h4>No Scheduled Exams found</h4> :
-                                    <div> {examData.map((exam, i) => (
-                                        <div key={i} className={classes.card}>
+
+                            {/* <Grid container spacing={4} justify="center"> */}
+                            {examData && examData.length === 0 ?
+                                <Grid container spacing={4} justify="center">
+                                    <h4>No Scheduled Exams found</h4>
+                                </Grid>
+                                :
+                                <Grid container spacing={4} justify="center">
+                                    {examData.map((exam, i) => (
+                                        <div key={i} className={classes.cardDiv}>
                                             <Card className={classes.card} elevation="7">
                                                 <ButtonBase className={classes.cardMargin}
                                                     onClick={event => examClicked(event, exam)}
@@ -299,8 +307,11 @@ export default function Course() {
                                             </Card>
 
                                         </div>
-                                    ))}</div>}
-                            </Grid>
+                                    ))}
+                                </Grid>
+                            }
+                            {/* </Grid> */}
+                            <br />
 
                             <Typography>
                                 Previous Exams
@@ -308,47 +319,55 @@ export default function Course() {
                             <br />
                             <Divider variant="middle" />
                             <br />
-                            <Grid container spacing={4} justify="center">
-                                {prevExam.length === 0 ? <h4>No previous Exam yet</h4> : <div>{prevExam.map((exam, i) => (
-                                    <div key={i} className={classes.card}>
-                                        <Card className={classes.card} elevation="7">
-                                            <CardContent className={classes.cardContent}>
-                                                <Grid container justify="center">
-                                                    <Typography gutterBottom variant="h5" component="h2">
-                                                        {exam.name}
-                                                    </Typography>
-                                                </Grid>
-                                                <Grid container justify="center">
-                                                    <DateRangeIcon className={classes.iconClass} />
-                                                    <Typography className={classes.margin}>
-                                                        {pExamDates[i]}
-                                                    </Typography>
-                                                </Grid>
-                                                {exam.submitted && exam.result ?
-                                                    <div>
-                                                        <Grid container justify="center">
-                                                            <AddIcon className={classes.iconClass} />
-                                                            <Typography className={classes.margin}>
-                                                                Total Marks: {exam.result.totalMarks}
-                                                            </Typography>
-                                                        </Grid>
-                                                        <Grid container justify="center">
-                                                            <AssignmentTurnedInIcon className={classes.iconClass} />
-                                                            <Typography className={classes.margin}>
-                                                                Obtained Marks: {exam.result.obtainedMarks}
-                                                            </Typography>
-                                                        </Grid>
-                                                    </div>
-                                                    :
-                                                    <div>Not submitted</div>
-                                                }
-                                            </CardContent>
-                                        </Card>
+                            {/* <Grid container spacing={4} justify="center"> */}
+                            {prevExam.length === 0 ?
+                                <Grid container spacing={4} justify="center">
+                                    <h4>No previous Exam yet</h4>
+                                </Grid>
+                                :
+                                <Grid container spacing={4} justify="center">
+                                    {prevExam.map((exam, i) => (
+                                        <div key={i} className={classes.cardDiv}>
+                                            <Card className={classes.card} elevation="7">
+                                                <CardContent className={classes.cardContent}>
+                                                    <Grid container justify="center">
+                                                        <Typography gutterBottom variant="h5" component="h2">
+                                                            {exam.name}
+                                                        </Typography>
+                                                    </Grid>
+                                                    <Grid container justify="center">
+                                                        <DateRangeIcon className={classes.iconClass} />
+                                                        <Typography className={classes.margin}>
+                                                            {pExamDates[i]}
+                                                        </Typography>
+                                                    </Grid>
+                                                    {exam.submitted && exam.result ?
+                                                        <div>
+                                                            <Grid container justify="center">
+                                                                <AddIcon className={classes.iconClass} />
+                                                                <Typography className={classes.margin}>
+                                                                    Total Marks: {exam.result.totalMarks}
+                                                                </Typography>
+                                                            </Grid>
+                                                            <Grid container justify="center">
+                                                                <AssignmentTurnedInIcon className={classes.iconClass} />
+                                                                <Typography className={classes.margin}>
+                                                                    Obtained Marks: {exam.result.obtainedMarks}
+                                                                </Typography>
+                                                            </Grid>
+                                                        </div>
+                                                        :
+                                                        <div>Not submitted</div>
+                                                    }
+                                                </CardContent>
+                                            </Card>
 
-                                    </div>
-                                ))}</div>}
+                                        </div>
+                                    ))}
+                                </Grid>
+                            }
 
-                            </Grid>
+                            {/* </Grid> */}
 
                         </Container>
                     </div>

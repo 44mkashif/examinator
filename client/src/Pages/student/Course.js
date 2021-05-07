@@ -136,13 +136,13 @@ export default function Course() {
 
     useEffect(() => {
         CourseService.getCourse(courseId, authToken, false).then((courseFromDb) => {
-            console.log("Course From Db: ", courseFromDb);
+            // console.log("Course From Db: ", courseFromDb);
             setCourse(courseFromDb);
             // course = courseFromDb;
         });
 
         ExamService.getExams(courseId, authToken).then((examsFromDb) => {
-            console.log("Exams from db: ", examsFromDb);
+            // console.log("Exams from db: ", examsFromDb);
 
             examData = [];
             prevExam = [];
@@ -159,8 +159,8 @@ export default function Course() {
                 const now = new Date();
 
                 if (examDate < now) {
-                    console.log("Exam date: ", examDate);
-                    console.log("Today: ", now);
+                    // console.log("Exam date: ", examDate);
+                    // console.log("Today: ", now);
                     prevExam.push(exam);
                 } else {
                     examData.push(exam);
@@ -180,11 +180,11 @@ export default function Course() {
                 pExamTimes.push(dt[1]);
             });
 
-            console.log("Prev Exams: ", prevExam);
-            console.log("Exams: ", examData);
+            // console.log("Prev Exams: ", prevExam);
+            // console.log("Exams: ", examData);
 
             examData.forEach(exam => {
-                ResultService.getResults(exam._id, studentId, authToken).then(res => {
+                ResultService.getResult(exam._id, studentId, authToken).then(res => {
                     if (res) {
                         exam.submitted = true;
                     }
@@ -192,12 +192,12 @@ export default function Course() {
             });
 
             prevExam.forEach(exam => {
-                ResultService.getResults(exam._id, studentId, authToken).then(res => {
+                ResultService.getResult(exam._id, studentId, authToken).then(res => {
                     if (res) {
                         exam.result = res[0];
                         exam.submitted = true;
                     }
-                    console.log("prevExam a: ", prevExam);
+                    // console.log("prevExam a: ", prevExam);
                     setLoading(true);
                 })
             });
@@ -233,24 +233,6 @@ export default function Course() {
             navigateTo(`../../Student/ExamAlreadySubmitted/${exam._id}`)
         }
     }
-
-
-    // let idYouWant;
-    // let propertyYouWant = "courseName";
-
-    // let res = examData.filter((item) => {
-    //     console.log(item._id)
-    //     return item._id;
-    // });
-    // console.log(course, "this is the course");
-    // console.log(examData, "This is exa data");
-
-
-    // if(examData.length === 0){
-    //     setErrorMessage(true);
-    // }
-    // let courseName;
-    // for()
 
     return (
         <React.Fragment>

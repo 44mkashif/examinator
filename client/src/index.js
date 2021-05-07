@@ -15,8 +15,6 @@ import FaceDetect from './Pages/Student/FaceDetect';
 import ExamWait from './Pages/Student/ExamWait';
 import ExamTimeout from './Pages/Student/ExamTimeout';
 import ExamAlreadySubmitted from './Pages/Student/ExamAlreadySubmitted';
-import Result from './Pages/Student/Result';
-
 
 import InstructorLogin from './Pages/Instructor/Login';
 import InstructorDashboard from './Pages/Instructor/Dashboard';
@@ -80,7 +78,6 @@ ReactDOM.render(
           <GuardedRoute path="/Student/Course/Exam/:exam" exact component={StudentExam} meta={{ auth: true, role: 'student' }} />
           <GuardedRoute path="/Student/Course/ExamInstruction/:exam" exact component={StudentExamInstruction} meta={{ auth: true, role: 'student' }} />
           <GuardedRoute path="/Student/Course/ExamComplete/:exam" exact component={StudentExamComplete} meta={{ auth: true, role: 'student' }} />
-          <GuardedRoute path="/Student/Course/Result/:exam" exact component={Result} meta={{ auth: true, role: 'student' }} />
           <GuardedRoute path="/Student/FaceDetect/:exam" exact component={FaceDetect} meta={{ auth: true, role: 'student' }} />
           <GuardedRoute path="/Student/ExamWait/:exam" exact component={ExamWait} meta={{ auth: true, role: 'student' }} />
           <GuardedRoute path="/Student/ExamTimeout/:exam" exact component={ExamTimeout} meta={{ auth: true, role: 'student' }} />
@@ -94,7 +91,7 @@ ReactDOM.render(
           <GuardedRoute path="/Instructor/Course/:course" exact component={InstructorCourse} meta={{ auth: true, role: 'instructor' }} />
           <GuardedRoute path="/Instructor/Course/:course/Paper" exact component={InstructorPaper} meta={{ auth: true, role: 'instructor' }} />
           <GuardedRoute path="/Instructor/Course/Exam/:exam" exact component={InstructorExam} meta={{ auth: true, role: 'instructor' }} />
-          <GuardedRoute path="/Instructor/Course/Exam/Result/:exam" exact component={ExamResult} meta={{ auth: true, role: 'instructor' }} />
+          <GuardedRoute path="/Instructor/Course/:course/Exam/Result/:exam" exact component={ExamResult} meta={{ auth: true, role: 'instructor' }} />
 
         </Switch>
       </GuardProvider>

@@ -288,7 +288,7 @@ export default function Course() {
                                         <AccessTimeIcon className={classes.scheduleIcon} />
                                         <Typography className={classes.buttonText} >
                                             Schedule Exam
-                                    </Typography>
+                                        </Typography>
                                     </Button>
                                 </div>
                             </Grid>
@@ -296,9 +296,9 @@ export default function Course() {
                     </AppBar>
                     <div className={classes.root}>
                         <Container className={classes.cardGrid}>
-                            <Typography>
+                            <Typography variant="h4">
                                 Scheduled Exams
-                        </Typography>
+                            </Typography>
                             <br />
                             <Divider variant="middle" />
                             <br />
@@ -360,9 +360,8 @@ export default function Course() {
                             }
 
                             <br />
-                            <Divider variant="middle" />
                             <br />
-                            <Typography>
+                            <Typography variant="h4">
                                 Previous Exams
                             </Typography>
 

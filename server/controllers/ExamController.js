@@ -233,6 +233,25 @@ class ExamController {
             return res.status(400).send({ success: false, msg: error });
         }
     }
+
+    static async hallCreated(req, res) {
+        try {
+            
+            let exam = await Exam.findByIdAndUpdate({_id: req.query.examId}, {
+                $set: {
+                    hallCreated: true
+                }
+            });
+
+            return res.status(200).send({ success: true, msg: 'hallCreated updated'});
+
+        } catch (error) {
+            console.log(error)
+            return res.status(400).send({ success: false, msg: error });
+        }
+    }
+
+
 }
 
 module.exports = { ExamController }

@@ -260,14 +260,13 @@ export default function Course() {
                     <div className={classes.root}>
                         <Container className={classes.cardGrid} >
 
-                            <Typography>
+                            <Typography variant="h4">
                                 Scheduled Exams
-                    </Typography>
+                            </Typography>
                             <br />
                             <Divider variant="middle" />
                             <br />
 
-                            {/* <Grid container spacing={4} justify="center"> */}
                             {examData && examData.length === 0 ?
                                 <Grid container spacing={4} justify="center">
                                     <h4>No Scheduled Exams found</h4>
@@ -310,10 +309,10 @@ export default function Course() {
                                     ))}
                                 </Grid>
                             }
-                            {/* </Grid> */}
+                            <br />
                             <br />
 
-                            <Typography>
+                            <Typography variant="h4">
                                 Previous Exams
                             </Typography>
                             <br />

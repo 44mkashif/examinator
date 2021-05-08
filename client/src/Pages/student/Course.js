@@ -287,7 +287,7 @@ export default function Course() {
                                     <Grid container>
                                         <Button raised className={classes.button} component={Link} to="/student/dashboard">
                                             <img src={logoImg} alt="logo" className={classes.logoImg} />
-                                            <Typography className={classes.whiteColor} noWrap>
+                                            <Typography style={{ color: 'white' }}>
                                                 {course ? course["courseName"].toUpperCase() : "EXAMINATOR"}
                                             </Typography>
                                         </Button>

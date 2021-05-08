@@ -24,6 +24,8 @@ import Loader from "react-loader-spinner";
 import theme from './../../theme';
 import AddIcon from '@material-ui/icons/Add';
 import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
+import Button from '@material-ui/core/Button';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -247,10 +249,13 @@ export default function Course() {
                             <Grid container spacing={2} justify='space-between' alignItems='center'>
                                 <div>
                                     <Grid container>
-                                        <img src={logoImg} alt="logo" className={classes.logoImg} />
-                                        <Typography variant="h6" color="inherit" noWrap>
-                                            {course ? course["courseName"].toUpperCase() : "EXAMINATOR"}
-                                        </Typography>
+                                        <Button component={Link} to="/student/dashboard">
+                                            <img src={logoImg} alt="logo" className={classes.logoImg} />
+                                            <Typography variant="h6" color="inherit" noWrap>
+                                                {course ? course["courseName"].toUpperCase() : "EXAMINATOR"}
+                                            </Typography>
+                                        </Button>
+                                        
                                     </Grid>
                                 </div>
                             </Grid>

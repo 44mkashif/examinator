@@ -31,6 +31,8 @@ import Divider from '@material-ui/core/Divider';
 import theme from './../../theme';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Loader from "react-loader-spinner";
+import { Link } from 'react-router-dom';
+import { Alert, AlertTitle } from '@material-ui/lab';
 
 import {
     MuiPickersUtilsProvider,
@@ -147,6 +149,7 @@ var body = {}
 export default function Course() {
     const [course, setCourse] = React.useState("");
     const [loading, setLoading] = React.useState(false);
+    const [error, setError] = React.useState("");
 
     const courseId = useParams().course;
     const authToken = localStorage.getItem('auth-token');
@@ -276,12 +279,18 @@ export default function Course() {
                 //Reload page
                 // else
                 //Print error message
+                if(res.success)
+                {
+                    setError(res.msg);
+                }
+                
             })
         }
     }
 
     return (
         <React.Fragment>
+            
             {!loading ?
                 <Loader type="BallTriangle" className={classes.loader} color={theme.palette.primary.main} height={80} width={80} />
                 :
@@ -291,10 +300,13 @@ export default function Course() {
                             <Grid container spacing={2} justify='space-between' alignItems='center'>
                                 <div>
                                     <Grid container>
-                                        <img src={logoImg} alt="logo" className={classes.logoImg} />
-                                        <Typography variant="h6" color="inherit" noWrap>
-                                            {course ? course["courseName"].toUpperCase() : "EXAMINATOR"}
-                                        </Typography>
+                                        <Button component={Link} to="/instructor/dashboard">
+                                            <img src={logoImg} alt="logo" className={classes.logoImg} />
+                                            <Typography variant="h6" color="inherit" noWrap>
+                                                {course ? course["courseName"].toUpperCase() : "EXAMINATOR"}
+                                            </Typography>
+                                        </Button>
+                                        
                                     </Grid>
                                 </div>
                                 <div>
@@ -367,9 +379,15 @@ export default function Course() {
                                                     </Grid>
                                                 </CardActions>
                                             </Card>
-
+                                            {error.length === 0 ? undefined : (
+                                                <Alert severity="success">
+                                                    <AlertTitle>Alert</AlertTitle>
+                                                    <Typography>{error}</Typography>
+                                                </Alert>
+                                            )}
                                         </div>
                                     ))}
+                                    
                                 </Grid>
                             }
 

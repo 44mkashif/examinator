@@ -152,7 +152,7 @@ export default function Dashboard() {
             <Toolbar>
               <Grid container spacing={2} justify='space-between' alignItems='center'>
                 <div>
-                  <Button >
+                  <Button raised style={{ borderRadius: 100,}}>
                     <img src={logoImg} alt="logo" style={{ width: 40, marginRight: 10 }} />
                     <Typography className={classes.whiteColor}>
                       Examinator

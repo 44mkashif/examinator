@@ -252,10 +252,19 @@ export default function Course() {
 
     const examClicked = (event, exam) => {
         console.log("Exam clicked", exam)
+
+        const now = new Date();
+        const examDate = new Date(exam.startTime);
+
+        // if (examDate < now) {
+        console.log("Exam date: ", exam.startTime);
+        console.log("Today: ", now);
+        // }
+
         if (exam.submitted) {
             navigateTo(`../../Student/ExamAlreadySubmitted/${exam._id}`)
         }
-        else if (!exam.hallCreated) {
+        else if (!exam.hallCreated || examDate > now) {
             navigateTo(`../../Student/ExamWait/${exam._id}`)
         }
         else {
@@ -266,17 +275,17 @@ export default function Course() {
     return (
         <React.Fragment>
             {!loading ?
-            <Grid container spacing={0} direction="column" alignItems="center" justify="center" style={{ minHeight: '100vh' }}>
-                <Loader type="BallTriangle" className={classes.loader} color={theme.palette.primary.main} height={80} width={80} />
-            </Grid>
-            :
+                <Grid container spacing={0} direction="column" alignItems="center" justify="center" style={{ minHeight: '100vh' }}>
+                    <Loader type="BallTriangle" className={classes.loader} color={theme.palette.primary.main} height={80} width={80} />
+                </Grid>
+                :
                 <div>
                     <AppBar position="relative">
                         <Toolbar>
                             <Grid container spacing={2} justify='space-between' alignItems='center'>
                                 <div>
                                     <Grid container>
-                                        <Button component={Link} to="/student/dashboard">
+                                        <Button raised className={classes.button} component={Link} to="/student/dashboard">
                                             <img src={logoImg} alt="logo" className={classes.logoImg} />
                                             <Typography style={{ color: 'white' }}>
                                                 {course ? course["courseName"].toUpperCase() : "EXAMINATOR"}

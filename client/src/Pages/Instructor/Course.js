@@ -297,27 +297,18 @@ export default function Course() {
 
             {!loading ?
                 <Loader type="BallTriangle" className={classes.loader} color={theme.palette.primary.main} height={80} width={80} />
-                :
-                <div>
-                    <AppBar position="relative">
-                        <Toolbar>
-                            <Grid container spacing={2} justify='space-between' alignItems='center'>
-                                <div>
-                                    <Grid container>
-                                        <Button component={Link} to="/instructor/dashboard">
-                                            <img src={logoImg} alt="logo" className={classes.logoImg} />
-                                            <Typography style={{ color: 'white' }}>
-                                                {course ? course["courseName"].toUpperCase() : "EXAMINATOR"}
-                                            </Typography>
-                                        </Button>
-
-                                    </Grid>
-                                </div>
-                                <div>
-                                    <Button raised className={classes.button} onClick={handleOpenMenu}>
-                                        <AccessTimeIcon className={classes.scheduleIcon} />
-                                        <Typography className={classes.buttonText} >
-                                            Schedule Exam
+            </Grid>
+            :
+            <div>
+                <AppBar position="relative">
+                    <Toolbar>
+                        <Grid container spacing={2} justify='space-between' alignItems='center'>
+                            <div>
+                                <Grid container>
+                                    <Button raised className={classes.button} component={Link} to="/instructor/dashboard">
+                                        <img src={logoImg} alt="logo" className={classes.logoImg} />
+                                        <Typography className={classes.whiteColor}>
+                                            {course ? course["courseName"].toUpperCase() : "EXAMINATOR"}
                                         </Typography>
                                     </Button>
                                 </div>

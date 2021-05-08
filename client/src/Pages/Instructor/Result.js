@@ -121,25 +121,43 @@ export default function Result() {
         });
 
         ResultService.getResults(examRoom, authToken).then(res => {
-            console.log(res);
+            // console.log(res);
             results = res;
 
             students = [];
 
             if (results && results.length > 0) {
+                var requests = [];
                 results.forEach(result => {
-                    StudentService.getStudent(result.studentId, authToken).then(student => {
-                        students.push(student);
-                        console.log("students: ", students);
-                        setLoading(true);
-                    })
+                    requests.push(fetchStudents(result.studentId));
                 });
+
+                Promise.all(requests).then(() => {
+                    console.log("students: ", students);
+                    console.log("Loading finished");
+                    setLoading(true);
+                })
             } else {
                 setLoading(true);
             }
         })
 
     }, []);
+
+    const fetchStudents = (studentId) => {
+        return new Promise(resolve => {
+            StudentService.getStudent(studentId, authToken)
+                .then(student => {
+                    students.push(student);
+                })
+                .then((data) => {
+                    resolve(data);
+                })
+                .catch((e) => {
+                    console.log(e);
+                });
+        })
+    }
 
 
     const classes = useStyles();

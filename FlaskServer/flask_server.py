@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from face_rec import compare_faces
 from flask_cors import CORS, cross_origin
+from integrate import extract_features
 import base64
 from PIL import Image
 import cv2
@@ -23,6 +24,22 @@ def face_match():
 
             ret = compare_faces(file1, file2)
             response = jsonify(success=bool(ret))
+
+            return response
+
+@app.route('/api/classify', methods=['POST'])
+@cross_origin()
+def classify():
+    if request.method == 'POST':
+        # check if the post request has the file part
+        print("test")
+        if ('frame' in request.files):
+            frame = request.files.get('frame')
+            ret = extract_features(frame)
+            if bool(ret) == False:
+                response = jsonify(success=False)
+            else:
+                response = jsonify(success=True, features=ret)
 
             return response
 

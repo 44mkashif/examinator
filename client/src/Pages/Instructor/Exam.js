@@ -25,6 +25,7 @@ import ExamService from '../../services/ExamService';
 import theme from './../../theme';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Loader from "react-loader-spinner";
+import ClassificationService from '../../services/ClassificationService';
 
 <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
 
@@ -80,6 +81,7 @@ export default function Exam() {
   examRoom = useParams().exam;
   const videoRef = React.useRef(null);
   const [msg, setmsg] = React.useState('');
+  const [img, setimg] = React.useState(null);
   const [toggleState, settoggleState] = React.useState({
     checked: true,
   });
@@ -107,9 +109,18 @@ export default function Exam() {
     // exam = examFromDb[0];
   })
 
+  const classifyImage = async (streamImage) => {
+    console.log("Captured Image: ", streamImage);
+    var data = new FormData();
+    data.append('frame', streamImage, streamImage.name);
+
+    const classification = await ClassificationService.classifyImage(data);
+
+    console.log(classification);
+  }
+
+
   React.useEffect(() => {
-
-
 
     const socket = io("http://127.0.0.1:4001");
     var videoDivision = document.querySelector('#videos');
@@ -155,12 +166,28 @@ export default function Exam() {
     }).then((stream) => {
       let localVideo = videoRef.current;
       localVideo.srcObject = stream;
+      const track = stream.getVideoTracks()[0];
+      let imageCapture = new ImageCapture(track);
+      imageCapture.takePhoto().then(imageBitmap => {
+        classifyImage(imageBitmap)
+      })
+
       localStream = stream;
       localVideo.play();
       console.log('Local Video Streaming....')
 
       // socket.emit('message', 'got stream', examRoom)
     })
+    function drawCanvas(canvas, img) {
+      canvas.width = getComputedStyle(canvas).width.split('px')[0];
+      canvas.height = getComputedStyle(canvas).height.split('px')[0];
+      let ratio  = Math.min(canvas.width / img.width, canvas.height / img.height);
+      let x = (canvas.width - img.width * ratio) / 2;
+      let y = (canvas.height - img.height * ratio) / 2;
+      canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
+      canvas.getContext('2d').drawImage(img, 0, 0, img.width, img.height,
+          x, y, img.width * ratio, img.height * ratio);
+    }
 
     function createPeerConnection(remoteClientId) {
       try {
@@ -281,7 +308,6 @@ export default function Exam() {
                 }
               </Grid>
             </Grid>
-
             <Grid item alignItems="right" xs={3} style={{ paddingTop: 20, paddingLeft: 30 }}>
               <div className={classes.content}>
                 <Typography variant="h6" gutterBottom>
@@ -291,7 +317,7 @@ export default function Exam() {
               <Divider />
               <div className={classes.drawerContainer}>
                 <List>
-                  {['Omer Munam', 'Ahmed Ali', 'Omer Majid', 'Ahmed Ali'].map((text, index) => (
+                  {['Omer Munam', 'Ahmed Ali', 'Omer Majid', 'Ahmed Annas'].map((text, index) => (
                     <ListItem button key={text}>
                       <ListItemIcon>{index % 2 === 0 ? <Avatar>OM</Avatar> : <Avatar>AA</Avatar>}</ListItemIcon>
                       <ListItemText primary={text} />

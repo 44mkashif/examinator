@@ -108,10 +108,10 @@ const useStyles = makeStyles((theme) => ({
     },
     loader: {
         display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginTop: '350px'
-    }
+    },
+    whiteColor: {
+        color: theme.palette.primary.contrastText
+    },
 }));
 
 var examDates = [];
@@ -252,19 +252,24 @@ export default function Course() {
 
     const examClicked = (event, exam) => {
         console.log("Exam clicked", exam)
-        if (!exam.submitted) {
-            navigateTo(`../Course/ExamInstruction/${exam._id}`)
+        if (exam.submitted) {
+            navigateTo(`../../Student/ExamAlreadySubmitted/${exam._id}`)
+        }
+        else if (!exam.hallCreated) {
+            navigateTo(`../../Student/ExamWait/${exam._id}`)
         }
         else {
-            navigateTo(`../../Student/ExamAlreadySubmitted/${exam._id}`)
+            navigateTo(`../Course/ExamInstruction/${exam._id}`)
         }
     }
 
     return (
         <React.Fragment>
             {!loading ?
+            <Grid container spacing={0} direction="column" alignItems="center" justify="center" style={{ minHeight: '100vh' }}>
                 <Loader type="BallTriangle" className={classes.loader} color={theme.palette.primary.main} height={80} width={80} />
-                :
+            </Grid>
+            :
                 <div>
                     <AppBar position="relative">
                         <Toolbar>

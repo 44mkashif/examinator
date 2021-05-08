@@ -155,61 +155,83 @@ export default function Course() {
             examTimes = [];
             pExamTimes = [];
 
-            examsFromDb.forEach((exam) => {
-                const examDate = new Date(exam.startTime);
-                const duration = exam.duration;
-                examDate.setHours(examDate.getHours() + duration);
+            if (examsFromDb && examsFromDb.length > 0) {
+                examsFromDb.forEach((exam) => {
+                    const examDate = new Date(exam.startTime);
+                    const duration = exam.duration;
+                    examDate.setHours(examDate.getHours() + duration);
 
-                const now = new Date();
+                    const now = new Date();
 
-                if (examDate < now) {
-                    // console.log("Exam date: ", examDate);
-                    // console.log("Today: ", now);
-                    prevExam.push(exam);
-                } else {
-                    examData.push(exam);
-                }
-
-            });
-
-            examData.forEach(exam => {
-                const dt = processDate(exam.startTime);
-                examDates.push(dt[0]);
-                examTimes.push(dt[1]);
-            });
-
-            prevExam.forEach(exam => {
-                const dt = processDate(exam.startTime);
-                pExamDates.push(dt[0]);
-                pExamTimes.push(dt[1]);
-            });
-
-            // console.log("Prev Exams: ", prevExam);
-            // console.log("Exams: ", examData);
-
-            examData.forEach(exam => {
-                ResultService.getResult(exam._id, studentId, authToken).then(res => {
-                    if (res) {
-                        exam.submitted = true;
+                    if (examDate < now) {
+                        // console.log("Exam date: ", examDate);
+                        // console.log("Today: ", now);
+                        prevExam.push(exam);
+                    } else {
+                        examData.push(exam);
                     }
-                })
-            });
 
-            prevExam.forEach(exam => {
-                ResultService.getResult(exam._id, studentId, authToken).then(res => {
-                    if (res) {
-                        exam.result = res[0];
-                        exam.submitted = true;
-                    }
-                    // console.log("prevExam a: ", prevExam);
+                });
+
+                examData.forEach(exam => {
+                    const dt = processDate(exam.startTime);
+                    examDates.push(dt[0]);
+                    examTimes.push(dt[1]);
+                });
+
+                prevExam.forEach(exam => {
+                    const dt = processDate(exam.startTime);
+                    pExamDates.push(dt[0]);
+                    pExamTimes.push(dt[1]);
+                });
+
+                // console.log("Prev Exams: ", prevExam);
+                // console.log("Exams: ", examData);
+
+                examData.forEach(exam => {
+                    ResultService.getResult(exam._id, studentId, authToken).then(res => {
+                        if (res) {
+                            exam.submitted = true;
+                        }
+                    })
+                });
+
+                var requests = [];
+                prevExam.forEach((exam) => {
+                    requests.push(fetchResults(exam));
+                });
+
+                Promise.all(requests).then(() => {
+                    console.log("prevExam: ", prevExam);
+                    console.log("Loading finished");
                     setLoading(true);
                 })
-            });
-            // console.log("prevExam b: ", prevExam);
+            } else {
+                console.log("Loading finished");
+                setLoading(true);
+            }
 
         });
 
     }, []);
+
+    const fetchResults = (exam) => {
+        return new Promise(resolve => {
+            ResultService.getResult(exam._id, studentId, authToken)
+                .then(res => {
+                    if (res) {
+                        exam.result = res[0];
+                        exam.submitted = true;
+                    }
+                })
+                .then((data) => {
+                    resolve(data);
+                })
+                .catch((e) => {
+                    console.log(e);
+                })
+        });
+    }
 
     const processDate = (startTime) => {
         const date = new Date(startTime);
@@ -255,7 +277,7 @@ export default function Course() {
                                                 {course ? course["courseName"].toUpperCase() : "EXAMINATOR"}
                                             </Typography>
                                         </Button>
-                                        
+
                                     </Grid>
                                 </div>
                             </Grid>

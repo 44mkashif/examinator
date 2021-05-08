@@ -95,14 +95,13 @@ export default function Exam() {
       exam = examFromDb[0];
       console.log("Exam from db: ", exam);
 
-      setLoading(true);
-      //  setExamName(examFromDb[0]["courseName"]);
-      // setExamDuration(examFromDb[0]["duration"]);
-      // setExamStartTime(examFromDb[0]["startTime"]);
-      // console.log(examFromDb[0]);
-      // console.log(examDuration);
-      // console.log(examStartTime);
-      // exam = examFromDb[0];
+      if (exam) {
+        ExamService.updateHallCreated(exam._id, authToken).then(res => {
+          console.log(res);
+          setLoading(true);
+        });
+      }
+
     });
   }, [toggleState])
 

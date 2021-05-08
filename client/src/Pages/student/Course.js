@@ -252,11 +252,14 @@ export default function Course() {
 
     const examClicked = (event, exam) => {
         console.log("Exam clicked", exam)
-        if (!exam.submitted) {
-            navigateTo(`../Course/ExamInstruction/${exam._id}`)
+        if (exam.submitted) {
+            navigateTo(`../../Student/ExamAlreadySubmitted/${exam._id}`)
+        }
+        else if (!exam.hallCreated) {
+            navigateTo(`../../Student/ExamWait/${exam._id}`)
         }
         else {
-            navigateTo(`../../Student/ExamAlreadySubmitted/${exam._id}`)
+            navigateTo(`../Course/ExamInstruction/${exam._id}`)
         }
     }
 

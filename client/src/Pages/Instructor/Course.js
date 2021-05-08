@@ -300,7 +300,7 @@ return (
                         <Grid container spacing={2} justify='space-between' alignItems='center'>
                             <div>
                                 <Grid container>
-                                    <Button component={Link} to="/instructor/dashboard">
+                                    <Button raised className={classes.button} component={Link} to="/instructor/dashboard">
                                         <img src={logoImg} alt="logo" className={classes.logoImg} />
                                         <Typography className={classes.whiteColor}>
                                             {course ? course["courseName"].toUpperCase() : "EXAMINATOR"}

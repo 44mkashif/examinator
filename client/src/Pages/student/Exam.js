@@ -74,9 +74,6 @@ const useStyles = makeStyles((theme) => ({
   },
   loader: {
     display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: '350px'
   }
 
 }));
@@ -407,7 +404,9 @@ export default function AutoGrid() {
   return (
     <React.Fragment >
       {!loading ?
-        <Loader type="BallTriangle" className={classes.loader} color={theme.palette.primary.main} height={80} width={80} />
+        <Grid container spacing={0} direction="column" alignItems="center" justify="center" style={{ minHeight: '100vh' }}>
+          <Loader type="BallTriangle" className={classes.loader} color={theme.palette.primary.main} height={80} width={80} />
+        </Grid>
         :
         <div>
           <AppBar position="relative">

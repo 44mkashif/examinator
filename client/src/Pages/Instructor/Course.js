@@ -111,8 +111,7 @@ const useStyles = makeStyles((theme) => ({
         paddingTop: 10
     },
     cardMargin: {
-        marginLeft: 65,
-        paddingTop: 20
+
     },
     content: {
         fullWidth: 100,
@@ -126,10 +125,10 @@ const useStyles = makeStyles((theme) => ({
     },
     loader: {
         display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginTop: '350px'
-    }
+    },
+    whiteColor: {
+        color: theme.palette.primary.contrastText
+    },
 
 }));
 
@@ -283,10 +282,6 @@ export default function Course() {
                 //Print error message
                 if (res.success) {
                     setError(res.msg);
-                    window.location.reload();
-                }
-                if (res.success === false) {
-                    setError(res.msg);
                 }
             })
         }
@@ -294,22 +289,32 @@ export default function Course() {
 
     return (
         <React.Fragment>
-
             {!loading ?
-                <Loader type="BallTriangle" className={classes.loader} color={theme.palette.primary.main} height={80} width={80} />
-            </Grid>
-            :
-            <div>
-                <AppBar position="relative">
-                    <Toolbar>
-                        <Grid container spacing={2} justify='space-between' alignItems='center'>
-                            <div>
-                                <Grid container>
-                                    <Button raised className={classes.button} component={Link} to="/instructor/dashboard">
-                                        <img src={logoImg} alt="logo" className={classes.logoImg} />
-                                        <Typography className={classes.whiteColor}>
-                                            {course ? course["courseName"].toUpperCase() : "EXAMINATOR"}
-                                        </Typography>
+                <Grid container spacing={0} direction="column" alignItems="center" justify="center" style={{ minHeight: '100vh' }}>
+                    <Loader type="BallTriangle" className={classes.loader} color={theme.palette.primary.main} height={80} width={80} />
+                </Grid>
+                :
+                <div>
+                    <AppBar position="relative">
+                        <Toolbar>
+                            <Grid container spacing={2} justify='space-between' alignItems='center'>
+                                <div>
+                                    <Grid container>
+                                        <Button raised className={classes.button} component={Link} to="/instructor/dashboard">
+                                            <img src={logoImg} alt="logo" className={classes.logoImg} />
+                                            <Typography className={classes.whiteColor}>
+                                                {course ? course["courseName"].toUpperCase() : "EXAMINATOR"}
+                                            </Typography>
+                                        </Button>
+
+                                    </Grid>
+                                </div>
+                                <div>
+                                    <Button raised className={classes.button} onClick={handleOpenMenu}>
+                                        <AccessTimeIcon className={classes.scheduleIcon} />
+                                        <Typography className={classes.buttonText} >
+                                            Schedule Exam
+                                    </Typography>
                                     </Button>
                                 </div>
                             </Grid>
@@ -319,11 +324,11 @@ export default function Course() {
                         <Container className={classes.cardGrid}>
                             <Typography variant="h4">
                                 Scheduled Exams
-                            </Typography>
+                        </Typography>
                             <br />
                             <Divider variant="middle" />
                             <br />
-                            
+
                             {examData.length === 0 ?
                                 <Grid container spacing={4} justify="center">
                                     <h4>No Scheduled Exams found</h4>
@@ -333,33 +338,35 @@ export default function Course() {
                                     {examData.map((exam, i) => (
                                         <div key={i} className={classes.cardDiv}>
                                             <Card className={classes.card} elevation="7">
-                                                <ButtonBase className={classes.cardMargin}
-                                                    onClick={event => { navigateTo(`../Course/Exam/${exam._id}`) }}
-                                                >
-                                                    <CardContent justify="center">
-                                                        <Typography gutterBottom variant="h5" component="h2">
-                                                            {exam.name}
-                                                        </Typography>
-                                                        <Grid container justify="center">
-                                                            <TimerIcon className={classes.iconClass} />
-                                                            <Typography className={classes.margin}>
-                                                                Duration: {exam.duration} hrs
+                                                <Grid container spacing={0} direction="column" alignItems="center" justify="center" >
+                                                    <ButtonBase className={classes.cardMargin}
+                                                        onClick={event => { navigateTo(`../Course/Exam/${exam._id}`) }}
+                                                    >
+                                                        <CardContent justify="center">
+                                                            <Typography gutterBottom variant="h5" component="h2">
+                                                                {exam.name}
+                                                            </Typography>
+                                                            <Grid container justify="center">
+                                                                <TimerIcon className={classes.iconClass} />
+                                                                <Typography className={classes.margin}>
+                                                                    Duration: {exam.duration} hrs
                                                     </Typography>
-                                                        </Grid>
-                                                        <Grid container justify="center">
-                                                            <DateRangeIcon className={classes.iconClass} />
-                                                            <Typography className={classes.margin}>
-                                                                {examDates[i]}
-                                                            </Typography>
-                                                        </Grid>
-                                                        <Grid container justify="center">
-                                                            <AccessTimeIcon className={classes.iconClass} />
-                                                            <Typography className={classes.margin}>
-                                                                {examTimes[i]}
-                                                            </Typography>
-                                                        </Grid>
-                                                    </CardContent>
-                                                </ButtonBase>
+                                                            </Grid>
+                                                            <Grid container justify="center">
+                                                                <DateRangeIcon className={classes.iconClass} />
+                                                                <Typography className={classes.margin}>
+                                                                    {examDates[i]}
+                                                                </Typography>
+                                                            </Grid>
+                                                            <Grid container justify="center">
+                                                                <AccessTimeIcon className={classes.iconClass} />
+                                                                <Typography className={classes.margin}>
+                                                                    {examTimes[i]}
+                                                                </Typography>
+                                                            </Grid>
+                                                        </CardContent>
+                                                    </ButtonBase>
+                                                </Grid>
                                                 <CardActions>
                                                     <Grid container spacing={2}
                                                         justify='space-between'
@@ -374,23 +381,23 @@ export default function Course() {
                                                     </Grid>
                                                 </CardActions>
                                             </Card>
+                                            {error.length === 0 ? undefined : (
+                                                <Alert severity="success">
+                                                    <AlertTitle>Alert</AlertTitle>
+                                                    <Typography>{error}</Typography>
+                                                </Alert>
+                                            )}
                                         </div>
                                     ))}
+
                                 </Grid>
                             }
-                            <div>
-                                {error.length === 0 ? undefined : (
-                                    <Alert severity="success">
-                                        <AlertTitle>Alert</AlertTitle>
-                                        <Typography>{error}</Typography>
-                                    </Alert>
-                                )}
-                            </div>
+
                             <br />
                             <br />
                             <Typography variant="h4">
                                 Previous Exams
-                            </Typography>
+                        </Typography>
 
                             <br />
                             <Divider variant="middle" />
@@ -405,36 +412,36 @@ export default function Course() {
                                     {prevExam.map((exam, i) => (
                                         <div key={i} className={classes.cardDiv}>
                                             <Card className={classes.card} elevation="7">
-                                                <ButtonBase className={classes.cardMargin}
-                                                    onClick={event => { navigateTo(`../Course/${courseId}/Exam/Result/${exam._id}`) }}
-                                                >
-                                                    <CardContent className={classes.cardContent}>
-                                                        <Typography gutterBottom variant="h5" component="h2">
-                                                            {exam.name}
-                                                        </Typography>
-                                                        <Grid container justify="center">
-                                                            <TimerIcon className={classes.iconClass} />
-                                                            <Typography className={classes.margin}>
-                                                                Duration: {exam.duration} hrs
+                                                <Grid container spacing={0} direction="column" alignItems="center" justify="center" >
+                                                    <ButtonBase className={classes.cardMargin}
+                                                        onClick={event => { navigateTo(`../Course/${courseId}/Exam/Result/${exam._id}`) }}
+                                                    >
+                                                        <CardContent className={classes.cardContent}>
+                                                            <Typography gutterBottom variant="h5" component="h2">
+                                                                {exam.name}
+                                                            </Typography>
+                                                            <Grid container justify="center">
+                                                                <TimerIcon className={classes.iconClass} />
+                                                                <Typography className={classes.margin}>
+                                                                    Duration: {exam.duration} hrs
                                                     </Typography>
-                                                        </Grid>
-                                                        <Grid container justify="center">
-                                                            <DateRangeIcon className={classes.iconClass} />
-                                                            <Typography className={classes.margin}>
-                                                                {pExamDates[i]}
-                                                            </Typography>
-                                                        </Grid>
-                                                        <Grid container justify="center">
-                                                            <AccessTimeIcon className={classes.iconClass} />
-                                                            <Typography className={classes.margin}>
-                                                                {pExamTimes[i]}
-                                                            </Typography>
-                                                        </Grid>
-                                                    </CardContent>
-
-                                                </ButtonBase>
+                                                            </Grid>
+                                                            <Grid container justify="center">
+                                                                <DateRangeIcon className={classes.iconClass} />
+                                                                <Typography className={classes.margin}>
+                                                                    {pExamDates[i]}
+                                                                </Typography>
+                                                            </Grid>
+                                                            <Grid container justify="center">
+                                                                <AccessTimeIcon className={classes.iconClass} />
+                                                                <Typography className={classes.margin}>
+                                                                    {pExamTimes[i]}
+                                                                </Typography>
+                                                            </Grid>
+                                                        </CardContent>
+                                                    </ButtonBase>
+                                                </Grid>
                                             </Card>
-
                                         </div>
                                     ))}
                                 </Grid>}
@@ -548,7 +555,7 @@ export default function Course() {
                                             onClick={handleCloseMenu}
                                         >
                                             Close
-                                    </Button>
+                                </Button>
                                         <Button
                                             variant="contained"
                                             color="primary"
@@ -558,7 +565,7 @@ export default function Course() {
                                         // onClick={createCourse}
                                         >
                                             Save
-                                    </Button>
+                                </Button>
                                     </Grid>
                                 </form>
 

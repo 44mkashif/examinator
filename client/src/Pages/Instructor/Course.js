@@ -166,34 +166,36 @@ export default function Course() {
             examTimes = [];
             pExamTimes = [];
 
-            examsFromDb.forEach((exam) => {
-                const examDate = new Date(exam.startTime);
-                const duration = exam.duration;
-                examDate.setHours(examDate.getHours() + duration);
+            if (examsFromDb && examsFromDb.length > 0) {
+                examsFromDb.forEach((exam) => {
+                    const examDate = new Date(exam.startTime);
+                    const duration = exam.duration;
+                    examDate.setHours(examDate.getHours() + duration);
 
-                const now = new Date();
+                    const now = new Date();
 
-                if (examDate < now) {
-                    console.log("Exam date: ", examDate);
-                    console.log("Today: ", now);
+                    if (examDate < now) {
+                        console.log("Exam date: ", examDate);
+                        console.log("Today: ", now);
 
-                    prevExam.push(exam);
-                } else {
-                    examData.push(exam);
-                }
-            })
+                        prevExam.push(exam);
+                    } else {
+                        examData.push(exam);
+                    }
+                })
 
-            examData.forEach(exam => {
-                const dt = processDate(exam.startTime);
-                examDates.push(dt[0]);
-                examTimes.push(dt[1]);
-            });
+                examData.forEach(exam => {
+                    const dt = processDate(exam.startTime);
+                    examDates.push(dt[0]);
+                    examTimes.push(dt[1]);
+                });
 
-            prevExam.forEach(exam => {
-                const dt = processDate(exam.startTime);
-                pExamDates.push(dt[0]);
-                pExamTimes.push(dt[1]);
-            });
+                prevExam.forEach(exam => {
+                    const dt = processDate(exam.startTime);
+                    pExamDates.push(dt[0]);
+                    pExamTimes.push(dt[1]);
+                });
+            }
 
             setLoading(true);
         });
@@ -278,11 +280,9 @@ export default function Course() {
                 //Reload page
                 // else
                 //Print error message
-                if(res.success)
-                {
+                if (res.success) {
                     setError(res.msg);
                 }
-                
             })
         }
     }

@@ -110,9 +110,11 @@ export default function Dashboard() {
 
       courseData = [];
 
-      coursesFromDb.forEach((c) => {
-        courseData.push(c);
-      })
+      if (coursesFromDb && coursesFromDb.length > 0) {
+        coursesFromDb.forEach((c) => {
+          courseData.push(c);
+        })
+      }
       setLoading(true);
     });
   }, []);

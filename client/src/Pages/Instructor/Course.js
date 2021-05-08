@@ -283,6 +283,10 @@ export default function Course() {
                 //Print error message
                 if (res.success) {
                     setError(res.msg);
+                    window.location.reload();
+                }
+                if (res.success === false) {
+                    setError(res.msg);
                 }
             })
         }
@@ -302,7 +306,7 @@ export default function Course() {
                                     <Grid container>
                                         <Button component={Link} to="/instructor/dashboard">
                                             <img src={logoImg} alt="logo" className={classes.logoImg} />
-                                            <Typography variant="h6" color="inherit" noWrap>
+                                            <Typography style={{ color: 'white' }}>
                                                 {course ? course["courseName"].toUpperCase() : "EXAMINATOR"}
                                             </Typography>
                                         </Button>
@@ -328,7 +332,7 @@ export default function Course() {
                             <br />
                             <Divider variant="middle" />
                             <br />
-
+                            
                             {examData.length === 0 ?
                                 <Grid container spacing={4} justify="center">
                                     <h4>No Scheduled Exams found</h4>
@@ -379,18 +383,18 @@ export default function Course() {
                                                     </Grid>
                                                 </CardActions>
                                             </Card>
-                                            {error.length === 0 ? undefined : (
-                                                <Alert severity="success">
-                                                    <AlertTitle>Alert</AlertTitle>
-                                                    <Typography>{error}</Typography>
-                                                </Alert>
-                                            )}
                                         </div>
                                     ))}
-
                                 </Grid>
                             }
-
+                            <div>
+                                {error.length === 0 ? undefined : (
+                                    <Alert severity="success">
+                                        <AlertTitle>Alert</AlertTitle>
+                                        <Typography>{error}</Typography>
+                                    </Alert>
+                                )}
+                            </div>
                             <br />
                             <br />
                             <Typography variant="h4">

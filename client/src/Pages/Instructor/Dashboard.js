@@ -93,9 +93,6 @@ const useStyles = makeStyles((theme) => ({
   },
   loader: {
     display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: '350px'
   }
 }));
 
@@ -144,11 +141,11 @@ export default function Dashboard() {
     <React.Fragment>
       <CssBaseline />
       {!loading ?
-        <Loader type="BallTriangle" className={classes.loader} color={theme.palette.primary.main} height={80} width={80} />
+        <Grid container spacing={0} direction="column" alignItems="center" justify="center" style={{ minHeight: '100vh' }}>
+          <Loader type="BallTriangle" className={classes.loader} color={theme.palette.primary.main} height={80} width={80} />
+        </Grid>
         :
         <div>
-
-
           <AppBar position="relative">
             <Toolbar>
               <Grid container spacing={2} justify='space-between' alignItems='center'>
@@ -213,6 +210,7 @@ export default function Dashboard() {
           <Footer />
           {/* End footer */}
         </div>
+        
       }
     </React.Fragment >
 

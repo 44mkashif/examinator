@@ -108,10 +108,10 @@ const useStyles = makeStyles((theme) => ({
     },
     loader: {
         display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginTop: '350px'
-    }
+    },
+    whiteColor: {
+        color: theme.palette.primary.contrastText
+    },
 }));
 
 var examDates = [];
@@ -266,8 +266,10 @@ export default function Course() {
     return (
         <React.Fragment>
             {!loading ?
+            <Grid container spacing={0} direction="column" alignItems="center" justify="center" style={{ minHeight: '100vh' }}>
                 <Loader type="BallTriangle" className={classes.loader} color={theme.palette.primary.main} height={80} width={80} />
-                :
+            </Grid>
+            :
                 <div>
                     <AppBar position="relative">
                         <Toolbar>
@@ -276,7 +278,7 @@ export default function Course() {
                                     <Grid container>
                                         <Button component={Link} to="/student/dashboard">
                                             <img src={logoImg} alt="logo" className={classes.logoImg} />
-                                            <Typography variant="h6" color="inherit" noWrap>
+                                            <Typography className={classes.whiteColor} noWrap>
                                                 {course ? course["courseName"].toUpperCase() : "EXAMINATOR"}
                                             </Typography>
                                         </Button>

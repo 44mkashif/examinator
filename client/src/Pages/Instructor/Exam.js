@@ -109,10 +109,11 @@ export default function Exam() {
     // exam = examFromDb[0];
   })
 
-  const classifyImage = async (streamImage) => {
+  const classifyImage = async (streamImage, studentID) => {
     console.log("Captured Image: ", streamImage);
     var data = new FormData();
     data.append('frame', streamImage, streamImage.name);
+    data.append('studentID', studentID)
 
     const classification = await ClassificationService.classifyImage(data);
 
@@ -169,7 +170,7 @@ export default function Exam() {
       const track = stream.getVideoTracks()[0];
       let imageCapture = new ImageCapture(track);
       imageCapture.takePhoto().then(imageBitmap => {
-        classifyImage(imageBitmap)
+        classifyImage(imageBitmap, 'studentID')
       })
 
       localStream = stream;
@@ -178,16 +179,6 @@ export default function Exam() {
 
       // socket.emit('message', 'got stream', examRoom)
     })
-    function drawCanvas(canvas, img) {
-      canvas.width = getComputedStyle(canvas).width.split('px')[0];
-      canvas.height = getComputedStyle(canvas).height.split('px')[0];
-      let ratio  = Math.min(canvas.width / img.width, canvas.height / img.height);
-      let x = (canvas.width - img.width * ratio) / 2;
-      let y = (canvas.height - img.height * ratio) / 2;
-      canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
-      canvas.getContext('2d').drawImage(img, 0, 0, img.width, img.height,
-          x, y, img.width * ratio, img.height * ratio);
-    }
 
     function createPeerConnection(remoteClientId) {
       try {

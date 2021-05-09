@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from face_rec import compare_faces
 from flask_cors import CORS, cross_origin
 from integrate import extract_features
+from feat_store import append_features_get_class
 import base64
 from PIL import Image
 import cv2
@@ -35,11 +36,13 @@ def classify():
         print("test")
         if ('frame' in request.files):
             frame = request.files.get('frame')
+            ID = request.form.get('studentID')
             ret = extract_features(frame)
             if bool(ret) == False:
                 response = jsonify(success=False)
             else:
-                response = jsonify(success=True, features=ret)
+                classification = append_features_get_class(ret, ID)
+                response = jsonify(success=True, features=ret, classification=classification)
 
             return response
 

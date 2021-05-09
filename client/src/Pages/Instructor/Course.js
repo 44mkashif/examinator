@@ -282,6 +282,10 @@ export default function Course() {
                 //Print error message
                 if (res.success) {
                     setError(res.msg);
+                    window.location.reload();
+                }
+                if (res.success == false){
+                    setError(res.msg);
                 }
             })
         }
@@ -381,17 +385,22 @@ export default function Course() {
                                                     </Grid>
                                                 </CardActions>
                                             </Card>
-                                            {error.length === 0 ? undefined : (
-                                                <Alert severity="success">
-                                                    <AlertTitle>Alert</AlertTitle>
-                                                    <Typography>{error}</Typography>
-                                                </Alert>
-                                            )}
+                                            
                                         </div>
                                     ))}
 
                                 </Grid>
                             }
+                            <br />
+                            <br />
+                            <div>
+                                {error.length === 0 ? undefined : (
+                                    <Alert severity="success">
+                                        <AlertTitle>Alert</AlertTitle>
+                                        <Typography>{error}</Typography>
+                                    </Alert>
+                                )}
+                            </div>
 
                             <br />
                             <br />

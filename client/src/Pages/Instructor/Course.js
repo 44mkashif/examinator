@@ -149,6 +149,7 @@ export default function Course() {
     const [course, setCourse] = React.useState("");
     const [loading, setLoading] = React.useState(false);
     const [error, setError] = React.useState("");
+    const [success, setSuccess] = React.useState("");
 
     const courseId = useParams().course;
     const authToken = localStorage.getItem('auth-token');
@@ -281,11 +282,13 @@ export default function Course() {
                 // else
                 //Print error message
                 if (res.success) {
-                    setError(res.msg);
+                    setError("");
+                    setSuccess(res.msg);
                     window.location.reload();
                 }
-                if (res.success == false){
+                if (res.success == false) {
                     setError(res.msg);
+                    setSuccess("");
                 }
             })
         }
@@ -385,7 +388,7 @@ export default function Course() {
                                                     </Grid>
                                                 </CardActions>
                                             </Card>
-                                            
+
                                         </div>
                                     ))}
 
@@ -394,14 +397,21 @@ export default function Course() {
                             <br />
                             <br />
                             <div>
-                                {error.length === 0 ? undefined : (
+                                {success.length === 0 ? undefined : (
                                     <Alert severity="success">
+                                        <AlertTitle>Alert</AlertTitle>
+                                        <Typography>{success}</Typography>
+                                    </Alert>
+                                )}
+                            </div>
+                            <div>
+                                {error.length === 0 ? undefined : (
+                                    <Alert severity="error">
                                         <AlertTitle>Alert</AlertTitle>
                                         <Typography>{error}</Typography>
                                     </Alert>
                                 )}
                             </div>
-
                             <br />
                             <br />
                             <Typography variant="h4">

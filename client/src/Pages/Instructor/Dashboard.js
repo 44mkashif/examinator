@@ -11,7 +11,6 @@ import Container from '@material-ui/core/Container';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import { useHistory } from 'react-router-dom';
 import AppBar from '@material-ui/core/AppBar';
-import courseImage from './../../assets/course.jpg';
 import Toolbar from '@material-ui/core/Toolbar';
 import logoImg from './../../assets/navbar-2.png';
 import Button from '@material-ui/core/Button';
@@ -65,7 +64,7 @@ const useStyles = makeStyles((theme) => ({
   },
   cardMedia: {
     paddingTop: '56.25%', // 16:9
-    backgroundImage: `url(${courseImage})`,
+    // backgroundImage: `url(${courseImage})`,
   },
   cardContent: {
     flexGrow: 1,
@@ -152,7 +151,7 @@ export default function Dashboard() {
             <Toolbar>
               <Grid container spacing={2} justify='space-between' alignItems='center'>
                 <div>
-                  <Button raised style={{ borderRadius: 100,}}>
+                  <Button raised style={{ borderRadius: 100, }}>
                     <img src={logoImg} alt="logo" style={{ width: 40, marginRight: 10 }} />
                     <Typography className={classes.whiteColor}>
                       Examinator
@@ -198,6 +197,8 @@ export default function Dashboard() {
                           className={classes.cardHeader}
                         />
                         <CardMedia
+                          // backgroundImage={}
+                          image={course.imgUrl}
                           className={classes.cardMedia}
                         />
                       </Card>
@@ -212,7 +213,7 @@ export default function Dashboard() {
           <Footer />
           {/* End footer */}
         </div>
-        
+
       }
     </React.Fragment >
 

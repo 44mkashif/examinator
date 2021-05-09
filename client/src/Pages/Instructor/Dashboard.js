@@ -197,7 +197,6 @@ export default function Dashboard() {
                           className={classes.cardHeader}
                         />
                         <CardMedia
-                          // backgroundImage={}
                           image={course.imgUrl}
                           className={classes.cardMedia}
                         />

@@ -9,6 +9,7 @@ import Submitted from '../../assets/Submitted.png';
 import Button from '@material-ui/core/Button';
 import { useHistory, useParams, } from 'react-router-dom';
 import Footer from '../Components/Footer';
+import { useLocation } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -38,6 +39,9 @@ export default function StudentExamComplete() {
 
     const history = useHistory();
     const navigateTo = (path) => history.push(path);
+    const location = useLocation();
+    const data = location.state.data;
+    console.log(data);
 
     return (
 
@@ -55,7 +59,7 @@ export default function StudentExamComplete() {
                         <Grid item xs={12}>
 
                             <Typography>
-                                Your Exam Have Been Submitted
+                                {data ? data : "Your exam have been submitted" }
                                 </Typography>
                         </Grid>
                         <Grid xs={12}>

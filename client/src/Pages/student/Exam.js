@@ -1,9 +1,7 @@
 import React from 'react';
 import io from 'socket.io-client';
 import { useHistory, useParams } from 'react-router-dom';
-import { Link } from 'react-router-dom';
 import logoImg from './../../assets/navbar-2.png';
-import Question from './Components/Question';
 import ExamService from '../../services/ExamService';
 import ResultService from '../../services/ResultService';
 import Footer from '../Components/Footer';
@@ -115,27 +113,34 @@ export default function AutoGrid() {
 
     window.onblur = () => {
       socket.emit('message', { type: 'blur', name: localStorage.getItem('studentName') }, examRoom);
+      count+=1;
+      setErrorMsg(`You have changed the tab ${count} times. Your Exam will be cancelled after ${ 3 - count} more warnings`);
+      if(count === 3 ) {
+        navigateToWithData(`../ExamComplete/${examRoom}` , "Your Exam has been cancelled");
+      }
     };
 
-    if (examRoom != '') {
+    if (examRoom !== '') {
       socket.emit('join', examRoom);
     }
 
+    
+
     socket.on('message', (message) => {
-      if (message.type == 'offer' && !isAnswered) {
+      if (message.type === 'offer' && !isAnswered) {
         console.log('student getting offer');
         peerConnection.setRemoteDescription(new RTCSessionDescription(message));
         doAnswer();
-      } else if (message.type == 'candidate') {
+      } else if (message.type === 'candidate') {
         console.log('student getting candidate info');
         let candidate = new RTCIceCandidate({
           sdpMLineIndex: message.label,
           candidate: message.candidate
         });
         peerConnection.addIceCandidate(candidate);
-      } else if (message == 'close') {
+      } else if (message === 'close') {
         handleRemoteHangup();
-      } else if (message.type == 'on/off') {
+      } else if (message.type === 'on/off') {
         if (message.toggleState.checked) {
           console.log('retain')
           document.getElementById('remoteVideo').hidden = false;
@@ -204,13 +209,6 @@ export default function AutoGrid() {
 
       document.getElementById('remoteVideo').hidden = false;
       document.getElementById('instructorAvatar').hidden = true;
-
-      // remoteStream = e.stream;
-      // let remoteVideo = document.createElement('video');
-      // remoteVideo.srcObject = remoteStream;
-      // remoteVideo.autoplay = true;
-      // remoteVideo.width = 250;
-      // videoDivision.appendChild(remoteVideo);
     }
 
 
@@ -295,10 +293,17 @@ export default function AutoGrid() {
   const [activebutton, setButton] = React.useState(true);
   const [selected, setSelected] = React.useState(true);
   const [loading, setLoading] = React.useState(false);
+
+  var count = 0;
+  const [errorMsg, setErrorMsg] = React.useState('');
   // const [selectedOption, setSelectedOption] = React.useState('');
 
   const history = useHistory();
   const navigateTo = (path) => history.push(path);
+  const navigateToWithData =  ( path, msg ) => history.push({
+    pathname: path,
+    state: { data: msg }
+  });
 
 
   const handleChange = () => {
@@ -365,7 +370,7 @@ export default function AutoGrid() {
         obtainedMarks: 0
       }
       answers.forEach(answer => {
-        if (answer.markedOption == answer.correctOption) {
+        if (answer.markedOption === answer.correctOption) {
           result.obtainedMarks += answer.marks;
         }
       });
@@ -374,7 +379,7 @@ export default function AutoGrid() {
       ResultService.addResult(result, authToken).then(res => {
         console.log(res);
         setLoading(true);
-        navigateTo(`../ExamComplete/${examRoom}`);
+        navigateToWithData(`../ExamComplete/${examRoom}`, "Your Exam has been Submitted");
       })
     })
 
@@ -437,6 +442,17 @@ export default function AutoGrid() {
                     Your Exam is Finished. Press Submit to Proceed.
                   </Alert>
                 </Box>
+
+                <div>
+                  {errorMsg &&
+                    <Box mt={5}>
+                      <Alert severity="error">
+                        <AlertTitle>Alert</AlertTitle>
+                        {errorMsg}
+                      </Alert>
+                    </Box>
+                  }
+                </div>
 
                 <Grid container spacing={2} justify="center" style={{ paddingTop: 40 }}>
                   <Grid item>

@@ -108,31 +108,31 @@ export default function Exam() {
     const socket = io("http://127.0.0.1:4001");
     var videoDivision = document.querySelector('#videos');
 
-    if (examRoom != '') {
+    if (examRoom !== '') {
       socket.emit('create', examRoom);
     }
 
     socket.on('message', (message, remoteClientId) => {
-      if (message == 'got stream' && isCreator) {
+      if (message === 'got stream' && isCreator) {
         console.log('instructor getting client signal');
         createPeerConnection(remoteClientId);
         doCall(remoteClientId);
-      } else if (message.type == 'answer' && isCreator) {
+      } else if (message.type === 'answer' && isCreator) {
         peerConnections[remoteClientId].setRemoteDescription(new RTCSessionDescription(message));
         remoteId = remoteClientId;
-      } else if (message.type == 'candidate') {
+      } else if (message.type === 'candidate') {
         console.log('instructor getting candidate info');
         let candidate = new RTCIceCandidate({
           sdpMLineIndex: message.label,
           candidate: message.candidate
         });
         peerConnections[remoteClientId].addIceCandidate(candidate);
-      } else if (message == 'close') {
+      } else if (message === 'close') {
         console.log('remote stream closed...');
         handleRemoteHangup(remoteClientId);
-      } else if (message.type == 'blur') {
+      } else if (message.type === 'blur') {
         setmsg(message.name + ' has changed tab');
-      } else if (message.type == 'focus') {
+      } else if (message.type === 'focus') {
         setmsg('');
       }
 

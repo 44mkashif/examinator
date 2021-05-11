@@ -124,8 +124,6 @@ export default function AutoGrid() {
       socket.emit('join', examRoom);
     }
 
-
-
     socket.on('message', (message) => {
       if (message.type === 'offer' && !isAnswered) {
         console.log('student getting offer');

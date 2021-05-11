@@ -1,5 +1,7 @@
-import React from 'react';
-import AppBar from './Components/AppBar';
+import React, { useEffect } from 'react';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import logoImg from './../../assets/navbar-2.png';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
@@ -9,11 +11,11 @@ import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
 import { useHistory, useParams, } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
-import Webcam from "react-webcam";
-import { Alert, AlertTitle } from '@material-ui/lab';
-import Box from '@material-ui/core/Box';
-import FormData from 'form-data';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
+import ExamService from '../../services/ExamService';
+import theme from './../../theme';
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import Loader from "react-loader-spinner";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -50,23 +52,18 @@ const useStyles = makeStyles((theme) => ({
         borderStyle: "solid",
         borderColor: theme.palette.primary.main,
     },
-
+    loader: {
+        display: 'flex',
+    }
 }));
 
-const videoConstraints = {
-    width: 480,
-    height: 480,
-    facingMode: "user"
-};
+var exam;
 
 export default function Testpage() {
 
     const studentId = localStorage.getItem('studentId');
     const authToken = localStorage.getItem('auth-token');
-
-    const [displayCaptured, setCaptured] = React.useState(false);
-    const [displayValidity, setValidity] = React.useState(true);
-    // const [srcImg, setSrcImg] = React.useState(null);
+    const [loading, setLoading] = React.useState(false);
 
     const history = useHistory();
     const navigateTo = (path) => history.push(path);
@@ -75,54 +72,107 @@ export default function Testpage() {
 
     const classes = useStyles();
 
-    const webcamRef = React.useRef(null);
+    useEffect(() => {
+        ExamService.getExam(examRoom, authToken, false).then(examFromDb => {
+            exam = examFromDb[0];
 
+            exam.startTime = processDate(exam.startTime);
+            console.log("Exam from db: ", exam);
+            setLoading(true);
+        })
+    }, []);
 
-    var data = new FormData();
+    const processDate = (date) => {
+        date = new Date(date);
+
+        var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+        var hours = date.getHours();
+        var minutes = date.getMinutes();
+        var ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12;
+        hours = hours ? hours : 12; // the hour '0' should be '12'
+        minutes = minutes < 10 ? '0' + minutes : minutes;
+
+        const strTime = hours + ':' + minutes + ' ' + ampm;
+        const strDate = months[date.getMonth()] + " " + date.getDate() + ", " + date.getFullYear();
+        return strDate + " " + strTime;
+    }
+
 
     return (
         <React.Fragment>
-            <AppBar />
-            <CssBaseline />
-            <Container fixed>
-                <div className={classes.root}>
-                    <Paper className={classes.paper}>
-                        <Grid container spacing={3}>
-                            <Grid item xs={12} >
-                                <AccessTimeIcon />
-                                <Typography variant="h6" style={{ paddingTop: 100 }}>
-                                    Your Exam is scheduled at 10:00pm - 12:00pm Eastern Standard Time
-                            </Typography>
-                                <Typography variant="h6" style={{ paddingTop: 100 }}>
-                                    Data Structures Mid Term Exam.
-                            </Typography>
+            {!loading ?
+                <Grid container spacing={0} direction="column" alignItems="center" justify="center" style={{ minHeight: '100vh' }}>
+                    <Loader type="BallTriangle" className={classes.loader} color={theme.palette.primary.main} height={80} width={80} />
+                </Grid>
+                :
+                <div>
+                    <AppBar position="relative">
+                        <Toolbar>
+                            <Grid container spacing={2} justify='space-between' alignItems='center'>
+                                <div>
+                                    <Grid container>
+                                        <img src={logoImg} alt="logo" style={{ width: 40, marginRight: 10 }} />
+                                        <Typography style={{ color: 'white', marginTop: 5 }}>
+                                            {exam ? exam.name.toUpperCase() : "EXAMINATOR"}
+                                        </Typography>
+                                    </Grid>
+                                </div>
                             </Grid>
-                            <Divider orientation="vertical" flexItem style={{ marginRight: "-1px" }} />
+                        </Toolbar>
+                    </AppBar>
+                    <CssBaseline />
+                    <Container fixed>
+                        <div className={classes.root}>
+                            <Paper className={classes.paper}>
+                                <Grid container spacing={3}>
+                                    <Grid item xs={12} >
+                                        <AccessTimeIcon />
+                                        <Typography variant="h6" style={{ paddingTop: 100 }}>
+                                            {exam.name}
+                                        </Typography>
+                                        <Typography variant="h6" style={{ paddingTop: 100 }}>
+                                            Your Exam is scheduled at {exam.startTime}
+                                        </Typography>
+                                        <Typography variant="h6" style={{ paddingTop: 100 }}>
+                                            Duration: {exam.duration} hrs
+                                        </Typography>
+                                        <Typography variant="h6" style={{ paddingTop: 100 }}>
+                                            Total marks: {exam.totalMarks}
+                                        </Typography>
+                                        <Typography variant="h6" style={{ paddingTop: 100 }}>
+                                            No of questions: {exam.question.length}
+                                        </Typography>
+                                    </Grid>
+                                    <Divider orientation="vertical" flexItem style={{ marginRight: "-1px" }} />
 
-                            <Grid item xs={12}>
-                                {/* <button onClick={capture}>Capture photo</button> */}
+                                    <Grid item xs={12}>
+                                        {/* <button onClick={capture}>Capture photo</button> */}
 
-                                <Grid align="center" className={classes.padding}>
-                                    <Button
-
-                                        variant="contained"
-                                        color="primary"
-                                        className={classes.button} x
-                                        // onClick={capture}
-                                        // endIcon={<Icon></Icon>}
-                                        onClick={event => {
-                                            navigateTo(`../Course/Exam/${examRoom}`)
-                                        }}
-                                    >
-                                        Test Camera
-                                </Button>
+                                        <Grid align="center" className={classes.padding}>
+                                            {/* Chudri ye button styling krty huy remove kr dena */}
+                                            <Button
+                                                variant="contained"
+                                                color="primary"
+                                                className={classes.button} x
+                                                // onClick={capture}
+                                                // endIcon={<Icon></Icon>}
+                                                onClick={event => {
+                                                    navigateTo(`../Course/Exam/${examRoom}`)
+                                                }}
+                                            >
+                                                Test Camera
+                                            </Button>
+                                        </Grid>
+                                    </Grid>
                                 </Grid>
-                            </Grid>
-                        </Grid>
-                    </Paper>
+                            </Paper>
 
+                        </div>
+                    </Container>
                 </div>
-            </Container>
+            }
         </React.Fragment>
     )
 };

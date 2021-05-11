@@ -16,7 +16,7 @@ export default function appBar() {
                 <Grid container spacing={2} justify='space-between' alignItems='center'>
                     <div>
                         <Grid container>
-                            <Button component={Link} to="/student/dashboard">
+                            <Button raised style={{ borderRadius: 100,}} component={Link} to="/student/dashboard"> 
                                 <img src={logoImg} alt="logo" style={{ width: 40, marginRight: 10 }} />
                                 <Typography style={{ color: 'white' }}>
                                     Examinator

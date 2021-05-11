@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import AppBar from './Components/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
@@ -83,10 +83,11 @@ export default function Testpage() {
 
     var data = new FormData();
 
-
-    FacialRecognitionService.getImage(studentId, authToken).then((imgUrl) => {
-        setimgURL(imgUrl);
-    })
+    useEffect(() => {
+        FacialRecognitionService.getImage(studentId, authToken).then((imgUrl) => {
+            setimgURL(imgUrl);
+        })
+    }, []);
 
     const capture = () => {
         const imageSrc = webcamRef.current.getScreenshot();
@@ -177,7 +178,7 @@ export default function Testpage() {
 
                                     variant="contained"
                                     color="primary"
-                                    className={classes.button}x 
+                                    className={classes.button} x
                                     // onClick={capture}
                                     // endIcon={<Icon></Icon>}
                                     onClick={event => {

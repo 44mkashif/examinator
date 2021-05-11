@@ -12,6 +12,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import CourseService from './../../services/CourseService';
 import ResultService from './../../services/ResultService';
+import StudentService from './../../services/StudentService';
 import theme from './../../theme';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Loader from "react-loader-spinner";
@@ -21,18 +22,12 @@ import Typography from '@material-ui/core/Typography';
 import Toolbar from '@material-ui/core/Toolbar';
 import logoImg from './../../assets/navbar-2.png';
 
+import { Link } from 'react-router-dom';
+import Button from '@material-ui/core/Button';
+
+
 import { useHistory, useParams, } from 'react-router-dom';
 
-function createData(name, calories, fat, carbs, protein) {
-    return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-    createData("Saify", 20, 30, "05/07/2021 1:56 AM"),
-    createData("Kashi", 16, 30, "05/07/2021 1:57 AM"),
-    createData("Munam", 16, 30, "05/07/2021 1:58 AM"),
-    createData("Boogey", 15.5, 30, "05/07/2021 1:59 AM"),
-];
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -61,7 +56,6 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center'
     },
     button: {
-
         borderRadius: 100,
 
     },
@@ -77,13 +71,17 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
         justifyContent: 'center',
         marginTop: '350px'
-    }
+    },
+    whiteColor: {
+        color: theme.palette.primary.contrastText
+    },
 
 }));
 
 var examRoom;
 var course;
 var results;
+var students = [];
 
 const processDate = (date) => {
     date = new Date(date);
@@ -119,11 +117,43 @@ export default function Result() {
         });
 
         ResultService.getResults(examRoom, authToken).then(res => {
-            console.log(res);
+            // console.log(res);
             results = res;
-            setLoading(true);
+
+            students = [];
+
+            if (results && results.length > 0) {
+                var requests = [];
+                results.forEach(result => {
+                    requests.push(fetchStudents(result.studentId));
+                });
+
+                Promise.all(requests).then(() => {
+                    console.log("students: ", students);
+                    console.log("Loading finished");
+                    setLoading(true);
+                })
+            } else {
+                setLoading(true);
+            }
         })
+
     }, []);
+
+    const fetchStudents = (studentId) => {
+        return new Promise(resolve => {
+            StudentService.getStudent(studentId, authToken)
+                .then(student => {
+                    students.push(student);
+                })
+                .then((data) => {
+                    resolve(data);
+                })
+                .catch((e) => {
+                    console.log(e);
+                });
+        })
+    }
 
 
     const classes = useStyles();
@@ -138,18 +168,24 @@ export default function Result() {
                 :
                 <div>
                     <AppBar position="relative">
-                        <Toolbar>
-                            <Grid container spacing={2} justify='space-between' alignItems='center'>
-                                <div>
-                                    <Grid container>
-                                        <img src={logoImg} alt="logo" className={classes.logoImg} />
-                                        <Typography variant="h6" color="inherit" noWrap>
-                                            {course ? course.courseName : "EXAMINATOR"}
-                                        </Typography>
-                                    </Grid>
-                                </div>
-                            </Grid>
-                        </Toolbar>
+                        
+                            <Toolbar>
+                                <Grid container spacing={2} justify='space-between' alignItems='center'>
+                                    <div>
+                                        <Grid container>
+                                        <Button raised className={classes.button} component={Link} to="/instructor/dashboard">
+                                            <img src={logoImg} alt="logo" className={classes.logoImg} />
+                                        
+                                            <Typography className={classes.whiteColor} >
+                                                {course ? course.courseName.toUpperCase() : "EXAMINATOR"}
+                                            </Typography>
+                                        </Button>
+                                        </Grid>
+                                    </div>
+                                </Grid>
+                            </Toolbar>
+                        
+                        
                     </AppBar>
                     <CssBaseline />
                     {results && results.length > 0 ?
@@ -166,12 +202,12 @@ export default function Result() {
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
-                                        {results.map((result) => (
+                                        {results.map((result, i) => (
                                             <TableRow key={result.studentId}>
                                                 <TableCell component="th" scope="row">
-                                                    {result.studentId}
+                                                    {students[i].fName} {students[i].lName}
                                                 </TableCell>
-                                                <TableCell align="center">{result.studentId}</TableCell>
+                                                <TableCell align="center">{students[i].regNo}</TableCell>
                                                 <TableCell align="center">{result.obtainedMarks}</TableCell>
                                                 <TableCell align="center">{result.totalMarks}</TableCell>
                                                 <TableCell align="right">{processDate(result.createdAt)}</TableCell>

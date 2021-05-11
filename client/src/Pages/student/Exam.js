@@ -1,9 +1,7 @@
 import React from 'react';
 import io from 'socket.io-client';
 import { useHistory, useParams } from 'react-router-dom';
-import { Link } from 'react-router-dom';
 import logoImg from './../../assets/navbar-2.png';
-import Question from './Components/Question';
 import ExamService from '../../services/ExamService';
 import ResultService from '../../services/ResultService';
 import Footer from '../Components/Footer';
@@ -74,9 +72,6 @@ const useStyles = makeStyles((theme) => ({
   },
   loader: {
     display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: '350px'
   }
 
 }));
@@ -118,27 +113,32 @@ export default function AutoGrid() {
 
     window.onblur = () => {
       socket.emit('message', { type: 'blur', name: localStorage.getItem('studentName') }, examRoom);
+      count += 1;
+      setErrorMsg(`You have changed the tab ${count} times. Your Exam will be cancelled after ${3 - count} more warnings`);
+      if (count === 3) {
+        submitExam(null, "Your Exam has been cancelled");
+      }
     };
 
-    if (examRoom != '') {
+    if (examRoom !== '') {
       socket.emit('join', examRoom);
     }
 
     socket.on('message', (message) => {
-      if (message.type == 'offer' && !isAnswered) {
+      if (message.type === 'offer' && !isAnswered) {
         console.log('student getting offer');
         peerConnection.setRemoteDescription(new RTCSessionDescription(message));
         doAnswer();
-      } else if (message.type == 'candidate') {
+      } else if (message.type === 'candidate') {
         console.log('student getting candidate info');
         let candidate = new RTCIceCandidate({
           sdpMLineIndex: message.label,
           candidate: message.candidate
         });
         peerConnection.addIceCandidate(candidate);
-      } else if (message == 'close') {
+      } else if (message === 'close') {
         handleRemoteHangup();
-      } else if (message.type == 'on/off') {
+      } else if (message.type === 'on/off') {
         if (message.toggleState.checked) {
           console.log('retain')
           document.getElementById('remoteVideo').hidden = false;
@@ -207,13 +207,6 @@ export default function AutoGrid() {
 
       document.getElementById('remoteVideo').hidden = false;
       document.getElementById('instructorAvatar').hidden = true;
-
-      // remoteStream = e.stream;
-      // let remoteVideo = document.createElement('video');
-      // remoteVideo.srcObject = remoteStream;
-      // remoteVideo.autoplay = true;
-      // remoteVideo.width = 250;
-      // videoDivision.appendChild(remoteVideo);
     }
 
 
@@ -246,6 +239,51 @@ export default function AutoGrid() {
       peerConnection = null;
     }
 
+    ExamService.getExam(examRoom, authToken, false).then((examFromDb) => {
+      questions = []
+
+      exam = examFromDb[0];
+      console.log("Exam from db: ", exam);
+
+      const examDate = new Date(exam.startTime);
+      const duration = exam.duration;
+      examDate.setHours(examDate.getHours() + duration);
+
+      const now = new Date();
+
+      if (examDate < now) {
+        console.log("Exam date: ", examDate);
+        console.log("Today: ", now);
+        console.log("Exam over");
+        navigateTo(`../ExamComplete/${examRoom}`);
+      }
+
+      exam.question.forEach((question, i) => {
+        // <Question question={"Question " + (i + 1) + ": " + question.statement} options={question.options} qNo={i} />
+        questions.push(
+          <div>
+            <Paper className={classes.paper}>
+              <FormControl component="fieldset">
+                <FormLabel component="legend">
+                  Q{(i + 1)}: {question.statement}
+                </FormLabel>
+                <RadioGroup aria-label="answer" name="answer1" value={selectedOptions[i]} onChange={event => handleOptionChange(event, question, i)}>
+                  <FormControlLabel value="0" control={<Radio />} label={question.options[0]} />
+                  <FormControlLabel value="1" control={<Radio />} label={question.options[1]} />
+                  <FormControlLabel value="2" control={<Radio />} label={question.options[2]} />
+                  <FormControlLabel value="3" control={<Radio />} label={question.options[3]} />
+                </RadioGroup>
+              </FormControl>
+            </Paper>
+          </div>
+        )
+      });
+      console.log("Ques: ", questions);
+
+      setLoading(true);
+
+    });
+
   }, []);
 
   const classes = useStyles();
@@ -253,10 +291,17 @@ export default function AutoGrid() {
   const [activebutton, setButton] = React.useState(true);
   const [selected, setSelected] = React.useState(true);
   const [loading, setLoading] = React.useState(false);
+
+  var count = 0;
+  const [errorMsg, setErrorMsg] = React.useState('');
   // const [selectedOption, setSelectedOption] = React.useState('');
 
   const history = useHistory();
   const navigateTo = (path) => history.push(path);
+  const navigateToWithData = (path, msg) => history.push({
+    pathname: path,
+    state: { data: msg }
+  });
 
 
   const handleChange = () => {
@@ -289,7 +334,7 @@ export default function AutoGrid() {
     })
   }
 
-  const submitExam = () => {
+  const submitExam = (event, msg) => {
     //Fetch answers and submit result
     submittedAnswers = [];
     setLoading(false);
@@ -300,21 +345,25 @@ export default function AutoGrid() {
       var questions = exam.question;
       var answers = [];
 
-      console.log("Student Answers: ", submittedAnswers);
       console.log("Questions: ", questions);
 
-      submittedAnswers.forEach(answer => {
-        questions.forEach(question => {
-          if (question._id === answer.questionId) {
-            answers.push({
-              qId: question._id,
-              marks: question.marks,
-              correctOption: question.correctOption,
-              markedOption: answer.markedOption
-            })
-          }
+      if (submittedAnswers && submittedAnswers.length > 0) {
+
+        console.log("Student Answers: ", submittedAnswers);
+
+        submittedAnswers.forEach(answer => {
+          questions.forEach(question => {
+            if (question._id === answer.questionId) {
+              answers.push({
+                qId: question._id,
+                marks: question.marks,
+                correctOption: question.correctOption,
+                markedOption: answer.markedOption
+              })
+            }
+          });
         });
-      });
+      }
 
       var result = {
         examId: examRoom,
@@ -322,29 +371,34 @@ export default function AutoGrid() {
         totalMarks: exam.totalMarks,
         obtainedMarks: 0
       }
-      answers.forEach(answer => {
-        if (answer.markedOption == answer.correctOption) {
-          result.obtainedMarks += answer.marks;
-        }
-      });
+
+      if (answers.length > 0) {
+        answers.forEach(answer => {
+          if (answer.markedOption === answer.correctOption) {
+            result.obtainedMarks += answer.marks;
+          }
+        });
+      }
 
       console.log("Result: ", result);
       ResultService.addResult(result, authToken).then(res => {
         console.log(res);
         setLoading(true);
-        navigateTo(`../ExamComplete/${examRoom}`);
+        navigateToWithData(`../ExamComplete/${examRoom}`, msg);
       })
     })
 
   }
 
-  const handleOptionChange = (event, index) => {
+  const handleOptionChange = (event, question, index) => {
     setSelected(false);
     console.log(event.target.value);
     // setSelectedOption(event.target.value);
 
-    selectedOptions[index] = exam.question[index].options.indexOf(event.target.value);
+    // selectedOptions[index] = question.options.indexOf(event.target.value);
+    selectedOptions[index] = parseInt(event.target.value);
     console.log("selectedOptions", selectedOptions);
+    console.log("selectedOption", question.options[selectedOptions[index]]);
   };
 
   // var questionNum;
@@ -359,55 +413,12 @@ export default function AutoGrid() {
   //   questions.push(<Question question={"Question " + i + ": " + ques[i]} qNo={i} />);
   // }
 
-  ExamService.getExam(examRoom, authToken, false).then((examFromDb) => {
-    questions = []
-
-    exam = examFromDb[0];
-    console.log("Exam from db: ", exam);
-
-    const examDate = new Date(exam.startTime);
-    const duration = exam.duration;
-    examDate.setHours(examDate.getHours() + duration);
-
-    const now = new Date();
-
-    if (examDate < now) {
-      console.log("Exam date: ", examDate);
-      console.log("Today: ", now);
-      console.log("Exam over");
-      navigateTo(`../ExamComplete/${examRoom}`);
-    }
-
-    exam.question.forEach((question, i) => {
-      // <Question question={"Question " + (i + 1) + ": " + question.statement} options={question.options} qNo={i} />
-      questions.push(
-        <div>
-          <Paper className={classes.paper}>
-            <FormControl component="fieldset">
-              <FormLabel component="legend">
-                Q{(i + 1)}: {question.statement}
-              </FormLabel>
-              <RadioGroup aria-label="answer" name="answer1" value={selectedOptions[i]} onChange={event => handleOptionChange(event, i)}>
-                <FormControlLabel value={question.options[0]} control={<Radio />} label={question.options[0]} />
-                <FormControlLabel value={question.options[1]} control={<Radio />} label={question.options[1]} />
-                <FormControlLabel value={question.options[2]} control={<Radio />} label={question.options[2]} />
-                <FormControlLabel value={question.options[3]} control={<Radio />} label={question.options[3]} />
-              </RadioGroup>
-            </FormControl>
-          </Paper>
-        </div>
-      )
-    });
-    console.log("Ques: ", questions);
-
-    setLoading(true);
-
-  })
-
   return (
     <React.Fragment >
       {!loading ?
-        <Loader type="BallTriangle" className={classes.loader} color={theme.palette.primary.main} height={80} width={80} />
+        <Grid container spacing={0} direction="column" alignItems="center" justify="center" style={{ minHeight: '100vh' }}>
+          <Loader type="BallTriangle" className={classes.loader} color={theme.palette.primary.main} height={80} width={80} />
+        </Grid>
         :
         <div>
           <AppBar position="relative">
@@ -417,7 +428,7 @@ export default function AutoGrid() {
                   <Grid container>
                     <img src={logoImg} alt="logo" style={{ width: 40, marginRight: 10 }} />
                     <Typography style={{ color: 'white', marginTop: 5 }}>
-                      {exam.name}
+                      {exam ? exam.name.toUpperCase() : "EXAMINATOR"}
                     </Typography>
                   </Grid>
                 </div>
@@ -439,6 +450,17 @@ export default function AutoGrid() {
                   </Alert>
                 </Box>
 
+                <div>
+                  {errorMsg &&
+                    <Box mt={5}>
+                      <Alert severity="error">
+                        <AlertTitle>Alert</AlertTitle>
+                        {errorMsg}
+                      </Alert>
+                    </Box>
+                  }
+                </div>
+
                 <Grid container spacing={2} justify="center" style={{ paddingTop: 40 }}>
                   <Grid item>
                     <Button variant="contained" color="primary" className={classes.button} onClick={handleChange} disabled={selected} >
@@ -447,7 +469,7 @@ export default function AutoGrid() {
                   </Grid>
                   <Grid item>
                     <Button variant="contained" color="secondary" className={classes.button}
-                      disabled={activebutton} onClick={submitExam}>
+                      disabled={activebutton} onClick={event => submitExam(event, "Your Exam has been Submitted")}>
                       Submit
                   </Button>
                   </Grid>

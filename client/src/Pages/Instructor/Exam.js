@@ -1,5 +1,5 @@
 import React from 'react';
-import AppBar from './Components/AppBar';
+import AppBar from '@material-ui/core/AppBar';
 import Grid from '@material-ui/core/Grid';
 import io from 'socket.io-client';
 import { useParams } from 'react-router-dom';
@@ -66,9 +66,6 @@ const useStyles = makeStyles((theme) => ({
   },
   loader: {
     display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: '350px'
   }
 }));
 
@@ -92,22 +89,19 @@ export default function Exam() {
   React.useEffect(() => {
     const socket = io("http://127.0.0.1:4001");
     socket.emit('on/off stream', { type: 'on/off', toggleState: toggleState }, examRoom);
+
+    ExamService.getExam(examRoom, authToken, true).then((examFromDb) => {
+      exam = examFromDb[0];
+      console.log("Exam from db: ", exam);
+      if (exam) {
+        ExamService.updateHallCreated(exam._id, authToken).then(res => {
+          console.log(res);
+          setLoading(true);
+        });
+      }
+
+    });
   }, [toggleState])
-
-  const authToken = localStorage.getItem('auth-token');
-  ExamService.getExam(examRoom, authToken, true).then((examFromDb) => {
-    exam = examFromDb[0];
-    console.log("Exam from db: ", exam);
-
-    setLoading(true);
-    //  setExamName(examFromDb[0]["courseName"]);
-    // setExamDuration(examFromDb[0]["duration"]);
-    // setExamStartTime(examFromDb[0]["startTime"]);
-    // console.log(examFromDb[0]);
-    // console.log(examDuration);
-    // console.log(examStartTime);
-    // exam = examFromDb[0];
-  })
 
   const classifyImage = async (streamImage, studentID) => {
     console.log("Captured Image: ", streamImage);
@@ -120,37 +114,37 @@ export default function Exam() {
     console.log(classification);
   }
 
+  const authToken = localStorage.getItem('auth-token');
 
   React.useEffect(() => {
-
     const socket = io("http://127.0.0.1:4001");
     var videoDivision = document.querySelector('#videos');
 
-    if (examRoom != '') {
+    if (examRoom !== '') {
       socket.emit('create', examRoom);
     }
 
     socket.on('message', (message, remoteClientId) => {
-      if (message == 'got stream' && isCreator) {
+      if (message === 'got stream' && isCreator) {
         console.log('instructor getting client signal');
         createPeerConnection(remoteClientId);
         doCall(remoteClientId);
-      } else if (message.type == 'answer' && isCreator) {
+      } else if (message.type === 'answer' && isCreator) {
         peerConnections[remoteClientId].setRemoteDescription(new RTCSessionDescription(message));
         remoteId = remoteClientId;
-      } else if (message.type == 'candidate') {
+      } else if (message.type === 'candidate') {
         console.log('instructor getting candidate info');
         let candidate = new RTCIceCandidate({
           sdpMLineIndex: message.label,
           candidate: message.candidate
         });
         peerConnections[remoteClientId].addIceCandidate(candidate);
-      } else if (message == 'close') {
+      } else if (message === 'close') {
         console.log('remote stream closed...');
         handleRemoteHangup(remoteClientId);
-      } else if (message.type == 'blur') {
+      } else if (message.type === 'blur') {
         setmsg(message.name + ' has changed tab');
-      } else if (message.type == 'focus') {
+      } else if (message.type === 'focus') {
         setmsg('');
       }
 
@@ -252,7 +246,9 @@ export default function Exam() {
   return (
     <React.Fragment>
       {!loading ?
-        <Loader type="BallTriangle" className={classes.loader} color={theme.palette.primary.main} height={80} width={80} />
+        <Grid container spacing={0} direction="column" alignItems="center" justify="center" style={{ minHeight: '100vh' }}>
+          <Loader type="BallTriangle" className={classes.loader} color={theme.palette.primary.main} height={80} width={80} />
+        </Grid>
         :
         <div>
           <AppBar position="relative">
@@ -260,15 +256,16 @@ export default function Exam() {
               <Grid container spacing={2} justify='space-between' alignItems='center'>
                 <div>
                   <Grid container>
-                    <img src={logoImg} alt="logo" className={classes.logoImg} />
-                    <Typography variant="h6" color="inherit" noWrap>
-                      Examinator
-                  </Typography>
+                    <img src={logoImg} alt="logo" style={{ width: 40, marginRight: 10 }} />
+                    <Typography style={{ color: 'white', marginTop: 5 }}>
+                      {exam ? exam.name.toUpperCase() : "EXAMINATOR"}
+                    </Typography>
                   </Grid>
                 </div>
               </Grid>
             </Toolbar>
           </AppBar>
+
           <Grid container spacing={0}>
             <Grid item justify="start" xs={9} style={{ paddingTop: 20, paddingLeft: 20, paddingRight: 20 }} >
               <Timer duration={exam.duration} startTime={exam.startTime} />

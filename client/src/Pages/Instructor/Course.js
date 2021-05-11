@@ -45,11 +45,7 @@ const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
     },
-    // paper: {
-    //     padding: theme.spacing(2),
-    //     textAlign: 'center',
-    //     color: theme.palette.text.secondary,
-    // },
+    
     modal: {
         display: 'flex',
         alignItems: 'center',
@@ -275,18 +271,12 @@ export default function Course() {
         if (window.confirm('Are you sure you wish to delete this item?')) {
             ExamService.deleteExam(examId, authToken).then(res => {
                 console.log(res);
-
-                // if (res.success)
-                //Print message deleted
-                //Reload page
-                // else
-                //Print error message
                 if (res.success) {
                     setError("");
                     setSuccess(res.msg);
                     window.location.reload();
                 }
-                if (res.success == false) {
+                if (res.success === false) {
                     setError(res.msg);
                     setSuccess("");
                 }

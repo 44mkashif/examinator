@@ -113,7 +113,20 @@ export default function Exam() {
 
     console.log(classification);
   }
+<<<<<<< HEAD
 
+=======
+      if (exam) {
+        ExamService.updateHallCreated(exam._id, authToken).then(res => {
+          console.log(res);
+          setLoading(true);
+        });
+      }
+
+    });
+  }, [toggleState])
+
+>>>>>>> 034a4dbb2db9a4c8c8e5313cd99f9af618d93102
   const authToken = localStorage.getItem('auth-token');
 
   React.useEffect(() => {

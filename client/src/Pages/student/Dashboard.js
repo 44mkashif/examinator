@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import Avatar from '@material-ui/core/Avatar';
@@ -41,13 +41,18 @@ const useStyles = makeStyles((theme) => ({
   },
   card: {
     width: 300,
-    margin: theme.spacing(0, 3, 3),
+    // margin: theme.spacing(1, 3, 2),
+    border: `1px solid ${theme.palette.primary.dark}`,
+    borderRadius: "10px"
     // display: 'flex',
     // flexDirection: 'column',
   },
+  cardDiv: {
+    padding: "10px",
+  },
   cardMedia: {
     paddingTop: '56.25%', // 16:9
-    backgroundImage: `url(${courseImage})`,
+    // backgroundImage: `url(${courseImage})`,
   },
   cardContent: {
     flexGrow: 1,
@@ -75,9 +80,6 @@ const useStyles = makeStyles((theme) => ({
   },
   loader: {
     display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: '350px'
   }
 }));
 
@@ -102,18 +104,20 @@ export default function Dashboard() {
 
   const [loading, setLoading] = React.useState(false);
 
-  CourseService.getCourses(instructorId, authToken).then((coursesFromDb) => {
-    console.log(coursesFromDb);
+  useEffect(() => {
+    CourseService.getCourses(instructorId, authToken).then((coursesFromDb) => {
+      console.log(coursesFromDb);
 
-    courseData = [];
-    if (coursesFromDb.length > 0) {
-      coursesFromDb.forEach((c) => {
-        courseData.push(c);
-      })
-    }
-    setLoading(true);
+      courseData = [];
 
-  })
+      if (coursesFromDb && coursesFromDb.length > 0) {
+        coursesFromDb.forEach((c) => {
+          courseData.push(c);
+        })
+      }
+      setLoading(true);
+    });
+  }, []);
 
 
 
@@ -127,7 +131,9 @@ export default function Dashboard() {
     <React.Fragment>
       <CssBaseline />
       {!loading ?
-        <Loader type="BallTriangle" className={classes.loader} color={theme.palette.primary.main} height={80} width={80} />
+        <Grid container spacing={0} direction="column" alignItems="center" justify="center" style={{ minHeight: '100vh' }}>
+          <Loader type="BallTriangle" className={classes.loader} color={theme.palette.primary.main} height={80} width={80} />
+        </Grid>
         :
         <div>
           <AppBar position="relative">
@@ -136,12 +142,12 @@ export default function Dashboard() {
                 <div>
                   <Grid container spacing={2} justify='space-between' alignItems='center'>
                     <div>
-                      <Button >              
-                         <img src={logoImg} alt="logo" style={{ width: 40, marginRight: 10 }} />
-                          <Typography className={classes.whiteColor}>
-                            EXAMINATOR
+                      <Button raised style={{ borderRadius: 100, }} >
+                        <img src={logoImg} alt="logo" style={{ width: 40, marginRight: 10 }} />
+                        <Typography className={classes.whiteColor}>
+                          EXAMINATOR
                           </Typography>
-                        </Button>
+                      </Button>
                     </div>
                   </Grid>
                 </div>
@@ -161,11 +167,11 @@ export default function Dashboard() {
 
               <Grid container spacing={2} justify="center">
                 {courseData.map((course, c) => (
-                  <div key={c} className={classes.card}>
+                  <div key={c} className={classes.cardDiv}>
                     <ButtonBase
                       onClick={event => { navigateTo(`../Student/Course/${course._id}`) }}
                     >
-                      <Card className={classes.card}>
+                      <Card className={classes.card} elevation={10}>
                         <CardHeader
                           avatar={
                             <Avatar className={classes.avatar}>
@@ -176,6 +182,7 @@ export default function Dashboard() {
                           subheader={course.courseCode}
                         />
                         <CardMedia
+                          image={course.imgUrl}
                           className={classes.cardMedia}
                         />
                       </Card>

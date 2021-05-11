@@ -24,6 +24,8 @@ import Loader from "react-loader-spinner";
 import theme from './../../theme';
 import AddIcon from '@material-ui/icons/Add';
 import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
+import Button from '@material-ui/core/Button';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -67,9 +69,11 @@ const useStyles = makeStyles((theme) => ({
     },
     card: {
         width: 300,
-        margin: theme.spacing(1, 3, 2),
-        // display: 'flex',
-        // flexDirection: 'column',
+        border: `1px solid ${theme.palette.primary.dark}`,
+        borderRadius: "10px"
+    },
+    cardDiv: {
+        padding: "10px",
     },
     editClass: {
         color: theme.palette.secondary.dark
@@ -104,10 +108,10 @@ const useStyles = makeStyles((theme) => ({
     },
     loader: {
         display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginTop: '350px'
-    }
+    },
+    whiteColor: {
+        color: theme.palette.primary.contrastText
+    },
 }));
 
 var examDates = [];
@@ -151,61 +155,83 @@ export default function Course() {
             examTimes = [];
             pExamTimes = [];
 
-            examsFromDb.forEach((exam) => {
-                const examDate = new Date(exam.startTime);
-                const duration = exam.duration;
-                examDate.setHours(examDate.getHours() + duration);
+            if (examsFromDb && examsFromDb.length > 0) {
+                examsFromDb.forEach((exam) => {
+                    const examDate = new Date(exam.startTime);
+                    const duration = exam.duration;
+                    examDate.setHours(examDate.getHours() + duration);
 
-                const now = new Date();
+                    const now = new Date();
 
-                if (examDate < now) {
-                    // console.log("Exam date: ", examDate);
-                    // console.log("Today: ", now);
-                    prevExam.push(exam);
-                } else {
-                    examData.push(exam);
-                }
-
-            });
-
-            examData.forEach(exam => {
-                const dt = processDate(exam.startTime);
-                examDates.push(dt[0]);
-                examTimes.push(dt[1]);
-            });
-
-            prevExam.forEach(exam => {
-                const dt = processDate(exam.startTime);
-                pExamDates.push(dt[0]);
-                pExamTimes.push(dt[1]);
-            });
-
-            // console.log("Prev Exams: ", prevExam);
-            // console.log("Exams: ", examData);
-
-            examData.forEach(exam => {
-                ResultService.getResult(exam._id, studentId, authToken).then(res => {
-                    if (res) {
-                        exam.submitted = true;
+                    if (examDate < now) {
+                        // console.log("Exam date: ", examDate);
+                        // console.log("Today: ", now);
+                        prevExam.push(exam);
+                    } else {
+                        examData.push(exam);
                     }
-                })
-            });
 
-            prevExam.forEach(exam => {
-                ResultService.getResult(exam._id, studentId, authToken).then(res => {
-                    if (res) {
-                        exam.result = res[0];
-                        exam.submitted = true;
-                    }
-                    // console.log("prevExam a: ", prevExam);
+                });
+
+                examData.forEach(exam => {
+                    const dt = processDate(exam.startTime);
+                    examDates.push(dt[0]);
+                    examTimes.push(dt[1]);
+                });
+
+                prevExam.forEach(exam => {
+                    const dt = processDate(exam.startTime);
+                    pExamDates.push(dt[0]);
+                    pExamTimes.push(dt[1]);
+                });
+
+                // console.log("Prev Exams: ", prevExam);
+                // console.log("Exams: ", examData);
+
+                examData.forEach(exam => {
+                    ResultService.getResult(exam._id, studentId, authToken).then(res => {
+                        if (res) {
+                            exam.submitted = true;
+                        }
+                    })
+                });
+
+                var requests = [];
+                prevExam.forEach((exam) => {
+                    requests.push(fetchResults(exam));
+                });
+
+                Promise.all(requests).then(() => {
+                    console.log("prevExam: ", prevExam);
+                    console.log("Loading finished");
                     setLoading(true);
                 })
-            });
-            // console.log("prevExam b: ", prevExam);
+            } else {
+                console.log("Loading finished");
+                setLoading(true);
+            }
 
         });
 
     }, []);
+
+    const fetchResults = (exam) => {
+        return new Promise(resolve => {
+            ResultService.getResult(exam._id, studentId, authToken)
+                .then(res => {
+                    if (res) {
+                        exam.result = res[0];
+                        exam.submitted = true;
+                    }
+                })
+                .then((data) => {
+                    resolve(data);
+                })
+                .catch((e) => {
+                    console.log(e);
+                })
+        });
+    }
 
     const processDate = (startTime) => {
         const date = new Date(startTime);
@@ -226,18 +252,32 @@ export default function Course() {
 
     const examClicked = (event, exam) => {
         console.log("Exam clicked", exam)
-        if (!exam.submitted) {
-            navigateTo(`../Course/ExamInstruction/${exam._id}`)
+
+        const now = new Date();
+        const examDate = new Date(exam.startTime);
+
+        // if (examDate < now) {
+        console.log("Exam date: ", exam.startTime);
+        console.log("Today: ", now);
+        // }
+
+        if (exam.submitted) {
+            navigateTo(`../../Student/ExamAlreadySubmitted/${exam._id}`)
+        }
+        else if (!exam.hallCreated || examDate > now) {
+            navigateTo(`../../Student/ExamWait/${exam._id}`)
         }
         else {
-            navigateTo(`../../Student/ExamAlreadySubmitted/${exam._id}`)
+            navigateTo(`../Course/ExamInstruction/${exam._id}`)
         }
     }
 
     return (
         <React.Fragment>
             {!loading ?
-                <Loader type="BallTriangle" className={classes.loader} color={theme.palette.primary.main} height={80} width={80} />
+                <Grid container spacing={0} direction="column" alignItems="center" justify="center" style={{ minHeight: '100vh' }}>
+                    <Loader type="BallTriangle" className={classes.loader} color={theme.palette.primary.main} height={80} width={80} />
+                </Grid>
                 :
                 <div>
                     <AppBar position="relative">
@@ -245,10 +285,13 @@ export default function Course() {
                             <Grid container spacing={2} justify='space-between' alignItems='center'>
                                 <div>
                                     <Grid container>
-                                        <img src={logoImg} alt="logo" className={classes.logoImg} />
-                                        <Typography variant="h6" color="inherit" noWrap>
-                                            {course["courseName"]}
-                                        </Typography>
+                                        <Button raised className={classes.button} component={Link} to="/student/dashboard">
+                                            <img src={logoImg} alt="logo" className={classes.logoImg} />
+                                            <Typography style={{ color: 'white' }}>
+                                                {course ? course["courseName"].toUpperCase() : "EXAMINATOR"}
+                                            </Typography>
+                                        </Button>
+
                                     </Grid>
                                 </div>
                             </Grid>
@@ -258,16 +301,21 @@ export default function Course() {
                     <div className={classes.root}>
                         <Container className={classes.cardGrid} >
 
-                            <Typography>
+                            <Typography variant="h4">
                                 Scheduled Exams
-                    </Typography>
+                            </Typography>
                             <br />
                             <Divider variant="middle" />
                             <br />
-                            <Grid container spacing={4} justify="center">
-                                {examData && examData.length === 0 ? <h4>No Scheduled Exams found</h4> :
-                                    <div> {examData.map((exam, i) => (
-                                        <div key={i} className={classes.card}>
+
+                            {examData && examData.length === 0 ?
+                                <Grid container spacing={4} justify="center">
+                                    <h4>No Scheduled Exams found</h4>
+                                </Grid>
+                                :
+                                <Grid container spacing={4} justify="center">
+                                    {examData.map((exam, i) => (
+                                        <div key={i} className={classes.cardDiv}>
                                             <Card className={classes.card} elevation="7">
                                                 <ButtonBase className={classes.cardMargin}
                                                     onClick={event => examClicked(event, exam)}
@@ -299,56 +347,67 @@ export default function Course() {
                                             </Card>
 
                                         </div>
-                                    ))}</div>}
-                            </Grid>
+                                    ))}
+                                </Grid>
+                            }
+                            <br />
+                            <br />
 
-                            <Typography>
+                            <Typography variant="h4">
                                 Previous Exams
                             </Typography>
                             <br />
                             <Divider variant="middle" />
                             <br />
-                            <Grid container spacing={4} justify="center">
-                                {prevExam.length === 0 ? <h4>No previous Exam yet</h4> : <div>{prevExam.map((exam, i) => (
-                                    <div key={i} className={classes.card}>
-                                        <Card className={classes.card} elevation="7">
-                                            <CardContent className={classes.cardContent}>
-                                                <Grid container justify="center">
-                                                    <Typography gutterBottom variant="h5" component="h2">
-                                                        {exam.name}
-                                                    </Typography>
-                                                </Grid>
-                                                <Grid container justify="center">
-                                                    <DateRangeIcon className={classes.iconClass} />
-                                                    <Typography className={classes.margin}>
-                                                        {pExamDates[i]}
-                                                    </Typography>
-                                                </Grid>
-                                                {exam.submitted && exam.result ?
-                                                    <div>
-                                                        <Grid container justify="center">
-                                                            <AddIcon className={classes.iconClass} />
-                                                            <Typography className={classes.margin}>
-                                                                Total Marks: {exam.result.totalMarks}
-                                                            </Typography>
-                                                        </Grid>
-                                                        <Grid container justify="center">
-                                                            <AssignmentTurnedInIcon className={classes.iconClass} />
-                                                            <Typography className={classes.margin}>
-                                                                Obtained Marks: {exam.result.obtainedMarks}
-                                                            </Typography>
-                                                        </Grid>
-                                                    </div>
-                                                    :
-                                                    <div>Not submitted</div>
-                                                }
-                                            </CardContent>
-                                        </Card>
+                            {/* <Grid container spacing={4} justify="center"> */}
+                            {prevExam.length === 0 ?
+                                <Grid container spacing={4} justify="center">
+                                    <h4>No previous Exam yet</h4>
+                                </Grid>
+                                :
+                                <Grid container spacing={4} justify="center">
+                                    {prevExam.map((exam, i) => (
+                                        <div key={i} className={classes.cardDiv}>
+                                            <Card className={classes.card} elevation="7">
+                                                <CardContent className={classes.cardContent}>
+                                                    <Grid container justify="center">
+                                                        <Typography gutterBottom variant="h5" component="h2">
+                                                            {exam.name}
+                                                        </Typography>
+                                                    </Grid>
+                                                    <Grid container justify="center">
+                                                        <DateRangeIcon className={classes.iconClass} />
+                                                        <Typography className={classes.margin}>
+                                                            {pExamDates[i]}
+                                                        </Typography>
+                                                    </Grid>
+                                                    {exam.submitted && exam.result ?
+                                                        <div>
+                                                            <Grid container justify="center">
+                                                                <AddIcon className={classes.iconClass} />
+                                                                <Typography className={classes.margin}>
+                                                                    Total Marks: {exam.result.totalMarks}
+                                                                </Typography>
+                                                            </Grid>
+                                                            <Grid container justify="center">
+                                                                <AssignmentTurnedInIcon className={classes.iconClass} />
+                                                                <Typography className={classes.margin}>
+                                                                    Obtained Marks: {exam.result.obtainedMarks}
+                                                                </Typography>
+                                                            </Grid>
+                                                        </div>
+                                                        :
+                                                        <div>Not submitted</div>
+                                                    }
+                                                </CardContent>
+                                            </Card>
 
-                                    </div>
-                                ))}</div>}
+                                        </div>
+                                    ))}
+                                </Grid>
+                            }
 
-                            </Grid>
+                            {/* </Grid> */}
 
                         </Container>
                     </div>

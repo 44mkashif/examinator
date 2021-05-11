@@ -113,10 +113,10 @@ export default function AutoGrid() {
 
     window.onblur = () => {
       socket.emit('message', { type: 'blur', name: localStorage.getItem('studentName') }, examRoom);
-      count+=1;
-      setErrorMsg(`You have changed the tab ${count} times. Your Exam will be cancelled after ${ 3 - count} more warnings`);
-      if(count === 3 ) {
-        navigateToWithData(`../ExamComplete/${examRoom}` , "Your Exam has been cancelled");
+      count += 1;
+      setErrorMsg(`You have changed the tab ${count} times. Your Exam will be cancelled after ${3 - count} more warnings`);
+      if (count === 3) {
+        submitExam(null, "Your Exam has been cancelled");
       }
     };
 
@@ -124,7 +124,7 @@ export default function AutoGrid() {
       socket.emit('join', examRoom);
     }
 
-    
+
 
     socket.on('message', (message) => {
       if (message.type === 'offer' && !isAnswered) {
@@ -269,11 +269,11 @@ export default function AutoGrid() {
                 <FormLabel component="legend">
                   Q{(i + 1)}: {question.statement}
                 </FormLabel>
-                <RadioGroup aria-label="answer" name="answer1" value={selectedOptions[i]} onChange={event => handleOptionChange(event, i)}>
-                  <FormControlLabel value={question.options[0]} control={<Radio />} label={question.options[0]} />
-                  <FormControlLabel value={question.options[1]} control={<Radio />} label={question.options[1]} />
-                  <FormControlLabel value={question.options[2]} control={<Radio />} label={question.options[2]} />
-                  <FormControlLabel value={question.options[3]} control={<Radio />} label={question.options[3]} />
+                <RadioGroup aria-label="answer" name="answer1" value={selectedOptions[i]} onChange={event => handleOptionChange(event, question, i)}>
+                  <FormControlLabel value="0" control={<Radio />} label={question.options[0]} />
+                  <FormControlLabel value="1" control={<Radio />} label={question.options[1]} />
+                  <FormControlLabel value="2" control={<Radio />} label={question.options[2]} />
+                  <FormControlLabel value="3" control={<Radio />} label={question.options[3]} />
                 </RadioGroup>
               </FormControl>
             </Paper>
@@ -300,7 +300,7 @@ export default function AutoGrid() {
 
   const history = useHistory();
   const navigateTo = (path) => history.push(path);
-  const navigateToWithData =  ( path, msg ) => history.push({
+  const navigateToWithData = (path, msg) => history.push({
     pathname: path,
     state: { data: msg }
   });
@@ -336,7 +336,7 @@ export default function AutoGrid() {
     })
   }
 
-  const submitExam = () => {
+  const submitExam = (event, msg) => {
     //Fetch answers and submit result
     submittedAnswers = [];
     setLoading(false);
@@ -347,21 +347,25 @@ export default function AutoGrid() {
       var questions = exam.question;
       var answers = [];
 
-      console.log("Student Answers: ", submittedAnswers);
       console.log("Questions: ", questions);
 
-      submittedAnswers.forEach(answer => {
-        questions.forEach(question => {
-          if (question._id === answer.questionId) {
-            answers.push({
-              qId: question._id,
-              marks: question.marks,
-              correctOption: question.correctOption,
-              markedOption: answer.markedOption
-            })
-          }
+      if (submittedAnswers && submittedAnswers.length > 0) {
+
+        console.log("Student Answers: ", submittedAnswers);
+
+        submittedAnswers.forEach(answer => {
+          questions.forEach(question => {
+            if (question._id === answer.questionId) {
+              answers.push({
+                qId: question._id,
+                marks: question.marks,
+                correctOption: question.correctOption,
+                markedOption: answer.markedOption
+              })
+            }
+          });
         });
-      });
+      }
 
       var result = {
         examId: examRoom,
@@ -369,29 +373,34 @@ export default function AutoGrid() {
         totalMarks: exam.totalMarks,
         obtainedMarks: 0
       }
-      answers.forEach(answer => {
-        if (answer.markedOption === answer.correctOption) {
-          result.obtainedMarks += answer.marks;
-        }
-      });
+
+      if (answers.length > 0) {
+        answers.forEach(answer => {
+          if (answer.markedOption === answer.correctOption) {
+            result.obtainedMarks += answer.marks;
+          }
+        });
+      }
 
       console.log("Result: ", result);
       ResultService.addResult(result, authToken).then(res => {
         console.log(res);
         setLoading(true);
-        navigateToWithData(`../ExamComplete/${examRoom}`, "Your Exam has been Submitted");
+        navigateToWithData(`../ExamComplete/${examRoom}`, msg);
       })
     })
 
   }
 
-  const handleOptionChange = (event, index) => {
+  const handleOptionChange = (event, question, index) => {
     setSelected(false);
     console.log(event.target.value);
     // setSelectedOption(event.target.value);
 
-    selectedOptions[index] = exam.question[index].options.indexOf(event.target.value);
+    // selectedOptions[index] = question.options.indexOf(event.target.value);
+    selectedOptions[index] = parseInt(event.target.value);
     console.log("selectedOptions", selectedOptions);
+    console.log("selectedOption", question.options[selectedOptions[index]]);
   };
 
   // var questionNum;
@@ -462,7 +471,7 @@ export default function AutoGrid() {
                   </Grid>
                   <Grid item>
                     <Button variant="contained" color="secondary" className={classes.button}
-                      disabled={activebutton} onClick={submitExam}>
+                      disabled={activebutton} onClick={event => submitExam(event, "Your Exam has been Submitted")}>
                       Submit
                   </Button>
                   </Grid>

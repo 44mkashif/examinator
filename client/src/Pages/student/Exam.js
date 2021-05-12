@@ -255,8 +255,21 @@ export default function AutoGrid() {
         console.log("Exam date: ", examDate);
         console.log("Today: ", now);
         console.log("Exam over");
-        navigateTo(`../ExamComplete/${examRoom}`);
+        navigateToWithData(`../ExamComplete/${examRoom}`, "Exam is not available at this time");
+        return;
       }
+
+      const startTime = new Date(exam.startTime) / 1000; // use UNIX timestamp in seconds
+      const durationInSecs = exam.duration * 60 * 60;
+      const endTime = startTime + durationInSecs; // use UNIX timestamp in seconds
+      const timeElapsed = (now / 1000) - startTime;
+      const remainingTime = endTime - startTime - timeElapsed;
+      console.log("Remaining time in seconds: ", remainingTime);
+
+      setTimeout(() => {
+        examTimeOut();
+      }, remainingTime * 1000);
+
 
       exam.question.forEach((question, i) => {
         // <Question question={"Question " + (i + 1) + ": " + question.statement} options={question.options} qNo={i} />
@@ -401,17 +414,9 @@ export default function AutoGrid() {
     console.log("selectedOption", question.options[selectedOptions[index]]);
   };
 
-  // var questionNum;
-
-  // var ques = ["A linear collection of data elements where the linear node is given by means of pointer is called?",
-  //   "In linked list each node contains a minimum of two fields. One field is data field to store the data second field is?",
-  //   "What would be the asymptotic time complexity to add a node at the end of singly linked list, if the pointer is initially pointing to the head of the list?",
-  //   "The concatenation of two lists can be performed in O(1) time. Which of the following variation of the linked list can be used?",
-  //   "What would be the asymptotic time complexity to insert an element at the front of the linked list (head is known)"];
-
-  // for (var i = 0; i < questionNum; i++) {
-  //   questions.push(<Question question={"Question " + i + ": " + ques[i]} qNo={i} />);
-  // }
+  const examTimeOut = () => {
+    submitExam(null, "Your ran out of time! Your exam has been submitted");
+  }
 
   return (
     <React.Fragment >

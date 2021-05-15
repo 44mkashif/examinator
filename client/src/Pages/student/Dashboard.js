@@ -52,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
   },
   cardMedia: {
     paddingTop: '56.25%', // 16:9
-    backgroundImage: `url(${courseImage})`,
+    // backgroundImage: `url(${courseImage})`,
   },
   cardContent: {
     flexGrow: 1,
@@ -142,7 +142,7 @@ export default function Dashboard() {
                 <div>
                   <Grid container spacing={2} justify='space-between' alignItems='center'>
                     <div>
-                      <Button raised style={{ borderRadius: 100,}} >
+                      <Button raised style={{ borderRadius: 100, }} >
                         <img src={logoImg} alt="logo" style={{ width: 40, marginRight: 10 }} />
                         <Typography className={classes.whiteColor}>
                           EXAMINATOR
@@ -182,6 +182,7 @@ export default function Dashboard() {
                           subheader={course.courseCode}
                         />
                         <CardMedia
+                          image={course.imgUrl}
                           className={classes.cardMedia}
                         />
                       </Card>

@@ -13,7 +13,6 @@ import StudentExamInstruction from './Pages/Student/ExamInstruction';
 import StudentExamComplete from './Pages/Student/ExamComplete';
 import FaceDetect from './Pages/Student/FaceDetect';
 import ExamWait from './Pages/Student/ExamWait';
-import ExamTimeout from './Pages/Student/ExamTimeout';
 import ExamAlreadySubmitted from './Pages/Student/ExamAlreadySubmitted';
 
 import InstructorLogin from './Pages/Instructor/Login';
@@ -80,7 +79,6 @@ ReactDOM.render(
           <GuardedRoute path="/Student/Course/ExamComplete/:exam" exact component={StudentExamComplete} meta={{ auth: true, role: 'student' }} />
           <GuardedRoute path="/Student/FaceDetect/:exam" exact component={FaceDetect} meta={{ auth: true, role: 'student' }} />
           <GuardedRoute path="/Student/ExamWait/:exam" exact component={ExamWait} meta={{ auth: true, role: 'student' }} />
-          <GuardedRoute path="/Student/ExamTimeout/:exam" exact component={ExamTimeout} meta={{ auth: true, role: 'student' }} />
           <GuardedRoute path="/Student/ExamAlreadySubmitted/:exam" exact component={ExamAlreadySubmitted} meta={{ auth: true, role: 'student' }} />
 
           <Route path="/test" exact component={Test} />

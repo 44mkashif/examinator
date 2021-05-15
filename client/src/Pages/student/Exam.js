@@ -1,9 +1,7 @@
 import React from 'react';
 import io from 'socket.io-client';
 import { useHistory, useParams } from 'react-router-dom';
-import { Link } from 'react-router-dom';
 import logoImg from './../../assets/navbar-2.png';
-import Question from './Components/Question';
 import ExamService from '../../services/ExamService';
 import ResultService from '../../services/ResultService';
 import Footer from '../Components/Footer';
@@ -115,27 +113,32 @@ export default function AutoGrid() {
 
     window.onblur = () => {
       socket.emit('message', { type: 'blur', name: localStorage.getItem('studentName') }, examRoom);
+      count += 1;
+      setErrorMsg(`You have changed the tab ${count} times. Your Exam will be cancelled after ${3 - count} more warnings`);
+      if (count === 3) {
+        submitExam(null, "Your Exam has been cancelled");
+      }
     };
 
-    if (examRoom != '') {
+    if (examRoom !== '') {
       socket.emit('join', examRoom);
     }
 
     socket.on('message', (message) => {
-      if (message.type == 'offer' && !isAnswered) {
+      if (message.type === 'offer' && !isAnswered) {
         console.log('student getting offer');
         peerConnection.setRemoteDescription(new RTCSessionDescription(message));
         doAnswer();
-      } else if (message.type == 'candidate') {
+      } else if (message.type === 'candidate') {
         console.log('student getting candidate info');
         let candidate = new RTCIceCandidate({
           sdpMLineIndex: message.label,
           candidate: message.candidate
         });
         peerConnection.addIceCandidate(candidate);
-      } else if (message == 'close') {
+      } else if (message === 'close') {
         handleRemoteHangup();
-      } else if (message.type == 'on/off') {
+      } else if (message.type === 'on/off') {
         if (message.toggleState.checked) {
           console.log('retain')
           document.getElementById('remoteVideo').hidden = false;
@@ -204,13 +207,6 @@ export default function AutoGrid() {
 
       document.getElementById('remoteVideo').hidden = false;
       document.getElementById('instructorAvatar').hidden = true;
-
-      // remoteStream = e.stream;
-      // let remoteVideo = document.createElement('video');
-      // remoteVideo.srcObject = remoteStream;
-      // remoteVideo.autoplay = true;
-      // remoteVideo.width = 250;
-      // videoDivision.appendChild(remoteVideo);
     }
 
 
@@ -259,8 +255,21 @@ export default function AutoGrid() {
         console.log("Exam date: ", examDate);
         console.log("Today: ", now);
         console.log("Exam over");
-        navigateTo(`../ExamComplete/${examRoom}`);
+        navigateToWithData(`../ExamComplete/${examRoom}`, "Exam is not available at this time");
+        return;
       }
+
+      const startTime = new Date(exam.startTime) / 1000; // use UNIX timestamp in seconds
+      const durationInSecs = exam.duration * 60 * 60;
+      const endTime = startTime + durationInSecs; // use UNIX timestamp in seconds
+      const timeElapsed = (now / 1000) - startTime;
+      const remainingTime = endTime - startTime - timeElapsed;
+      console.log("Remaining time in seconds: ", remainingTime);
+
+      setTimeout(() => {
+        examTimeOut();
+      }, remainingTime * 1000);
+
 
       exam.question.forEach((question, i) => {
         // <Question question={"Question " + (i + 1) + ": " + question.statement} options={question.options} qNo={i} />
@@ -271,11 +280,11 @@ export default function AutoGrid() {
                 <FormLabel component="legend">
                   Q{(i + 1)}: {question.statement}
                 </FormLabel>
-                <RadioGroup aria-label="answer" name="answer1" value={selectedOptions[i]} onChange={event => handleOptionChange(event, i)}>
-                  <FormControlLabel value={question.options[0]} control={<Radio />} label={question.options[0]} />
-                  <FormControlLabel value={question.options[1]} control={<Radio />} label={question.options[1]} />
-                  <FormControlLabel value={question.options[2]} control={<Radio />} label={question.options[2]} />
-                  <FormControlLabel value={question.options[3]} control={<Radio />} label={question.options[3]} />
+                <RadioGroup aria-label="answer" name="answer1" value={selectedOptions[i]} onChange={event => handleOptionChange(event, question, i)}>
+                  <FormControlLabel value="0" control={<Radio />} label={question.options[0]} />
+                  <FormControlLabel value="1" control={<Radio />} label={question.options[1]} />
+                  <FormControlLabel value="2" control={<Radio />} label={question.options[2]} />
+                  <FormControlLabel value="3" control={<Radio />} label={question.options[3]} />
                 </RadioGroup>
               </FormControl>
             </Paper>
@@ -295,10 +304,17 @@ export default function AutoGrid() {
   const [activebutton, setButton] = React.useState(true);
   const [selected, setSelected] = React.useState(true);
   const [loading, setLoading] = React.useState(false);
+
+  var count = 0;
+  const [errorMsg, setErrorMsg] = React.useState('');
   // const [selectedOption, setSelectedOption] = React.useState('');
 
   const history = useHistory();
   const navigateTo = (path) => history.push(path);
+  const navigateToWithData = (path, msg) => history.push({
+    pathname: path,
+    state: { data: msg }
+  });
 
 
   const handleChange = () => {
@@ -331,7 +347,7 @@ export default function AutoGrid() {
     })
   }
 
-  const submitExam = () => {
+  const submitExam = (event, msg) => {
     //Fetch answers and submit result
     submittedAnswers = [];
     setLoading(false);
@@ -342,21 +358,25 @@ export default function AutoGrid() {
       var questions = exam.question;
       var answers = [];
 
-      console.log("Student Answers: ", submittedAnswers);
       console.log("Questions: ", questions);
 
-      submittedAnswers.forEach(answer => {
-        questions.forEach(question => {
-          if (question._id === answer.questionId) {
-            answers.push({
-              qId: question._id,
-              marks: question.marks,
-              correctOption: question.correctOption,
-              markedOption: answer.markedOption
-            })
-          }
+      if (submittedAnswers && submittedAnswers.length > 0) {
+
+        console.log("Student Answers: ", submittedAnswers);
+
+        submittedAnswers.forEach(answer => {
+          questions.forEach(question => {
+            if (question._id === answer.questionId) {
+              answers.push({
+                qId: question._id,
+                marks: question.marks,
+                correctOption: question.correctOption,
+                markedOption: answer.markedOption
+              })
+            }
+          });
         });
-      });
+      }
 
       var result = {
         examId: examRoom,
@@ -364,42 +384,39 @@ export default function AutoGrid() {
         totalMarks: exam.totalMarks,
         obtainedMarks: 0
       }
-      answers.forEach(answer => {
-        if (answer.markedOption == answer.correctOption) {
-          result.obtainedMarks += answer.marks;
-        }
-      });
+
+      if (answers.length > 0) {
+        answers.forEach(answer => {
+          if (answer.markedOption === answer.correctOption) {
+            result.obtainedMarks += answer.marks;
+          }
+        });
+      }
 
       console.log("Result: ", result);
       ResultService.addResult(result, authToken).then(res => {
         console.log(res);
         setLoading(true);
-        navigateTo(`../ExamComplete/${examRoom}`);
+        navigateToWithData(`../ExamComplete/${examRoom}`, msg);
       })
     })
 
   }
 
-  const handleOptionChange = (event, index) => {
+  const handleOptionChange = (event, question, index) => {
     setSelected(false);
     console.log(event.target.value);
     // setSelectedOption(event.target.value);
 
-    selectedOptions[index] = exam.question[index].options.indexOf(event.target.value);
+    // selectedOptions[index] = question.options.indexOf(event.target.value);
+    selectedOptions[index] = parseInt(event.target.value);
     console.log("selectedOptions", selectedOptions);
+    console.log("selectedOption", question.options[selectedOptions[index]]);
   };
 
-  // var questionNum;
-
-  // var ques = ["A linear collection of data elements where the linear node is given by means of pointer is called?",
-  //   "In linked list each node contains a minimum of two fields. One field is data field to store the data second field is?",
-  //   "What would be the asymptotic time complexity to add a node at the end of singly linked list, if the pointer is initially pointing to the head of the list?",
-  //   "The concatenation of two lists can be performed in O(1) time. Which of the following variation of the linked list can be used?",
-  //   "What would be the asymptotic time complexity to insert an element at the front of the linked list (head is known)"];
-
-  // for (var i = 0; i < questionNum; i++) {
-  //   questions.push(<Question question={"Question " + i + ": " + ques[i]} qNo={i} />);
-  // }
+  const examTimeOut = () => {
+    submitExam(null, "Your ran out of time! Your exam has been submitted");
+  }
 
   return (
     <React.Fragment >
@@ -438,6 +455,17 @@ export default function AutoGrid() {
                   </Alert>
                 </Box>
 
+                <div>
+                  {errorMsg &&
+                    <Box mt={5}>
+                      <Alert severity="error">
+                        <AlertTitle>Alert</AlertTitle>
+                        {errorMsg}
+                      </Alert>
+                    </Box>
+                  }
+                </div>
+
                 <Grid container spacing={2} justify="center" style={{ paddingTop: 40 }}>
                   <Grid item>
                     <Button variant="contained" color="primary" className={classes.button} onClick={handleChange} disabled={selected} >
@@ -446,7 +474,7 @@ export default function AutoGrid() {
                   </Grid>
                   <Grid item>
                     <Button variant="contained" color="secondary" className={classes.button}
-                      disabled={activebutton} onClick={submitExam}>
+                      disabled={activebutton} onClick={event => submitExam(event, "Your Exam has been Submitted")}>
                       Submit
                   </Button>
                   </Grid>

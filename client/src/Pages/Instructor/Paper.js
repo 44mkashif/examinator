@@ -307,12 +307,13 @@ export default function SimplePaper() {
                         Save
                     </Button>
                 </Grid>
-                <div>
+
+                <Grid container justify="center" style={{ marginBottom: '20px' }}>
 
 
                     {Checksuccess &&
                         <Alert severity="success" action={
-                            <Button color="inherit" size="small" onClick={event => { navigateTo(`/Instructor/dashboard`) }}>
+                            <Button variant="contained" color="primary" className={classes.button} size="small" onClick={event => { navigateTo(`/Instructor/dashboard`) }}>
                                 Return to Dashboard
                             </Button>
                         }>
@@ -328,7 +329,7 @@ export default function SimplePaper() {
                             <strong> {error} </strong>
                         </Alert>
                     }
-                </div>
+                </Grid>
 
             </div>
 

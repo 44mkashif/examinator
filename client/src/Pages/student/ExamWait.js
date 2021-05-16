@@ -14,12 +14,15 @@ import Button from '@material-ui/core/Button';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import ExamService from '../../services/ExamService';
 import theme from './../../theme';
+import TimerIcon from '@material-ui/icons/Timer';
+import AddIcon from '@material-ui/icons/Add';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Loader from "react-loader-spinner";
 
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
+        marginTop: 120
     },
     paper: {
         padding: theme.spacing(2),
@@ -35,6 +38,14 @@ const useStyles = makeStyles((theme) => ({
         paddingBottom: theme.spacing(8),
 
     },
+    iconClass: {
+        color: theme.palette.secondary.dark,
+        marginTop: 20
+    },
+    margin: {
+        marginLeft: 10,
+        marginTop: 20
+    },
     align: {
         paddingTop: 100
     },
@@ -47,6 +58,12 @@ const useStyles = makeStyles((theme) => ({
 
         borderRadius: 100,
 
+    },
+    avatar: {
+        font: "1500px",
+        width: "100px",
+        height: "150px",
+        color: theme.palette.secondary.main
     },
     video: {
         borderStyle: "solid",
@@ -125,28 +142,25 @@ export default function Testpage() {
                     <CssBaseline />
                     <Container fixed>
                         <div className={classes.root}>
-                            <Paper className={classes.paper}>
-                                <Grid container spacing={3}>
+                                <Grid container spacing={1} align='center' justify='center'>
                                     <Grid item xs={12} >
-                                        <AccessTimeIcon />
-                                        <Typography variant="h6" style={{ paddingTop: 100 }}>
-                                            {exam.name}
+                                        <AccessTimeIcon className={classes.avatar}/>
+                                        <Typography variant="h5" component="h3" style={{ paddingTop: 20 }}>
+                                            {exam.name} is scheduled at {exam.startTime}
                                         </Typography>
-                                        <Typography variant="h6" style={{ paddingTop: 100 }}>
-                                            Your Exam is scheduled at {exam.startTime}
-                                        </Typography>
-                                        <Typography variant="h6" style={{ paddingTop: 100 }}>
-                                            Duration: {exam.duration} hrs
-                                        </Typography>
-                                        <Typography variant="h6" style={{ paddingTop: 100 }}>
-                                            Total marks: {exam.totalMarks}
-                                        </Typography>
-                                        <Typography variant="h6" style={{ paddingTop: 100 }}>
-                                            No of questions: {exam.question.length}
-                                        </Typography>
+                                        <Grid container justify="center">
+                                            <TimerIcon className={classes.iconClass} />
+                                            <Typography variant="h5 " component="h3" className={classes.margin}>
+                                                Duration: {exam.duration} hrs
+                                            </Typography>
+                                        </Grid>
+                                        <Grid container justify="center">
+                                            <AddIcon className={classes.iconClass} />
+                                            <Typography variant="h5 " component="h3" className={classes.margin}>
+                                                Total marks: {exam.totalMarks}
+                                            </Typography>
+                                        </Grid>
                                     </Grid>
-                                    <Divider orientation="vertical" flexItem style={{ marginRight: "-1px" }} />
-
                                     <Grid item xs={12}>
                                         {/* <button onClick={capture}>Capture photo</button> */}
 
@@ -167,9 +181,7 @@ export default function Testpage() {
                                         </Grid>
                                     </Grid>
                                 </Grid>
-                            </Paper>
-
-                        </div>
+                 </div>
                     </Container>
                 </div>
             }

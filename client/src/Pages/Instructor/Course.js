@@ -347,7 +347,7 @@ export default function Course() {
                                                                 <TimerIcon className={classes.iconClass} />
                                                                 <Typography className={classes.margin}>
                                                                     Duration: {exam.duration} hrs
-                                                    </Typography>
+                                                                </Typography>
                                                             </Grid>
                                                             <Grid container justify="center">
                                                                 <DateRangeIcon className={classes.iconClass} />

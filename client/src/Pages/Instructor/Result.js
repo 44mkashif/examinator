@@ -75,6 +75,9 @@ const useStyles = makeStyles((theme) => ({
     whiteColor: {
         color: theme.palette.primary.contrastText
     },
+    color: {
+        backgroundColor: theme.palette.primary.main
+    }
 
 }));
 
@@ -190,15 +193,15 @@ export default function Result() {
                     <CssBaseline />
                     {results && results.length > 0 ?
                         <Container fixed>
-                            <TableContainer component={Paper}>
+                            <TableContainer component={Paper} style={{ marginTop: '25px', borderRadius: '15px' }}>
                                 <Table className={classes.table} aria-label="simple table">
-                                    <TableHead>
+                                    <TableHead style={{ backgroundColor: theme.palette.primary.main}}>
                                         <TableRow>
-                                            <TableCell>Name</TableCell>
-                                            <TableCell align="center">Reg No #</TableCell>
-                                            <TableCell align="center">Obtained Marks</TableCell>
-                                            <TableCell align="center">Total Marks</TableCell>
-                                            <TableCell align="right">Submitted at</TableCell>
+                                            <TableCell className={classes.whiteColor}>Name</TableCell>
+                                            <TableCell align="center" className={classes.whiteColor}>Reg No #</TableCell>
+                                            <TableCell align="center" className={classes.whiteColor}>Obtained Marks</TableCell>
+                                            <TableCell align="center" className={classes.whiteColor}>Total Marks</TableCell>
+                                            <TableCell align="right" className={classes.whiteColor}>Submitted at</TableCell>
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
@@ -218,7 +221,12 @@ export default function Result() {
                             </TableContainer>
                         </Container>
                         :
-                        <div>No Results Found</div>
+                        <Grid container style={{ marginTop: '100px', marginLeft: '40%'}}>
+                            <Typography variant="h4">
+                                No Results Found
+                            </Typography>
+                           
+                        </Grid>
                     }
                 </div>
             }

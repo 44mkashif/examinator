@@ -7,7 +7,6 @@ import Grid from '@material-ui/core/Grid';
 import { Typography } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
-import Footer from '../Components/Footer';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 
 const useStyles = makeStyles((theme) => ({
@@ -22,6 +21,12 @@ const useStyles = makeStyles((theme) => ({
     },
     button: {
         borderRadius: 100,
+    },
+    avatar: {
+        font: "1500px",
+        width: "100px",
+        height: "150px",
+        color: theme.palette.secondary.main
     },
     margin: {
         marginTop: 50
@@ -40,15 +45,15 @@ export default function ExamAlreadySubmitted() {
             <CssBaseline />
 
             <Container fixed>
-                <div className={classes.root}>
-                    <Grid container spacing={2} align='center' >
-                        <Grid xs={12}>
-                            <CheckCircleOutlineIcon />
+            <div className={classes.root}>
+                    <Grid container spacing={2} align='center' justify='center' >
+                        <Grid item >
+                            <CheckCircleOutlineIcon className={classes.avatar}/>
                         </Grid>
-                        <Grid xs={12}>
-                            <Typography>
+                        <Grid item xs={12}>
+                            <Typography variant="h5" style={{ color: 'green' }}>
                                 Your exam has already been submitted.
-                                </Typography>
+                            </Typography>
                         </Grid>
                         <Grid xs={12} className={classes.margin}>
                             <Button className={classes.button}
@@ -62,9 +67,6 @@ export default function ExamAlreadySubmitted() {
                     </Grid>
                 </div>
             </Container>
-            {/* Footer */}
-            <Footer />
-            {/* End footer */}
         </React.Fragment>
     )
 };

@@ -397,7 +397,13 @@ export default function Course() {
                                                             </Grid>
                                                         </div>
                                                         :
-                                                        <div>Not submitted</div>
+                                                        <div>
+                                                            <Grid container justify="center">
+                                                                <Typography className={classes.margin}>
+                                                                    Not submitted
+                                                                </Typography>
+                                                            </Grid>
+                                                        </div>
                                                     }
                                                 </CardContent>
                                             </Card>

@@ -59,6 +59,10 @@ const useStyles = makeStyles((theme) => ({
         borderRadius: 100,
 
     },
+    logoImg: {
+        width: 40,
+        marginRight: 10
+    },
     avatar: {
         font: "1500px",
         width: "100px",
@@ -130,10 +134,12 @@ export default function Testpage() {
                             <Grid container spacing={2} justify='space-between' alignItems='center'>
                                 <div>
                                     <Grid container>
-                                        <img src={logoImg} alt="logo" style={{ width: 40, marginRight: 10 }} />
-                                        <Typography style={{ color: 'white', marginTop: 5 }}>
-                                            {exam ? exam.name.toUpperCase() : "EXAMINATOR"}
-                                        </Typography>
+                                        <Button raised className={classes.button} >
+                                            <img src={logoImg} alt="logo" className={classes.logoImg} />
+                                            <Typography style={{ color: 'white' }}>
+                                                {exam ? exam.name.toUpperCase() : "EXAMINATOR"}
+                                            </Typography>
+                                        </Button>
                                     </Grid>
                                 </div>
                             </Grid>
@@ -142,46 +148,27 @@ export default function Testpage() {
                     <CssBaseline />
                     <Container fixed>
                         <div className={classes.root}>
-                                <Grid container spacing={1} align='center' justify='center'>
-                                    <Grid item xs={12} >
-                                        <AccessTimeIcon className={classes.avatar}/>
-                                        <Typography variant="h5" component="h3" style={{ paddingTop: 20 }}>
-                                            {exam.name} is scheduled at {exam.startTime}
+                            <Grid container spacing={1} align='center' justify='center'>
+                                <Grid item xs={12} >
+                                    <AccessTimeIcon className={classes.avatar}/>
+                                    <Typography variant="h5" component="h3" style={{ paddingTop: 20 }}>
+                                        {exam.name} is scheduled at {exam.startTime}
+                                    </Typography>
+                                    <Grid container justify="center">
+                                        <TimerIcon className={classes.iconClass} />
+                                        <Typography variant="h5 " component="h3" className={classes.margin}>
+                                            Duration: {exam.duration} hrs
                                         </Typography>
-                                        <Grid container justify="center">
-                                            <TimerIcon className={classes.iconClass} />
-                                            <Typography variant="h5 " component="h3" className={classes.margin}>
-                                                Duration: {exam.duration} hrs
-                                            </Typography>
-                                        </Grid>
-                                        <Grid container justify="center">
-                                            <AddIcon className={classes.iconClass} />
-                                            <Typography variant="h5 " component="h3" className={classes.margin}>
-                                                Total marks: {exam.totalMarks}
-                                            </Typography>
-                                        </Grid>
                                     </Grid>
-                                    <Grid item xs={12}>
-                                        {/* <button onClick={capture}>Capture photo</button> */}
-
-                                        <Grid align="center" className={classes.padding}>
-                                            {/* Chudri ye button styling krty huy remove kr dena */}
-                                            <Button
-                                                variant="contained"
-                                                color="primary"
-                                                className={classes.button} x
-                                                // onClick={capture}
-                                                // endIcon={<Icon></Icon>}
-                                                onClick={event => {
-                                                    navigateTo(`../Course/Exam/${examRoom}`)
-                                                }}
-                                            >
-                                                Test Camera
-                                            </Button>
-                                        </Grid>
+                                    <Grid container justify="center">
+                                        <AddIcon className={classes.iconClass} />
+                                        <Typography variant="h5 " component="h3" className={classes.margin}>
+                                            Total marks: {exam.totalMarks}
+                                        </Typography>
                                     </Grid>
                                 </Grid>
-                 </div>
+                            </Grid>
+                        </div>
                     </Container>
                 </div>
             }

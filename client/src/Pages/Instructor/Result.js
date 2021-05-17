@@ -171,31 +171,31 @@ export default function Result() {
                 :
                 <div>
                     <AppBar position="relative">
-                        
-                            <Toolbar>
-                                <Grid container spacing={2} justify='space-between' alignItems='center'>
-                                    <div>
-                                        <Grid container>
-                                        <Button raised className={classes.button} component={Link} to="/instructor/dashboard">
+
+                        <Toolbar>
+                            <Grid container spacing={2} justify='space-between' alignItems='center'>
+                                <div>
+                                    <Grid container>
+                                        <Button className={classes.button} component={Link} to="/instructor/dashboard">
                                             <img src={logoImg} alt="logo" className={classes.logoImg} />
-                                        
+
                                             <Typography className={classes.whiteColor} >
                                                 {course ? course.courseName.toUpperCase() : "EXAMINATOR"}
                                             </Typography>
                                         </Button>
-                                        </Grid>
-                                    </div>
-                                </Grid>
-                            </Toolbar>
-                        
-                        
+                                    </Grid>
+                                </div>
+                            </Grid>
+                        </Toolbar>
+
+
                     </AppBar>
                     <CssBaseline />
                     {results && results.length > 0 ?
                         <Container fixed>
                             <TableContainer component={Paper} style={{ marginTop: '25px', borderRadius: '15px' }}>
                                 <Table className={classes.table} aria-label="simple table">
-                                    <TableHead style={{ backgroundColor: theme.palette.primary.main}}>
+                                    <TableHead style={{ backgroundColor: theme.palette.primary.main }}>
                                         <TableRow>
                                             <TableCell className={classes.whiteColor}>Name</TableCell>
                                             <TableCell align="center" className={classes.whiteColor}>Reg No #</TableCell>
@@ -221,11 +221,11 @@ export default function Result() {
                             </TableContainer>
                         </Container>
                         :
-                        <Grid container style={{ marginTop: '100px', marginLeft: '40%'}}>
+                        <Grid container style={{ marginTop: '100px', marginLeft: '40%' }}>
                             <Typography variant="h4">
                                 No Results Found
                             </Typography>
-                           
+
                         </Grid>
                     }
                 </div>

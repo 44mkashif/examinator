@@ -71,9 +71,9 @@ export default function Exam() {
                         <div>
                             <Typography variant="h2" component="h2" gutterBottom align='center'>
                                 Exam Name
-                                </Typography>
+                            </Typography>
                             <Box borderTop={3} {...defaultProps} />
-                            <Typography variant="body1" gutterBottom>
+                            <Typography gutterBottom>
                                 <h3 align='left' className={classes.olHeading}>Before beginning the exam</h3>
                                 <ol >
                                     <li>Make sure you have a good internet connection.</li>

@@ -135,7 +135,7 @@ export default function Testpage() {
                             <Grid container spacing={2} justify='space-between' alignItems='center'>
                                 <div>
                                     <Grid container>
-                                        <Button raised className={classes.button} component={Link} to="/student/dashboard">
+                                        <Button className={classes.button} component={Link} to="/student/dashboard">
                                             <img src={logoImg} alt="logo" className={classes.logoImg} />
                                             <Typography style={{ color: 'white' }}>
                                                 {exam ? exam.name.toUpperCase() : "EXAMINATOR"}
@@ -155,15 +155,15 @@ export default function Testpage() {
                                     <Typography variant="h5" component="h3" style={{ paddingTop: 20 }}>
                                         {exam.name} is scheduled at {exam.startTime}
                                     </Typography>
-                                    <Grid container justify="center">
+                                    <Grid container justify="center" alignItems="center">
                                         <TimerIcon className={classes.iconClass} />
-                                        <Typography variant="h5 " component="h3" className={classes.margin}>
+                                        <Typography variant="h5" component="h3" className={classes.margin}>
                                             Duration: {exam.duration} hrs
                                         </Typography>
                                     </Grid>
-                                    <Grid container justify="center">
+                                    <Grid container justify="center" alignItems="center">
                                         <AddIcon className={classes.iconClass} />
-                                        <Typography variant="h5 " component="h3" className={classes.margin}>
+                                        <Typography variant="h5" component="h3" className={classes.margin}>
                                             Total marks: {exam.totalMarks}
                                         </Typography>
                                     </Grid>

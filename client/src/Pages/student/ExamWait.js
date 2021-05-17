@@ -18,6 +18,7 @@ import TimerIcon from '@material-ui/icons/Timer';
 import AddIcon from '@material-ui/icons/Add';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Loader from "react-loader-spinner";
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -134,7 +135,7 @@ export default function Testpage() {
                             <Grid container spacing={2} justify='space-between' alignItems='center'>
                                 <div>
                                     <Grid container>
-                                        <Button raised className={classes.button} >
+                                        <Button raised className={classes.button} component={Link} to="/student/dashboard">
                                             <img src={logoImg} alt="logo" className={classes.logoImg} />
                                             <Typography style={{ color: 'white' }}>
                                                 {exam ? exam.name.toUpperCase() : "EXAMINATOR"}
@@ -150,7 +151,7 @@ export default function Testpage() {
                         <div className={classes.root}>
                             <Grid container spacing={1} align='center' justify='center'>
                                 <Grid item xs={12} >
-                                    <AccessTimeIcon className={classes.avatar}/>
+                                    <AccessTimeIcon className={classes.avatar} />
                                     <Typography variant="h5" component="h3" style={{ paddingTop: 20 }}>
                                         {exam.name} is scheduled at {exam.startTime}
                                     </Typography>

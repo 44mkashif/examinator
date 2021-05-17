@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
     button: {
         borderRadius: 100,
         marginButtom: '30px',
-        width: "50%"
+        marginLeft: '20px'
     },
     paper: {
         padding: theme.spacing(2),
@@ -308,18 +308,22 @@ export default function SimplePaper() {
                     </Button>
                 </Grid>
 
-                <Grid container justify="center" style={{ marginBottom: '20px' }}>
+                <Grid container spacing={3} justify="center" style={{ marginTop: '50px' , marginBottom: '20px' }}>
 
 
                     {Checksuccess &&
+                        
                         <Alert severity="success" action={
-                            <Button variant="contained" color="primary" className={classes.button} size="small" onClick={event => { navigateTo(`/Instructor/dashboard`) }}>
+                            <Button variant="contained" color="primary" className={classes.button} onClick={event => { navigateTo(`/Instructor/dashboard`) }}>
                                 Return to Dashboard
                             </Button>
                         }>
+                            
+                        
                             <AlertTitle>Success</AlertTitle>
                             <strong> Your Exam has been successfully Scheduled </strong>
                         </Alert>
+
                     }
 
                     {

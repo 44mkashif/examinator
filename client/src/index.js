@@ -81,7 +81,7 @@ ReactDOM.render(
           <GuardedRoute path="/Student/ExamWait/:exam" exact component={ExamWait} meta={{ auth: true, role: 'student' }} />
           <GuardedRoute path="/Student/ExamAlreadySubmitted/:exam" exact component={ExamAlreadySubmitted} meta={{ auth: true, role: 'student' }} />
 
-          <Route path="/test" exact component={Test} />
+          <GuardedRoute path="/test" exact component={Test} />
 
 
           <GuardedRoute path="/Instructor/Login" exact component={InstructorLogin} />

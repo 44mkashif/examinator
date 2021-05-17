@@ -227,7 +227,7 @@ export default function Exam() {
 
   return (
     <React.Fragment>
-     {!loading ?
+      {!loading ?
         <Grid container spacing={0} direction="column" alignItems="center" justify="center" style={{ minHeight: '100vh' }}>
           <Loader type="BallTriangle" className={classes.loader} color={theme.palette.primary.main} height={80} width={80} />
         </Grid>
@@ -249,7 +249,7 @@ export default function Exam() {
           </AppBar>
 
           <Grid container spacing={0}>
-            <Grid item justify="start" xs={9} style={{ paddingTop: 20, paddingLeft: 20, paddingRight: 20 }} >
+            <Grid item xs={9} style={{ paddingTop: 20, paddingLeft: 20, paddingRight: 20 }} >
               <Timer duration={exam.duration} startTime={exam.startTime} />
               <div id="videos" style={{ paddingTop: 20 }}>
                 <video className={classes.video} width="250" ref={videoRef}></video>
@@ -267,7 +267,7 @@ export default function Exam() {
                   inputProps={{ 'aria-label': 'secondary checkbox' }}
                 />
               </Grid>
-              <Grid container justify="start" xs style={{ paddingLeft: 10 }} >
+              <Grid container style={{ paddingLeft: 10 }} >
                 {msg &&
                   <Box mt={5}>
                     <Alert severity="error">
@@ -279,7 +279,7 @@ export default function Exam() {
               </Grid>
             </Grid>
 
-            <Grid item alignItems="right" xs={3} style={{ paddingTop: 20, paddingLeft: 30 }}>
+            <Grid item xs={3} style={{ paddingTop: 20, paddingLeft: 30 }}>
               <div className={classes.content}>
                 <Typography variant="h6" gutterBottom>
                   Meeting Details
@@ -289,7 +289,7 @@ export default function Exam() {
               <div className={classes.drawerContainer}>
                 <List>
                   {['Omer Munam', 'Ahmed Ali', 'Omer Majid', 'Ahmed Ali'].map((text, index) => (
-                    <ListItem button key={text}>
+                    <ListItem button key={index}>
                       <ListItemIcon>{index % 2 === 0 ? <Avatar>OM</Avatar> : <Avatar>AA</Avatar>}</ListItemIcon>
                       <ListItemText primary={text} />
                       <ListItemIcon>{index % 2 === 0 ? <MicIcon></MicIcon> : <MicOffIcon></MicOffIcon>}</ListItemIcon>

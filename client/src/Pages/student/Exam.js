@@ -480,7 +480,7 @@ export default function AutoGrid() {
                   </Grid>
                 </Grid>
               </Grid>
-              <Grid container justify="right" xs style={{ paddingTop: 40 }}>
+              <Grid container xs style={{ paddingTop: 40 }}>
                 <div className="videos">
 
                   <video className={classes.video} width="350" ref={videoRef}></video>

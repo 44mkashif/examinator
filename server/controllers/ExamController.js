@@ -181,12 +181,21 @@ class ExamController {
 
     static async submitAnswer(req, res) {
         try {
-            let checkAnswer = await Answer.find({ 
-                $and: [
-                    { questionId: req.body.questionId },
-                    { studentId: req.body.studentId }
-                ]
-            });
+            let checkAnswer = await Answer.aggregate([
+                {
+                    $match: {
+                        $and: [
+                            {
+                                questionId: mongoose.Types.ObjectId(req.body.questionId)
+                            },
+                            {
+                                studentId: mongoose.Types.ObjectId(req.body.studentId)
+                            }
+                        ]
+                    }
+                }
+            ]);
+
             if (!checkAnswer[0]) {
 
                 let questionId = req.body.questionId;
@@ -222,10 +231,10 @@ class ExamController {
                 ]
             });
 
-            if(answers[0]) {
+            if (answers[0]) {
                 return res.status(200).send({ success: true, msg: 'Answers Fetched Successfuly', answers: answers });
             } else {
-                return res.status(401).send({ success: false, msg: 'Answers not found' })
+                return res.status(200).send({ success: false, msg: 'Answers not found' })
             }
 
         } catch (error) {
@@ -236,14 +245,14 @@ class ExamController {
 
     static async hallCreated(req, res) {
         try {
-            
-            let exam = await Exam.findByIdAndUpdate({_id: req.query.examId}, {
+
+            let exam = await Exam.findByIdAndUpdate({ _id: req.query.examId }, {
                 $set: {
                     hallCreated: true
                 }
             });
 
-            return res.status(200).send({ success: true, msg: 'hallCreated updated'});
+            return res.status(200).send({ success: true, msg: 'hallCreated updated' });
 
         } catch (error) {
             console.log(error)

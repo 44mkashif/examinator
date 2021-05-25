@@ -254,7 +254,9 @@ export default function Exam() {
               {loading ?
                 <Timer duration={exam.duration} startTime={exam.startTime} />
                 :
-                <div>Loading</div>
+                <Grid container spacing={0} direction="column" alignItems="center" justify="center">
+                  <Loader type="BallTriangle" className={classes.loader} color={theme.palette.primary.main} height={80} width={80} />
+                </Grid>
               }
               <div id="videos" style={{ paddingTop: 20 }}>
                 <video className={classes.video} width="250" ref={videoRef}></video>

@@ -270,30 +270,50 @@ export default function AutoGrid() {
         examTimeOut();
       }, remainingTime * 1000);
 
+      var subAnswers;
+      var qIds = [];
+      ResultService.getAnswers(examRoom, studentId, authToken).then(res => {
+        subAnswers = res;
 
-      exam.question.forEach((question, i) => {
-        // <Question question={"Question " + (i + 1) + ": " + question.statement} options={question.options} qNo={i} />
-        questions.push(
-          <div>
-            <Paper className={classes.paper}>
-              <FormControl component="fieldset">
-                <FormLabel component="legend">
-                  Q{(i + 1)}: {question.statement}
-                </FormLabel>
-                <RadioGroup aria-label="answer" name="answer1" value={selectedOptions[i]} onChange={event => handleOptionChange(event, question, i)}>
-                  <FormControlLabel value="0" control={<Radio />} label={question.options[0]} />
-                  <FormControlLabel value="1" control={<Radio />} label={question.options[1]} />
-                  <FormControlLabel value="2" control={<Radio />} label={question.options[2]} />
-                  <FormControlLabel value="3" control={<Radio />} label={question.options[3]} />
-                </RadioGroup>
-              </FormControl>
-            </Paper>
-          </div>
-        )
-      });
-      console.log("Ques: ", questions);
+        if (subAnswers && subAnswers.length > 0) {
+          subAnswers.forEach(ans => {
+            qIds.push(ans.questionId);
+          });
+          console.log("Student Answers: ", subAnswers);
+          console.log("Answers Q Ids: ", qIds);
+        }
 
-      setLoading(true);
+        exam.question.forEach((question, i) => {
+          // <Question question={"Question " + (i + 1) + ": " + question.statement} options={question.options} qNo={i} />
+
+          if (!qIds.includes(question._id)) {
+            questions.push(
+              <div>
+                <Paper className={classes.paper}>
+                  <FormControl component="fieldset">
+                    <FormLabel component="legend">
+                      Q{(i + 1)}: {question.statement}
+                    </FormLabel>
+                    <RadioGroup aria-label="answer" name="answer1" value={selectedOptions[i]} onChange={event => handleOptionChange(event, question, i)}>
+                      <FormControlLabel value="0" control={<Radio />} label={question.options[0]} />
+                      <FormControlLabel value="1" control={<Radio />} label={question.options[1]} />
+                      <FormControlLabel value="2" control={<Radio />} label={question.options[2]} />
+                      <FormControlLabel value="3" control={<Radio />} label={question.options[3]} />
+                    </RadioGroup>
+                  </FormControl>
+                </Paper>
+              </div>
+            )
+          }
+        });
+
+        console.log("Ques: ", questions);
+        if (questions.length == 0) {
+          setSelected(true);
+          setButton(false);
+        }
+        setLoading(true);
+      })
 
     });
 
@@ -319,7 +339,8 @@ export default function AutoGrid() {
 
   const handleChange = () => {
     setSelected(true);
-    submitAnswer(temp);
+    console.log("index: ", selectedOptions.length - 1);
+    submitAnswer(selectedOptions.length - 1);
     // currentQues.pop();
     console.log("Q: ", questions);
 
@@ -327,7 +348,6 @@ export default function AutoGrid() {
       setButton(false);
     }
 
-    console.log("temp: ", temp);
     setQNo(++temp);
   };
 
@@ -445,10 +465,13 @@ export default function AutoGrid() {
                   ?
                   <div>
                     <Timer duration={exam.duration} startTime={exam.startTime} />
-                    {questions[qNo ? qNo : 0]}
+                    {questions[qNo ? qNo : 0]
+                    }
                   </div>
                   :
-                  <div>Loading</div>
+                  <Grid container spacing={0} direction="column" alignItems="center" justify="center">
+                    <Loader type="BallTriangle" className={classes.loader} color={theme.palette.primary.main} height={80} width={80} />
+                  </Grid>
                 }
 
                 <Box mt={5} hidden={activebutton}>

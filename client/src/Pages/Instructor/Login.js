@@ -93,6 +93,7 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 100,
   },
 }));
+var body = {};
 
 export default function Login() {
 
@@ -100,13 +101,19 @@ export default function Login() {
   const [errorMessage, setErrorMessage] = React.useState("");
   const [isMobile, setIsMobile] = React.useState(window.innerWidth < 1200);
 
-  var body = {
-  }
 
   const instructorLogin = async (e) => {
     e.preventDefault();
-    const error = await AuthService.instructorLogin(body);
-    setErrorMessage(error);
+    console.log("Body: ", body);
+    if (body["email"] == null || body["email"] === "") {
+      setErrorMessage("Email is required!");
+    } else if (body["password"] == null || body["password"] === "") {
+      setErrorMessage("Password is required!");
+    } else {
+      setErrorMessage("");
+      const error = await AuthService.instructorLogin(body);
+      setErrorMessage(error);
+    }
   }
 
 

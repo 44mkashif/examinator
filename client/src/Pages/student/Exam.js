@@ -116,7 +116,7 @@ export default function AutoGrid() {
       count += 1;
       setErrorMsg(`You have changed the tab ${count} times. Your Exam will be cancelled after ${3 - count} more warnings`);
       if (count === 3) {
-        submitExam(null, "Your Exam has been cancelled");
+        // submitExam(null, "Your Exam has been cancelled");
       }
     };
 
@@ -255,32 +255,65 @@ export default function AutoGrid() {
         console.log("Exam date: ", examDate);
         console.log("Today: ", now);
         console.log("Exam over");
-        navigateTo(`../ExamComplete/${examRoom}`);
+        navigateToWithData(`../ExamComplete/${examRoom}`, "Exam is not available at this time");
+        return;
       }
 
-      exam.question.forEach((question, i) => {
-        // <Question question={"Question " + (i + 1) + ": " + question.statement} options={question.options} qNo={i} />
-        questions.push(
-          <div>
-            <Paper className={classes.paper}>
-              <FormControl component="fieldset">
-                <FormLabel component="legend">
-                  Q{(i + 1)}: {question.statement}
-                </FormLabel>
-                <RadioGroup aria-label="answer" name="answer1" value={selectedOptions[i]} onChange={event => handleOptionChange(event, question, i)}>
-                  <FormControlLabel value="0" control={<Radio />} label={question.options[0]} />
-                  <FormControlLabel value="1" control={<Radio />} label={question.options[1]} />
-                  <FormControlLabel value="2" control={<Radio />} label={question.options[2]} />
-                  <FormControlLabel value="3" control={<Radio />} label={question.options[3]} />
-                </RadioGroup>
-              </FormControl>
-            </Paper>
-          </div>
-        )
-      });
-      console.log("Ques: ", questions);
+      const startTime = new Date(exam.startTime) / 1000; // use UNIX timestamp in seconds
+      const durationInSecs = exam.duration * 60 * 60;
+      const endTime = startTime + durationInSecs; // use UNIX timestamp in seconds
+      const timeElapsed = (now / 1000) - startTime;
+      const remainingTime = endTime - startTime - timeElapsed;
+      console.log("Remaining time in seconds: ", remainingTime);
 
-      setLoading(true);
+      setTimeout(() => {
+        examTimeOut();
+      }, remainingTime * 1000);
+
+      var subAnswers;
+      var qIds = [];
+      ResultService.getAnswers(examRoom, studentId, authToken).then(res => {
+        subAnswers = res;
+
+        if (subAnswers && subAnswers.length > 0) {
+          subAnswers.forEach(ans => {
+            qIds.push(ans.questionId);
+          });
+          console.log("Student Answers: ", subAnswers);
+          console.log("Answers Q Ids: ", qIds);
+        }
+
+        exam.question.forEach((question, i) => {
+          // <Question question={"Question " + (i + 1) + ": " + question.statement} options={question.options} qNo={i} />
+
+          if (!qIds.includes(question._id)) {
+            questions.push(
+              <div>
+                <Paper className={classes.paper}>
+                  <FormControl component="fieldset">
+                    <FormLabel component="legend">
+                      Q{(i + 1)}: {question.statement}
+                    </FormLabel>
+                    <RadioGroup aria-label="answer" name="answer1" value={selectedOptions[i]} onChange={event => handleOptionChange(event, question, i)}>
+                      <FormControlLabel value="0" control={<Radio />} label={question.options[0]} />
+                      <FormControlLabel value="1" control={<Radio />} label={question.options[1]} />
+                      <FormControlLabel value="2" control={<Radio />} label={question.options[2]} />
+                      <FormControlLabel value="3" control={<Radio />} label={question.options[3]} />
+                    </RadioGroup>
+                  </FormControl>
+                </Paper>
+              </div>
+            )
+          }
+        });
+
+        console.log("Ques: ", questions);
+        if (questions.length == 0) {
+          setSelected(true);
+          setButton(false);
+        }
+        setLoading(true);
+      })
 
     });
 
@@ -306,7 +339,8 @@ export default function AutoGrid() {
 
   const handleChange = () => {
     setSelected(true);
-    submitAnswer(temp);
+    console.log("index: ", selectedOptions.length - 1);
+    submitAnswer(selectedOptions.length - 1);
     // currentQues.pop();
     console.log("Q: ", questions);
 
@@ -314,7 +348,6 @@ export default function AutoGrid() {
       setButton(false);
     }
 
-    console.log("temp: ", temp);
     setQNo(++temp);
   };
 
@@ -401,25 +434,13 @@ export default function AutoGrid() {
     console.log("selectedOption", question.options[selectedOptions[index]]);
   };
 
-  // var questionNum;
-
-  // var ques = ["A linear collection of data elements where the linear node is given by means of pointer is called?",
-  //   "In linked list each node contains a minimum of two fields. One field is data field to store the data second field is?",
-  //   "What would be the asymptotic time complexity to add a node at the end of singly linked list, if the pointer is initially pointing to the head of the list?",
-  //   "The concatenation of two lists can be performed in O(1) time. Which of the following variation of the linked list can be used?",
-  //   "What would be the asymptotic time complexity to insert an element at the front of the linked list (head is known)"];
-
-  // for (var i = 0; i < questionNum; i++) {
-  //   questions.push(<Question question={"Question " + i + ": " + ques[i]} qNo={i} />);
-  // }
+  const examTimeOut = () => {
+    submitExam(null, "Your ran out of time! Your exam has been submitted");
+  }
 
   return (
     <React.Fragment >
-      {!loading ?
-        <Grid container spacing={0} direction="column" alignItems="center" justify="center" style={{ minHeight: '100vh' }}>
-          <Loader type="BallTriangle" className={classes.loader} color={theme.palette.primary.main} height={80} width={80} />
-        </Grid>
-        :
+      {
         <div>
           <AppBar position="relative">
             <Toolbar>
@@ -428,7 +449,7 @@ export default function AutoGrid() {
                   <Grid container>
                     <img src={logoImg} alt="logo" style={{ width: 40, marginRight: 10 }} />
                     <Typography style={{ color: 'white', marginTop: 5 }}>
-                      {exam ? exam.name.toUpperCase() : "EXAMINATOR"}
+                      {loading & exam ? exam.name.toUpperCase() : "EXAMINATOR"}
                     </Typography>
                   </Grid>
                 </div>
@@ -440,8 +461,18 @@ export default function AutoGrid() {
             <Grid container spacing={3}>
               <Grid item xs={9} style={{ paddingTop: 40 }} >
                 {/* <Timer duration={exam.duration} startTime={exam.startTime} /> */}
-                <Timer duration={exam.duration} startTime={exam.startTime} />
-                {questions[qNo ? qNo : 0]}
+                {loading
+                  ?
+                  <div>
+                    <Timer duration={exam.duration} startTime={exam.startTime} />
+                    {questions[qNo ? qNo : 0]
+                    }
+                  </div>
+                  :
+                  <Grid container spacing={0} direction="column" alignItems="center" justify="center">
+                    <Loader type="BallTriangle" className={classes.loader} color={theme.palette.primary.main} height={80} width={80} />
+                  </Grid>
+                }
 
                 <Box mt={5} hidden={activebutton}>
                   <Alert severity="success">
@@ -475,7 +506,7 @@ export default function AutoGrid() {
                   </Grid>
                 </Grid>
               </Grid>
-              <Grid container justify="right" xs style={{ paddingTop: 40 }}>
+              <Grid container xs style={{ paddingTop: 40 }}>
                 <div className="videos">
 
                   <video className={classes.video} width="350" ref={videoRef}></video>
@@ -500,6 +531,10 @@ export default function AutoGrid() {
           </div>
           <Footer />
         </div>
+        // :
+        // <Grid container spacing={0} direction="column" alignItems="center" justify="center" style={{ minHeight: '100vh' }}>
+        //   <Loader type="BallTriangle" className={classes.loader} color={theme.palette.primary.main} height={80} width={80} />
+        // </Grid>
       }
     </React.Fragment >
 

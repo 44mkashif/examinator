@@ -151,7 +151,7 @@ export default function Dashboard() {
             <Toolbar>
               <Grid container spacing={2} justify='space-between' alignItems='center'>
                 <div>
-                  <Button raised style={{ borderRadius: 100, }}>
+                  <Button style={{ borderRadius: 100, }}>
                     <img src={logoImg} alt="logo" style={{ width: 40, marginRight: 10 }} />
                     <Typography className={classes.whiteColor}>
                       Examinator
@@ -160,7 +160,7 @@ export default function Dashboard() {
                 </div>
                 <div>
 
-                  <Button raised className={classes.button} onClick={logout}>
+                  <Button className={classes.button} onClick={logout}>
                     <ExitToAppIcon className={classes.extendedIcon} />
                     <Typography className={classes.buttonText}>
                       Log Out

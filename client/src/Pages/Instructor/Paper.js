@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
     button: {
         borderRadius: 100,
         marginButtom: '30px',
-        width: "50%"
+        marginLeft: '20px'
     },
     paper: {
         padding: theme.spacing(2),
@@ -175,11 +175,10 @@ export default function SimplePaper() {
                 <Grid container justify="center">
                     <Grid item >
                         {qComponents.map((q, index) => (
-                            <div>
+                            <div key={index}>
                                 <Paper className={classes.paper}>
                                     <div>
                                         <TextField
-                                            id="outlined-full-width"
                                             label={"Question " + (index + 1)}
                                             // style={{ marginRight: 8 }}
                                             placeholder="What is what in what?"
@@ -199,7 +198,6 @@ export default function SimplePaper() {
                                             <Grid item xs={5}>
                                                 <TextField
                                                     label="Option A"
-                                                    id="outlined-margin-dense"
                                                     style={{ margin: 8 }}
                                                     className={classes.textField}
                                                     margin="dense"
@@ -213,7 +211,6 @@ export default function SimplePaper() {
                                             <Grid item xs={5}>
                                                 <TextField
                                                     label="Option B"
-                                                    id="outlined-margin-dense"
                                                     style={{ margin: 8 }}
                                                     className={classes.textField}
                                                     margin="dense"
@@ -227,7 +224,6 @@ export default function SimplePaper() {
                                             <Grid item xs={5}>
                                                 <TextField
                                                     label="Option C"
-                                                    id="outlined-margin-dense"
                                                     style={{ margin: 8 }}
                                                     className={classes.textField}
                                                     margin="dense"
@@ -241,7 +237,6 @@ export default function SimplePaper() {
                                             <Grid item xs={5}>
                                                 <TextField
                                                     label="Option D"
-                                                    id="outlined-margin-dense"
                                                     className={classes.textField}
                                                     style={{ margin: 8 }}
                                                     margin="dense"
@@ -277,7 +272,6 @@ export default function SimplePaper() {
                                                 <Grid item>
                                                     <TextField
                                                         label="Marks"
-                                                        id="outlined-margin-dense"
                                                         className={classes.textField}
                                                         variant="outlined"
                                                         align="center"
@@ -307,18 +301,23 @@ export default function SimplePaper() {
                         Save
                     </Button>
                 </Grid>
-                <div>
+
+                <Grid container spacing={3} justify="center" style={{ marginTop: '50px', marginBottom: '20px' }}>
 
 
                     {Checksuccess &&
+
                         <Alert severity="success" action={
-                            <Button color="inherit" size="small" onClick={event => { navigateTo(`/Instructor/dashboard`) }}>
+                            <Button variant="contained" color="primary" className={classes.button} onClick={event => { navigateTo(`/Instructor/dashboard`) }}>
                                 Return to Dashboard
                             </Button>
                         }>
+
+
                             <AlertTitle>Success</AlertTitle>
                             <strong> Your Exam has been successfully Scheduled </strong>
                         </Alert>
+
                     }
 
                     {
@@ -328,7 +327,7 @@ export default function SimplePaper() {
                             <strong> {error} </strong>
                         </Alert>
                     }
-                </div>
+                </Grid>
 
             </div>
 

@@ -84,8 +84,8 @@ function App() {
   return (
     <div className="App">
       <Grid container component="main">
-        <Grid xs={12} sm={7} className={classes.leftContainer} >
-          <Grid container justify="left" className={classes.root} >
+        <Grid item xs={12} sm={7} className={classes.leftContainer} >
+          <Grid container className={classes.root} >
             {/* <CssBaseline /> */}
             <Grid item elevation={6} className={`${!isMobile ? classes.round : classes.mobile}`}>
               <div className={`${!isMobile ? classes.paper : ""}`}>

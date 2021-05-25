@@ -17,7 +17,6 @@ import { useState } from 'react';
 import { Alert, AlertTitle } from '@material-ui/lab';
 import Footer from '../Components/Footer';
 
-
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -91,6 +90,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+var body = {};
 
 export default function Login() {
 
@@ -98,12 +98,19 @@ export default function Login() {
   const [errorMessage, setErrorMessage] = React.useState("");
   const [isMobile, setIsMobile] = React.useState(window.innerWidth < 1200);
 
-  var body = {}
 
   const studentLogin = async (e) => {
     e.preventDefault();
-    const error = await AuthService.studentLogin(body);
-    setErrorMessage(error);
+    console.log("Body: ", body);
+    if (body["email"] == null || body["email"] === "") {
+      setErrorMessage("Email is required!");
+    } else if (body["password"] == null || body["password"] === "") {
+      setErrorMessage("Password is required!");
+    } else {
+      setErrorMessage("")
+      const error = await AuthService.studentLogin(body);
+      setErrorMessage(error);
+    }
   }
 
   const onEmailChange = (e) => {

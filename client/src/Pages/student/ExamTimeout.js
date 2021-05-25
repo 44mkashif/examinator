@@ -23,8 +23,14 @@ const useStyles = makeStyles((theme) => ({
     button: {
         borderRadius: 100,
     },
+    avatar: {
+        font: "1500px",
+        width: "100px",
+        height: "150px",
+        color: theme.palette.secondary.main
+      },
     margin: {
-        marginTop: 50
+        marginTop: 30
     }
 }));
 
@@ -41,18 +47,17 @@ export default function StudentExamComplete() {
 
             <Container fixed>
                 <div className={classes.root}>
-                    <Grid container spacing={2} align='center' >
-                        <Grid item xs={12}>
-                            <HourglassEmpty />
+                    <Grid container spacing={2} align='center' justify='center' >
+                        <Grid item >
+                            <HourglassEmpty className={classes.avatar}/>
                         </Grid>
                         <Grid item xs={12}>
-
-                            <Typography>
-                                Your ran out of time!
+                            <Typography variant="h5" style={{ color: 'red' }}>
+                                You ran out of time!
                                 </Typography>
                         </Grid>
                         <Grid xs={12}>
-                            <Typography>
+                            <Typography variant="h6">
                                 Your Exam have been Submitted
                                 </Typography>
                         </Grid>
@@ -68,9 +73,7 @@ export default function StudentExamComplete() {
                     </Grid>
                 </div>
             </Container>
-            {/* Footer */}
-            <Footer />
-            {/* End footer */}
+         
         </React.Fragment>
     )
 };

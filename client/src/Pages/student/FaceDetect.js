@@ -178,7 +178,7 @@ export default function Testpage() {
 
                                     variant="contained"
                                     color="primary"
-                                    className={classes.button} x
+                                    className={classes.button}
                                     // onClick={capture}
                                     // endIcon={<Icon></Icon>}
                                     onClick={event => {

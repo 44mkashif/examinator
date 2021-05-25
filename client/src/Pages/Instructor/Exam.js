@@ -244,11 +244,12 @@ export default function Exam() {
 
   return (
     <React.Fragment>
-      {!loading ?
-        <Grid container spacing={0} direction="column" alignItems="center" justify="center" style={{ minHeight: '100vh' }}>
-          <Loader type="BallTriangle" className={classes.loader} color={theme.palette.primary.main} height={80} width={80} />
-        </Grid>
-        :
+      {
+        // !loading ?
+        // <Grid container spacing={0} direction="column" alignItems="center" justify="center" style={{ minHeight: '100vh' }}>
+        //   <Loader type="BallTriangle" className={classes.loader} color={theme.palette.primary.main} height={80} width={80} />
+        // </Grid>
+        // :
         <div>
           <AppBar position="relative">
             <Toolbar>
@@ -257,7 +258,7 @@ export default function Exam() {
                   <Grid container>
                     <img src={logoImg} alt="logo" style={{ width: 40, marginRight: 10 }} />
                     <Typography style={{ color: 'white', marginTop: 5 }}>
-                      {exam ? exam.name.toUpperCase() : "EXAMINATOR"}
+                      {loading & exam ? exam.name.toUpperCase() : "EXAMINATOR"}
                     </Typography>
                   </Grid>
                 </div>
@@ -266,15 +267,21 @@ export default function Exam() {
           </AppBar>
 
           <Grid container spacing={0}>
-            <Grid item justify="start" xs={9} style={{ paddingTop: 20, paddingLeft: 20, paddingRight: 20 }} >
-              <Timer duration={exam.duration} startTime={exam.startTime} />
+            <Grid item xs={9} style={{ paddingTop: 20, paddingLeft: 20, paddingRight: 20 }} >
+              {loading ?
+                <Timer duration={exam.duration} startTime={exam.startTime} />
+                :
+                <Grid container spacing={0} direction="column" alignItems="center" justify="center">
+                  <Loader type="BallTriangle" className={classes.loader} color={theme.palette.primary.main} height={80} width={80} />
+                </Grid>
+              }
               <div id="videos" style={{ paddingTop: 20 }}>
                 <video className={classes.video} width="250" ref={videoRef}></video>
               </div>
               <Grid container style={{ paddingLeft: 90 }}>
                 <Typography>
                   Camera
-            </Typography>
+                </Typography>
               </Grid>
               <Grid container style={{ paddingLeft: 90 }}>
                 <Switch
@@ -284,7 +291,7 @@ export default function Exam() {
                   inputProps={{ 'aria-label': 'secondary checkbox' }}
                 />
               </Grid>
-              <Grid container justify="start" xs style={{ paddingLeft: 10 }} >
+              <Grid container style={{ paddingLeft: 10 }} >
                 {msg &&
                   <Box mt={5}>
                     <Alert severity="error">
@@ -295,7 +302,8 @@ export default function Exam() {
                 }
               </Grid>
             </Grid>
-            <Grid item alignItems="right" xs={3} style={{ paddingTop: 20, paddingLeft: 30 }}>
+
+            <Grid item xs={3} style={{ paddingTop: 20, paddingLeft: 30 }}>
               <div className={classes.content}>
                 <Typography variant="h6" gutterBottom>
                   Meeting Details
@@ -304,8 +312,8 @@ export default function Exam() {
               <Divider />
               <div className={classes.drawerContainer}>
                 <List>
-                  {['Omer Munam', 'Ahmed Ali', 'Omer Majid', 'Ahmed Annas'].map((text, index) => (
-                    <ListItem button key={text}>
+                  {['Omer Munam', 'Ahmed Ali', 'Omer Majid', 'Ahmed Ali'].map((text, index) => (
+                    <ListItem button key={index}>
                       <ListItemIcon>{index % 2 === 0 ? <Avatar>OM</Avatar> : <Avatar>AA</Avatar>}</ListItemIcon>
                       <ListItemText primary={text} />
                       <ListItemIcon>{index % 2 === 0 ? <MicIcon></MicIcon> : <MicOffIcon></MicOffIcon>}</ListItemIcon>

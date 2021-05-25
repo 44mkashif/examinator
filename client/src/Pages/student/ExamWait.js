@@ -14,12 +14,16 @@ import Button from '@material-ui/core/Button';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import ExamService from '../../services/ExamService';
 import theme from './../../theme';
+import TimerIcon from '@material-ui/icons/Timer';
+import AddIcon from '@material-ui/icons/Add';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Loader from "react-loader-spinner";
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
+        marginTop: 120
     },
     paper: {
         padding: theme.spacing(2),
@@ -35,6 +39,14 @@ const useStyles = makeStyles((theme) => ({
         paddingBottom: theme.spacing(8),
 
     },
+    iconClass: {
+        color: theme.palette.secondary.dark,
+        marginTop: 20
+    },
+    margin: {
+        marginLeft: 10,
+        marginTop: 20
+    },
     align: {
         paddingTop: 100
     },
@@ -47,6 +59,16 @@ const useStyles = makeStyles((theme) => ({
 
         borderRadius: 100,
 
+    },
+    logoImg: {
+        width: 40,
+        marginRight: 10
+    },
+    avatar: {
+        font: "1500px",
+        width: "100px",
+        height: "150px",
+        color: theme.palette.secondary.main
     },
     video: {
         borderStyle: "solid",
@@ -113,10 +135,12 @@ export default function Testpage() {
                             <Grid container spacing={2} justify='space-between' alignItems='center'>
                                 <div>
                                     <Grid container>
-                                        <img src={logoImg} alt="logo" style={{ width: 40, marginRight: 10 }} />
-                                        <Typography style={{ color: 'white', marginTop: 5 }}>
-                                            {exam ? exam.name.toUpperCase() : "EXAMINATOR"}
-                                        </Typography>
+                                        <Button className={classes.button} component={Link} to="/student/dashboard">
+                                            <img src={logoImg} alt="logo" className={classes.logoImg} />
+                                            <Typography style={{ color: 'white' }}>
+                                                {exam ? exam.name.toUpperCase() : "EXAMINATOR"}
+                                            </Typography>
+                                        </Button>
                                     </Grid>
                                 </div>
                             </Grid>
@@ -125,50 +149,26 @@ export default function Testpage() {
                     <CssBaseline />
                     <Container fixed>
                         <div className={classes.root}>
-                            <Paper className={classes.paper}>
-                                <Grid container spacing={3}>
-                                    <Grid item xs={12} >
-                                        <AccessTimeIcon />
-                                        <Typography variant="h6" style={{ paddingTop: 100 }}>
-                                            {exam.name}
-                                        </Typography>
-                                        <Typography variant="h6" style={{ paddingTop: 100 }}>
-                                            Your Exam is scheduled at {exam.startTime}
-                                        </Typography>
-                                        <Typography variant="h6" style={{ paddingTop: 100 }}>
+                            <Grid container spacing={1} align='center' justify='center'>
+                                <Grid item xs={12} >
+                                    <AccessTimeIcon className={classes.avatar} />
+                                    <Typography variant="h5" component="h3" style={{ paddingTop: 20 }}>
+                                        {exam.name} is scheduled at {exam.startTime}
+                                    </Typography>
+                                    <Grid container justify="center" alignItems="center">
+                                        <TimerIcon className={classes.iconClass} />
+                                        <Typography variant="h5" component="h3" className={classes.margin}>
                                             Duration: {exam.duration} hrs
                                         </Typography>
-                                        <Typography variant="h6" style={{ paddingTop: 100 }}>
+                                    </Grid>
+                                    <Grid container justify="center" alignItems="center">
+                                        <AddIcon className={classes.iconClass} />
+                                        <Typography variant="h5" component="h3" className={classes.margin}>
                                             Total marks: {exam.totalMarks}
                                         </Typography>
-                                        <Typography variant="h6" style={{ paddingTop: 100 }}>
-                                            No of questions: {exam.question.length}
-                                        </Typography>
-                                    </Grid>
-                                    <Divider orientation="vertical" flexItem style={{ marginRight: "-1px" }} />
-
-                                    <Grid item xs={12}>
-                                        {/* <button onClick={capture}>Capture photo</button> */}
-
-                                        <Grid align="center" className={classes.padding}>
-                                            {/* Chudri ye button styling krty huy remove kr dena */}
-                                            <Button
-                                                variant="contained"
-                                                color="primary"
-                                                className={classes.button} x
-                                                // onClick={capture}
-                                                // endIcon={<Icon></Icon>}
-                                                onClick={event => {
-                                                    navigateTo(`../Course/Exam/${examRoom}`)
-                                                }}
-                                            >
-                                                Test Camera
-                                            </Button>
-                                        </Grid>
                                     </Grid>
                                 </Grid>
-                            </Paper>
-
+                            </Grid>
                         </div>
                     </Container>
                 </div>

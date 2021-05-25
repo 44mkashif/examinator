@@ -96,7 +96,6 @@ const useStyles = makeStyles((theme) => ({
         paddingTop: 10
     },
     cardMargin: {
-        marginLeft: 65,
         paddingTop: 20
     },
     content: {
@@ -285,7 +284,7 @@ export default function Course() {
                             <Grid container spacing={2} justify='space-between' alignItems='center'>
                                 <div>
                                     <Grid container>
-                                        <Button raised className={classes.button} component={Link} to="/student/dashboard">
+                                        <Button className={classes.button} component={Link} to="/student/dashboard">
                                             <img src={logoImg} alt="logo" className={classes.logoImg} />
                                             <Typography style={{ color: 'white' }}>
                                                 {course ? course["courseName"].toUpperCase() : "EXAMINATOR"}
@@ -316,34 +315,36 @@ export default function Course() {
                                 <Grid container spacing={4} justify="center">
                                     {examData.map((exam, i) => (
                                         <div key={i} className={classes.cardDiv}>
-                                            <Card className={classes.card} elevation="7">
-                                                <ButtonBase className={classes.cardMargin}
-                                                    onClick={event => examClicked(event, exam)}
-                                                >
-                                                    <CardContent className={classes.cardContent}>
-                                                        <Typography gutterBottom variant="h5" component="h2">
-                                                            {exam.name}
-                                                        </Typography>
-                                                        <Grid container justify="center">
-                                                            <TimerIcon className={classes.iconClass} />
-                                                            <Typography className={classes.margin}>
-                                                                Duration: {exam.duration} hrs
+                                            <Card className={classes.card} elevation={7}>
+                                                <Grid container alignContent="center" justify="center">
+                                                    <ButtonBase className={classes.cardMargin}
+                                                        onClick={event => examClicked(event, exam)}
+                                                    >
+                                                        <CardContent className={classes.cardContent}>
+                                                            <Typography gutterBottom variant="h5" component="h2">
+                                                                {exam.name}
                                                             </Typography>
-                                                        </Grid>
-                                                        <Grid container justify="center">
-                                                            <DateRangeIcon className={classes.iconClass} />
-                                                            <Typography className={classes.margin}>
-                                                                {examDates[i]}
-                                                            </Typography>
-                                                        </Grid>
-                                                        <Grid container justify="center">
-                                                            <AccessTimeIcon className={classes.iconClass} />
-                                                            <Typography className={classes.margin}>
-                                                                {examTimes[i]}
-                                                            </Typography>
-                                                        </Grid>
-                                                    </CardContent>
-                                                </ButtonBase>
+                                                            <Grid container justify="center">
+                                                                <TimerIcon className={classes.iconClass} />
+                                                                <Typography className={classes.margin}>
+                                                                    Duration: {exam.duration} hrs
+                                                                </Typography>
+                                                            </Grid>
+                                                            <Grid container justify="center">
+                                                                <DateRangeIcon className={classes.iconClass} />
+                                                                <Typography className={classes.margin}>
+                                                                    {examDates[i]}
+                                                                </Typography>
+                                                            </Grid>
+                                                            <Grid container justify="center">
+                                                                <AccessTimeIcon className={classes.iconClass} />
+                                                                <Typography className={classes.margin}>
+                                                                    {examTimes[i]}
+                                                                </Typography>
+                                                            </Grid>
+                                                        </CardContent>
+                                                    </ButtonBase>
+                                                </Grid>
                                             </Card>
 
                                         </div>
@@ -368,7 +369,7 @@ export default function Course() {
                                 <Grid container spacing={4} justify="center">
                                     {prevExam.map((exam, i) => (
                                         <div key={i} className={classes.cardDiv}>
-                                            <Card className={classes.card} elevation="7">
+                                            <Card className={classes.card} elevation={7}>
                                                 <CardContent className={classes.cardContent}>
                                                     <Grid container justify="center">
                                                         <Typography gutterBottom variant="h5" component="h2">
@@ -397,7 +398,13 @@ export default function Course() {
                                                             </Grid>
                                                         </div>
                                                         :
-                                                        <div>Not submitted</div>
+                                                        <div>
+                                                            <Grid container justify="center">
+                                                                <Typography className={classes.margin} style={{ paddingBottom: '33px' }}>
+                                                                    Not submitted
+                                                                </Typography>
+                                                            </Grid>
+                                                        </div>
                                                     }
                                                 </CardContent>
                                             </Card>

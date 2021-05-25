@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
     },
-    
+
     modal: {
         display: 'flex',
         alignItems: 'center',
@@ -297,7 +297,7 @@ export default function Course() {
                             <Grid container spacing={2} justify='space-between' alignItems='center'>
                                 <div>
                                     <Grid container>
-                                        <Button raised className={classes.button} component={Link} to="/instructor/dashboard">
+                                        <Button className={classes.button} component={Link} to="/instructor/dashboard">
                                             <img src={logoImg} alt="logo" className={classes.logoImg} />
                                             <Typography className={classes.whiteColor}>
                                                 {course ? course["courseName"].toUpperCase() : "EXAMINATOR"}
@@ -307,7 +307,7 @@ export default function Course() {
                                     </Grid>
                                 </div>
                                 <div>
-                                    <Button raised className={classes.button} onClick={handleOpenMenu}>
+                                    <Button className={classes.button} onClick={handleOpenMenu}>
                                         <AccessTimeIcon className={classes.scheduleIcon} />
                                         <Typography className={classes.buttonText} >
                                             Schedule Exam
@@ -334,7 +334,7 @@ export default function Course() {
                                 <Grid container spacing={4} justify="center">
                                     {examData.map((exam, i) => (
                                         <div key={i} className={classes.cardDiv}>
-                                            <Card className={classes.card} elevation="7">
+                                            <Card className={classes.card} elevation={7}>
                                                 <Grid container spacing={0} direction="column" alignItems="center" justify="center" >
                                                     <ButtonBase className={classes.cardMargin}
                                                         onClick={event => { navigateTo(`../Course/Exam/${exam._id}`) }}
@@ -347,7 +347,7 @@ export default function Course() {
                                                                 <TimerIcon className={classes.iconClass} />
                                                                 <Typography className={classes.margin}>
                                                                     Duration: {exam.duration} hrs
-                                                    </Typography>
+                                                                </Typography>
                                                             </Grid>
                                                             <Grid container justify="center">
                                                                 <DateRangeIcon className={classes.iconClass} />
@@ -420,7 +420,7 @@ export default function Course() {
                                 <Grid container spacing={4} justify="center">
                                     {prevExam.map((exam, i) => (
                                         <div key={i} className={classes.cardDiv}>
-                                            <Card className={classes.card} elevation="7">
+                                            <Card className={classes.card} elevation={7}>
                                                 <Grid container spacing={0} direction="column" alignItems="center" justify="center" >
                                                     <ButtonBase className={classes.cardMargin}
                                                         onClick={event => { navigateTo(`../Course/${courseId}/Exam/Result/${exam._id}`) }}
@@ -558,7 +558,7 @@ export default function Course() {
                                     <Grid container spacing={2} justify='space-between' alignItems='center'>
                                         <Button
                                             variant="contained"
-                                            color="secondary.dark"
+                                            color="default"
                                             className={classes.button}
                                             style={{ width: '48%' }}
                                             onClick={handleCloseMenu}

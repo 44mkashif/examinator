@@ -116,7 +116,7 @@ export default function AutoGrid() {
       count += 1;
       setErrorMsg(`You have changed the tab ${count} times. Your Exam will be cancelled after ${3 - count} more warnings`);
       if (count === 3) {
-        submitExam(null, "Your Exam has been cancelled");
+        // submitExam(null, "Your Exam has been cancelled");
       }
     };
 
@@ -420,11 +420,7 @@ export default function AutoGrid() {
 
   return (
     <React.Fragment >
-      {!loading ?
-        <Grid container spacing={0} direction="column" alignItems="center" justify="center" style={{ minHeight: '100vh' }}>
-          <Loader type="BallTriangle" className={classes.loader} color={theme.palette.primary.main} height={80} width={80} />
-        </Grid>
-        :
+      {
         <div>
           <AppBar position="relative">
             <Toolbar>
@@ -433,7 +429,7 @@ export default function AutoGrid() {
                   <Grid container>
                     <img src={logoImg} alt="logo" style={{ width: 40, marginRight: 10 }} />
                     <Typography style={{ color: 'white', marginTop: 5 }}>
-                      {exam ? exam.name.toUpperCase() : "EXAMINATOR"}
+                      {loading & exam ? exam.name.toUpperCase() : "EXAMINATOR"}
                     </Typography>
                   </Grid>
                 </div>
@@ -445,8 +441,15 @@ export default function AutoGrid() {
             <Grid container spacing={3}>
               <Grid item xs={9} style={{ paddingTop: 40 }} >
                 {/* <Timer duration={exam.duration} startTime={exam.startTime} /> */}
-                <Timer duration={exam.duration} startTime={exam.startTime} />
-                {questions[qNo ? qNo : 0]}
+                {loading
+                  ?
+                  <div>
+                    <Timer duration={exam.duration} startTime={exam.startTime} />
+                    {questions[qNo ? qNo : 0]}
+                  </div>
+                  :
+                  <div>Loading</div>
+                }
 
                 <Box mt={5} hidden={activebutton}>
                   <Alert severity="success">
@@ -505,6 +508,10 @@ export default function AutoGrid() {
           </div>
           <Footer />
         </div>
+        // :
+        // <Grid container spacing={0} direction="column" alignItems="center" justify="center" style={{ minHeight: '100vh' }}>
+        //   <Loader type="BallTriangle" className={classes.loader} color={theme.palette.primary.main} height={80} width={80} />
+        // </Grid>
       }
     </React.Fragment >
 

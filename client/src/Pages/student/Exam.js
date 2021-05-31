@@ -116,7 +116,7 @@ export default function AutoGrid() {
       count += 1;
       setErrorMsg(`You have changed the tab ${count} times. Your Exam will be cancelled after ${3 - count} more warnings`);
       if (count === 3) {
-        // submitExam(null, "Your Exam has been cancelled");
+         submitExam(null, "Your Exam has been cancelled");
       }
     };
 

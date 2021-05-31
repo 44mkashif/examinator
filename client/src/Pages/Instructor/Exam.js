@@ -295,11 +295,11 @@ export default function Exam() {
               <Divider />
               <div className={classes.drawerContainer}>
                 <List>
-                  {['Omer Munam', 'Ahmed Ali', 'Omer Majid', 'Ahmed Ali'].map((text, index) => (
+                  {['Ahmed Pervaiz'].map((text, index) => (
                     <ListItem button key={index}>
-                      <ListItemIcon>{index % 2 === 0 ? <Avatar>OM</Avatar> : <Avatar>AA</Avatar>}</ListItemIcon>
+                      <ListItemIcon>{index % 2 === 0 ? <Avatar>AP</Avatar> : <Avatar>AA</Avatar>}</ListItemIcon>
                       <ListItemText primary={text} />
-                      <ListItemIcon>{index % 2 === 0 ? <MicIcon></MicIcon> : <MicOffIcon></MicOffIcon>}</ListItemIcon>
+                      {/* <ListItemIcon>{index % 2 === 0 ? <MicIcon></MicIcon> : <MicOffIcon></MicOffIcon>}</ListItemIcon> */}
                     </ListItem>
                   ))}
                 </List>

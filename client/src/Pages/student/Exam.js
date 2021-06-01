@@ -102,6 +102,8 @@ export default function AutoGrid() {
   examRoom = useParams().exam;
   const authToken = localStorage.getItem('auth-token');
   const studentId = localStorage.getItem('studentId');
+  const studentName = localStorage.getItem('studentName');
+  const studentRegNo = localStorage.getItem('studentRegNo');
 
   React.useEffect(() => {
 
@@ -113,7 +115,7 @@ export default function AutoGrid() {
     };
 
     window.onblur = () => {
-      socket.emit('message', { type: 'blur', name: localStorage.getItem('studentName') }, examRoom);
+      socket.emit('message', { type: 'blur', name: studentName }, examRoom);
       count += 1;
       setErrorMsg(`You have changed the tab ${count} times. Your Exam will be cancelled after ${3 - count} more warnings`);
       if (count === 3) {
@@ -173,19 +175,26 @@ export default function AutoGrid() {
         });
       }, 500);
 
+
       localStream = stream;
       localVideo.play();
       console.log('Local Video Streaming....')
 
       createPeerConnection();
       socket.emit('message', 'got stream', examRoom);
+      socket.emit('message', {
+        type: 'Student Info',
+        studentId: studentId,
+        studentName: studentName,
+        studentRegNo: studentRegNo
+      }, examRoom);
 
     }).catch((error) => {
       console.log(error)
     })
 
     window.onbeforeunload = function () {
-      socket.emit('message', 'close', examRoom);
+      socket.emit('message', { type: 'close', studentId: studentId }, examRoom);
     }
 
     function createPeerConnection() {
@@ -213,6 +222,12 @@ export default function AutoGrid() {
       console.log("Classification: ", classification);
       if (classification && classification.classification !== -1) {
         console.log("Classified");
+        socket.emit('message', {
+          type: 'classification',
+          classification: classification,
+          studentName: studentName,
+          studentRegNo: studentRegNo
+        }, examRoom);
       }
     }
 

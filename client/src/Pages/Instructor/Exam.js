@@ -60,9 +60,42 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(1),
   },
   video: {
-
+    borderStyle: "solid"
+  },
+  vid1: {
     borderStyle: "solid",
-    borderColor: "red",
+    borderColor: "green"
+  },
+  vid2: {
+    borderStyle: "solid",
+    borderColor: "#17a2b8"
+  },
+  vid3: {
+    borderStyle: "solid",
+    borderColor: "yellow"
+  },
+  vid4: {
+    borderStyle: "solid",
+    borderColor: "orange"
+  },
+  vid5: {
+    borderStyle: "solid",
+    borderColor: "red"
+  },
+  lvl1: {
+    backgroundColor: "#b3ffcc"
+  },
+  lvl2: {
+    backgroundColor: "#bbeff7",
+  },
+  lvl3: {
+    backgroundColor: "#ffff80",
+  },
+  lvl4: {
+    backgroundColor: "#ffc299",
+  },
+  lvl5: {
+    backgroundColor: "#ff9999",
   },
   loader: {
     display: 'flex',
@@ -74,6 +107,7 @@ var exam;
 export default function Exam() {
   const classes = useStyles();
   const [loading, setLoading] = React.useState(false);
+  const [students, setStudents] = React.useState([]);
 
   examRoom = useParams().exam;
   const videoRef = React.useRef(null);
@@ -138,13 +172,74 @@ export default function Exam() {
           candidate: message.candidate
         });
         peerConnections[remoteClientId].addIceCandidate(candidate);
-      } else if (message === 'close') {
+      } else if (message.type === 'close') {
         console.log('remote stream closed...');
         handleRemoteHangup(remoteClientId);
+        students.filter((student) => {
+          console.log(student);
+          return student.studentId !== message.studentId;
+        });
+        setStudents(students => [...students]);
+        console.log(students)
       } else if (message.type === 'blur') {
         setmsg(message.name + ' has changed tab');
       } else if (message.type === 'focus') {
         setmsg('');
+      } else if (message.type === 'classification') {
+        console.log("Message", message);
+        const maxIndex = indexOfMax(message.classification);
+        const element = document.getElementById(remoteClientId);
+
+        if (element.classList.contains(classes.vid1)) {
+          element.classList.remove(classes.vid1);
+        }
+        if (element.classList.contains(classes.vid2)) {
+          element.classList.remove(classes.vid2);
+        }
+        if (element.classList.contains(classes.vid3)) {
+          element.classList.remove(classes.vid3);
+        }
+        if (element.classList.contains(classes.vid4)) {
+          element.classList.remove(classes.vid4);
+        }
+        if (element.classList.contains(classes.vid5)) {
+          element.classList.remove(classes.vid5);
+        }
+
+        switch (maxIndex) {
+          case 0:
+            element.classList.add(classes.vid1);
+            break;
+
+          case 1:
+            element.classList.add(classes.vid2);
+            break;
+
+          case 2:
+            element.classList.add(classes.vid3);
+            break;
+
+          case 3:
+            element.classList.add(classes.vid4);
+            break;
+
+          case 4:
+            element.classList.add(classes.vid5);
+            break;
+
+          default:
+            break;
+        }
+
+      } else if (message.type === 'Student Info') {
+        console.log("Student Info", message);
+        const student = {
+          studentId: message.studentId,
+          studentName: message.studentName,
+          studentRegNo: message.studentRegNo
+        }
+        setStudents(students => [...students, student]);
+        console.log("Students: ", students);
       }
 
     })
@@ -177,6 +272,24 @@ export default function Exam() {
 
       // socket.emit('message', 'got stream', examRoom)
     })
+
+    function indexOfMax(arr) {
+      if (arr.length === 0) {
+        return -1;
+      }
+
+      var max = arr[0];
+      var maxIndex = 0;
+
+      for (var i = 1; i < arr.length; i++) {
+        if (arr[i] > max) {
+          maxIndex = i;
+          max = arr[i];
+        }
+      }
+
+      return maxIndex;
+    }
 
     function createPeerConnection(remoteClientId) {
       try {
@@ -229,7 +342,8 @@ export default function Exam() {
       videoDivision.appendChild(remoteVideo);
     }
     function handleRemoteStreamRemoved(e) {
-
+      console.log(e);
+      console.log("student removed");
     }
 
     function doCall(remoteClientId) {
@@ -325,18 +439,23 @@ export default function Exam() {
               <div className={classes.content}>
                 <Typography variant="h6" gutterBottom>
                   Meeting Details
-            </Typography>
+                </Typography>
               </div>
               <Divider />
               <div className={classes.drawerContainer}>
                 <List>
-                  {['Omer Munam', 'Ahmed Ali', 'Omer Majid', 'Ahmed Ali'].map((text, index) => (
-                    <ListItem button key={index}>
-                      <ListItemIcon>{index % 2 === 0 ? <Avatar>OM</Avatar> : <Avatar>AA</Avatar>}</ListItemIcon>
-                      <ListItemText primary={text} />
-                      <ListItemIcon>{index % 2 === 0 ? <MicIcon></MicIcon> : <MicOffIcon></MicOffIcon>}</ListItemIcon>
-                    </ListItem>
-                  ))}
+                  {students && students.length > 0 ?
+                    students.map((student, index) => (
+                      <ListItem button key={index}>
+                        <ListItemIcon>{index % 2 === 0 ? <Avatar>{student.studentName[0] + student.studentName[1]}</Avatar> : <Avatar>AA</Avatar>}</ListItemIcon>
+                        <ListItemText primary={student.studentRegNo} />
+                        <ListItemText primary={student.studentName} />
+                        {/* <ListItemIcon>{index % 2 === 0 ? <MicIcon></MicIcon> : <MicOffIcon></MicOffIcon>}</ListItemIcon> */}
+                      </ListItem>
+                    ))
+                    :
+                    <Typography>No Students in the meeting</Typography>
+                  }
                 </List>
                 <Divider />
                 <div className={classes.content}>
@@ -346,12 +465,26 @@ export default function Exam() {
                 </div>
                 <Divider />
                 <List>
-                  {['Level 1', 'Level 2', 'Level 3', 'Level 4', 'Level 5'].map((text, index) => (
-                    <ListItem button key={text}>
-                      <ListItemIcon>{<ArrowForwardRoundedIcon />}</ListItemIcon>
-                      <ListItemText primary={text} />
-                    </ListItem>
-                  ))}
+                  <ListItem button key='Level 1' className={classes.lvl1} >
+                    <ListItemIcon>{<ArrowForwardRoundedIcon />}</ListItemIcon>
+                    <ListItemText primary='Level 1' />
+                  </ListItem>
+                  <ListItem button key='Level 2' className={classes.lvl2}>
+                    <ListItemIcon>{<ArrowForwardRoundedIcon />}</ListItemIcon>
+                    <ListItemText primary='Level 2' />
+                  </ListItem>
+                  <ListItem button key='Level 3' className={classes.lvl3}>
+                    <ListItemIcon>{<ArrowForwardRoundedIcon />}</ListItemIcon>
+                    <ListItemText primary='Level 3' />
+                  </ListItem>
+                  <ListItem button key='Level 4' className={classes.lvl4}>
+                    <ListItemIcon>{<ArrowForwardRoundedIcon />}</ListItemIcon>
+                    <ListItemText primary='Level 4' />
+                  </ListItem>
+                  <ListItem button key='Level 5' className={classes.lvl5}>
+                    <ListItemIcon>{<ArrowForwardRoundedIcon />}</ListItemIcon>
+                    <ListItemText primary='Level 5' />
+                  </ListItem>
                 </List>
               </div>
             </Grid>

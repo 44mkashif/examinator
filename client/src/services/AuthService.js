@@ -12,6 +12,7 @@ class AuthService extends Component {
         localStorage.setItem('studentId', res.data.student._id);
         localStorage.setItem('studentName', res.data.student.fName + ' ' + res.data.student.lName);
         localStorage.setItem('auth-token', res.data.token);
+        localStorage.setItem('studentRegNo', res.data.student.regNo);
         localStorage.setItem('role', 'student');
         window.location.href = '/Student/Dashboard';
       }

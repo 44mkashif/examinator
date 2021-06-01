@@ -26,6 +26,8 @@ import theme from './../../theme';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Loader from "react-loader-spinner";
 import ClassificationService from '../../services/ClassificationService';
+import './exam.css';
+
 
 <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
 
@@ -62,26 +64,6 @@ const useStyles = makeStyles((theme) => ({
   video: {
     borderStyle: "solid",
     borderColor: theme.palette.primary.main
-  },
-  vid1: {
-    borderStyle: "solid",
-    borderColor: "green"
-  },
-  vid2: {
-    borderStyle: "solid",
-    borderColor: "#17a2b8"
-  },
-  vid3: {
-    borderStyle: "solid",
-    borderColor: "yellow"
-  },
-  vid4: {
-    borderStyle: "solid",
-    borderColor: "orange"
-  },
-  vid5: {
-    borderStyle: "solid",
-    borderColor: "red"
   },
   lvl1: {
     backgroundColor: "#b3ffcc"
@@ -188,44 +170,58 @@ export default function Exam() {
         setmsg('');
       } else if (message.type === 'classification') {
         console.log("Message", message);
-        const maxIndex = indexOfMax(message.classification);
+
+        const maxIndex = indexOfMax(message.classification.classification);
+
+        console.log(maxIndex);
+
         const element = document.getElementById(remoteClientId);
 
-        if (element.classList.contains(classes.vid1)) {
-          element.classList.remove(classes.vid1);
+        if (element.classList.contains("vid1")) {
+          element.classList.remove("vid1");
+          console.log("Removing vid1");
         }
-        if (element.classList.contains(classes.vid2)) {
-          element.classList.remove(classes.vid2);
+        if (element.classList.contains("vid2")) {
+          element.classList.remove("vid2");
+          console.log("Removing vid2");
         }
-        if (element.classList.contains(classes.vid3)) {
-          element.classList.remove(classes.vid3);
+        if (element.classList.contains("vid3")) {
+          element.classList.remove("vid3");
+          console.log("Removing vid3");
         }
-        if (element.classList.contains(classes.vid4)) {
-          element.classList.remove(classes.vid4);
+        if (element.classList.contains("vid4")) {
+          element.classList.remove("vid4");
+          console.log("Removing vid4");
         }
-        if (element.classList.contains(classes.vid5)) {
-          element.classList.remove(classes.vid5);
+        if (element.classList.contains("vid5")) {
+          element.classList.remove("vid5");
+          console.log("Removing vid5");
         }
 
         switch (maxIndex) {
           case 0:
-            element.classList.add(classes.vid1);
+            element.classList.add("vid1");
+            console.log("Adding vid1");
             break;
 
           case 1:
-            element.classList.add(classes.vid2);
+            element.classList.add("vid2");
+            console.log("Adding vid2");
             break;
 
           case 2:
-            element.classList.add(classes.vid3);
+            element.classList.add("vid3");
+            console.log("Adding vid3");
             break;
 
           case 3:
-            element.classList.add(classes.vid4);
+            element.classList.add("vid4");
+            console.log("Adding vid4");
             break;
 
           case 4:
-            element.classList.add(classes.vid5);
+            element.classList.add("vid5");
+            console.log("Adding vid5");
             break;
 
           default:

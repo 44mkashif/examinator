@@ -60,7 +60,8 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(1),
   },
   video: {
-    borderStyle: "solid"
+    borderStyle: "solid",
+    borderColor: theme.palette.primary.main
   },
   vid1: {
     borderStyle: "solid",

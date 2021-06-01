@@ -24,6 +24,7 @@ import Paper from '@material-ui/core/Paper';
 import theme from './../../theme';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Loader from "react-loader-spinner";
+import ClassificationService from '../../services/ClassificationService';
 
 <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
 
@@ -157,6 +158,21 @@ export default function AutoGrid() {
     }).then((stream) => {
       let localVideo = videoRef.current;
       localVideo.srcObject = stream;
+
+      setInterval(() => {
+        // console.log("Set interval")
+        const track = stream.getVideoTracks()[0];
+        // console.log("Local track: ", track);
+        let imageCapture = new ImageCapture(track);
+
+        imageCapture.takePhoto().then(imageBitmap => {
+          // console.log("Local image: ", imageBitmap);
+          classifyImage(imageBitmap, studentId)
+        }).catch(error => {
+          console.log(error);
+        });
+      }, 500);
+
       localStream = stream;
       localVideo.play();
       console.log('Local Video Streaming....')
@@ -183,6 +199,20 @@ export default function AutoGrid() {
       } catch (error) {
         console.log(error);
         return;
+      }
+    }
+
+    const classifyImage = async (streamImage, studentID) => {
+      // console.log("Captured Image: ", streamImage);
+      var data = new FormData();
+      data.append('frame', streamImage, streamImage.name);
+      data.append('studentID', studentID)
+
+      const classification = await ClassificationService.classifyImage(data);
+
+      console.log("Classification: ", classification);
+      if (classification && classification.classification !== -1) {
+        console.log("Classified");
       }
     }
 

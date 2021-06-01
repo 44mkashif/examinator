@@ -5,13 +5,13 @@ class ClassificationService extends Component {
 
     static async classifyImage(body) {
         try {
-            console.log(body);
+            // console.log(body);
             const res = await axios.post('http://localhost:5000/api/classify', body);
-            console.log(res);
+            // console.log(res);
             if (res.data.success) {
-                return res.data.features;
+                return res.data;
             }
-            else{
+            else {
                 console.log(res.data.success);
             }
         } catch (error) {

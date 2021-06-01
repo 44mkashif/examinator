@@ -28,6 +28,7 @@ def face_match():
 
             return response
 
+
 @app.route('/api/classify', methods=['POST'])
 @cross_origin()
 def classify():
@@ -38,11 +39,17 @@ def classify():
             frame = request.files.get('frame')
             ID = request.form.get('studentID')
             ret = extract_features(frame)
+            print(ret)
             if bool(ret) == False:
                 response = jsonify(success=False)
             else:
                 classification = append_features_get_class(ret, ID)
-                response = jsonify(success=True, features=ret, classification=classification)
+                if(not isinstance(classification, int)):
+                    classification = classification[0].tolist()
+
+                print("classification", type(classification))
+                response = jsonify(success=True, features=ret,
+                                   classification=classification)
 
             return response
 

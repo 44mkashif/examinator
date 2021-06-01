@@ -160,11 +160,16 @@ export default function Exam() {
     }).then((stream) => {
       let localVideo = videoRef.current;
       localVideo.srcObject = stream;
-      const track = stream.getVideoTracks()[0];
-      let imageCapture = new ImageCapture(track);
-      imageCapture.takePhoto().then(imageBitmap => {
-        classifyImage(imageBitmap, 'studentID')
-      })
+      // const track = stream.getVideoTracks()[0];
+      // console.log("Local track: ", track);
+      // let imageCapture = new ImageCapture(track);
+
+      // imageCapture.takePhoto().then(imageBitmap => {
+      //   console.log("Local image: ", imageBitmap);
+      //   classifyImage(imageBitmap, 'studentID')
+      // }).catch(error => {
+      //   console.log(error);
+      // });
 
       localStream = stream;
       localVideo.play();
@@ -202,6 +207,19 @@ export default function Exam() {
     function handleRemoteStreamAdded(e) {
       console.log('stream received')
       remoteStream = e.stream;
+
+      // const track = remoteStream.getVideoTracks()[0];
+      // console.log("Remote track: ", track);
+
+      // let imageCapture = new ImageCapture(track);
+      // console.log("Remote image capture: ", imageCapture);
+
+      // imageCapture.takePhoto()
+      //   .then(blob => createImageBitmap(blob))
+      //   .then(imageBitmap => {
+      //     console.log("Remote image: ", imageBitmap);
+      //   })
+
       let remoteVideo = document.createElement('video');
       remoteVideo.srcObject = remoteStream;
       remoteVideo.autoplay = true;

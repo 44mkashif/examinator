@@ -24,6 +24,7 @@ import Paper from '@material-ui/core/Paper';
 import theme from './../../theme';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Loader from "react-loader-spinner";
+import ClassificationService from '../../services/ClassificationService';
 
 <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
 
@@ -101,6 +102,8 @@ export default function AutoGrid() {
   examRoom = useParams().exam;
   const authToken = localStorage.getItem('auth-token');
   const studentId = localStorage.getItem('studentId');
+  const studentName = localStorage.getItem('studentName');
+  const studentRegNo = localStorage.getItem('studentRegNo');
 
   React.useEffect(() => {
 
@@ -112,7 +115,7 @@ export default function AutoGrid() {
     };
 
     window.onblur = () => {
-      socket.emit('message', { type: 'blur', name: localStorage.getItem('studentName') }, examRoom);
+      socket.emit('message', { type: 'blur', name: studentName }, examRoom);
       count += 1;
       setErrorMsg(`You have changed the tab ${count} times. Your Exam will be cancelled after ${3 - count} more warnings`);
       if (count === 3) {
@@ -157,19 +160,41 @@ export default function AutoGrid() {
     }).then((stream) => {
       let localVideo = videoRef.current;
       localVideo.srcObject = stream;
+
+      setInterval(() => {
+        // console.log("Set interval")
+        const track = stream.getVideoTracks()[0];
+        // console.log("Local track: ", track);
+        let imageCapture = new ImageCapture(track);
+
+        imageCapture.takePhoto().then(imageBitmap => {
+          // console.log("Local image: ", imageBitmap);
+          classifyImage(imageBitmap, studentId)
+        }).catch(error => {
+          console.log(error);
+        });
+      }, 500);
+
+
       localStream = stream;
       localVideo.play();
       console.log('Local Video Streaming....')
 
       createPeerConnection();
       socket.emit('message', 'got stream', examRoom);
+      socket.emit('message', {
+        type: 'Student Info',
+        studentId: studentId,
+        studentName: studentName,
+        studentRegNo: studentRegNo
+      }, examRoom);
 
     }).catch((error) => {
       console.log(error)
     })
 
     window.onbeforeunload = function () {
-      socket.emit('message', 'close', examRoom);
+      socket.emit('message', { type: 'close', studentId: studentId }, examRoom);
     }
 
     function createPeerConnection() {
@@ -183,6 +208,26 @@ export default function AutoGrid() {
       } catch (error) {
         console.log(error);
         return;
+      }
+    }
+
+    const classifyImage = async (streamImage, studentID) => {
+      // console.log("Captured Image: ", streamImage);
+      var data = new FormData();
+      data.append('frame', streamImage, streamImage.name);
+      data.append('studentID', studentID)
+
+      const classification = await ClassificationService.classifyImage(data);
+
+      console.log("Classification: ", classification);
+      if (classification && classification.classification !== -1) {
+        console.log("Classified");
+        socket.emit('message', {
+          type: 'classification',
+          classification: classification,
+          studentName: studentName,
+          studentRegNo: studentRegNo
+        }, examRoom);
       }
     }
 

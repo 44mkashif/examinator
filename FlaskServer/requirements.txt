@@ -3,3 +3,6 @@ flask_cors
 cmake
 dlib
 face_recognition
+tensorflow==2.3
+opencv-python
+numpy

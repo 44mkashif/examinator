@@ -1,0 +1,24 @@
+.vid1 {
+    border-style: solid;
+    border-color: green !important;
+}
+
+.vid2 {
+    border-style: solid;
+    border-color: #17a2b8 !important;
+}
+
+.vid3 {
+    border-style: solid;
+    border-color: yellow !important;
+}
+
+.vid4 {
+    border-style: solid;
+    border-color: orange !important;
+}
+
+.vid5 {
+    border-style: solid;
+    border-color: red !important;
+}

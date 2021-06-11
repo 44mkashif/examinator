@@ -25,6 +25,9 @@ import ExamService from '../../services/ExamService';
 import theme from './../../theme';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Loader from "react-loader-spinner";
+import ClassificationService from '../../services/ClassificationService';
+import './exam.css';
+
 
 <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
 
@@ -59,9 +62,23 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(1),
   },
   video: {
-
     borderStyle: "solid",
-    borderColor: "red",
+    borderColor: theme.palette.primary.main
+  },
+  lvl1: {
+    backgroundColor: "#b3ffcc"
+  },
+  lvl2: {
+    backgroundColor: "#bbeff7",
+  },
+  lvl3: {
+    backgroundColor: "#ffff80",
+  },
+  lvl4: {
+    backgroundColor: "#ffc299",
+  },
+  lvl5: {
+    backgroundColor: "#ff9999",
   },
   loader: {
     display: 'flex',
@@ -73,10 +90,12 @@ var exam;
 export default function Exam() {
   const classes = useStyles();
   const [loading, setLoading] = React.useState(false);
+  const [students, setStudents] = React.useState([]);
 
   examRoom = useParams().exam;
   const videoRef = React.useRef(null);
   const [msg, setmsg] = React.useState('');
+  const [img, setimg] = React.useState(null);
   const [toggleState, settoggleState] = React.useState({
     checked: true,
   });
@@ -91,7 +110,6 @@ export default function Exam() {
     ExamService.getExam(examRoom, authToken, true).then((examFromDb) => {
       exam = examFromDb[0];
       console.log("Exam from db: ", exam);
-
       if (exam) {
         ExamService.updateHallCreated(exam._id, authToken).then(res => {
           console.log(res);
@@ -102,6 +120,16 @@ export default function Exam() {
     });
   }, [toggleState])
 
+  const classifyImage = async (streamImage, studentID) => {
+    console.log("Captured Image: ", streamImage);
+    var data = new FormData();
+    data.append('frame', streamImage, streamImage.name);
+    data.append('studentID', studentID)
+
+    const classification = await ClassificationService.classifyImage(data);
+
+    console.log(classification);
+  }
   const authToken = localStorage.getItem('auth-token');
 
   React.useEffect(() => {
@@ -127,13 +155,88 @@ export default function Exam() {
           candidate: message.candidate
         });
         peerConnections[remoteClientId].addIceCandidate(candidate);
-      } else if (message === 'close') {
+      } else if (message.type === 'close') {
         console.log('remote stream closed...');
         handleRemoteHangup(remoteClientId);
+        students.filter((student) => {
+          console.log(student);
+          return student.studentId !== message.studentId;
+        });
+        setStudents(students => [...students]);
+        console.log(students)
       } else if (message.type === 'blur') {
         setmsg(message.name + ' has changed tab');
       } else if (message.type === 'focus') {
         setmsg('');
+      } else if (message.type === 'classification') {
+        console.log("Message", message);
+
+        const maxIndex = indexOfMax(message.classification.classification);
+
+        console.log(maxIndex);
+
+        const element = document.getElementById(remoteClientId);
+
+        if (element.classList.contains("vid1")) {
+          element.classList.remove("vid1");
+          console.log("Removing vid1");
+        }
+        if (element.classList.contains("vid2")) {
+          element.classList.remove("vid2");
+          console.log("Removing vid2");
+        }
+        if (element.classList.contains("vid3")) {
+          element.classList.remove("vid3");
+          console.log("Removing vid3");
+        }
+        if (element.classList.contains("vid4")) {
+          element.classList.remove("vid4");
+          console.log("Removing vid4");
+        }
+        if (element.classList.contains("vid5")) {
+          element.classList.remove("vid5");
+          console.log("Removing vid5");
+        }
+
+        switch (maxIndex) {
+          case 0:
+            element.classList.add("vid1");
+            console.log("Adding vid1");
+            break;
+
+          case 1:
+            element.classList.add("vid2");
+            console.log("Adding vid2");
+            break;
+
+          case 2:
+            element.classList.add("vid3");
+            console.log("Adding vid3");
+            break;
+
+          case 3:
+            element.classList.add("vid4");
+            console.log("Adding vid4");
+            break;
+
+          case 4:
+            element.classList.add("vid5");
+            console.log("Adding vid5");
+            break;
+
+          default:
+            break;
+        }
+
+      } else if (message.type === 'Student Info') {
+        console.log("Student Info", message);
+        const student = {
+          studentId: message.studentId,
+          studentName: message.studentName,
+          studentRegNo: message.studentRegNo
+        }
+        setStudents(students => [...students, student]);
+        console.log("Students: ", students);
       }
 
     })
@@ -149,12 +252,41 @@ export default function Exam() {
     }).then((stream) => {
       let localVideo = videoRef.current;
       localVideo.srcObject = stream;
+      // const track = stream.getVideoTracks()[0];
+      // console.log("Local track: ", track);
+      // let imageCapture = new ImageCapture(track);
+
+      // imageCapture.takePhoto().then(imageBitmap => {
+      //   console.log("Local image: ", imageBitmap);
+      //   classifyImage(imageBitmap, 'studentID')
+      // }).catch(error => {
+      //   console.log(error);
+      // });
+
       localStream = stream;
       localVideo.play();
       console.log('Local Video Streaming....')
 
       // socket.emit('message', 'got stream', examRoom)
     })
+
+    function indexOfMax(arr) {
+      if (arr.length === 0) {
+        return -1;
+      }
+
+      var max = arr[0];
+      var maxIndex = 0;
+
+      for (var i = 1; i < arr.length; i++) {
+        if (arr[i] > max) {
+          maxIndex = i;
+          max = arr[i];
+        }
+      }
+
+      return maxIndex;
+    }
 
     function createPeerConnection(remoteClientId) {
       try {
@@ -185,6 +317,19 @@ export default function Exam() {
     function handleRemoteStreamAdded(e) {
       console.log('stream received')
       remoteStream = e.stream;
+
+      // const track = remoteStream.getVideoTracks()[0];
+      // console.log("Remote track: ", track);
+
+      // let imageCapture = new ImageCapture(track);
+      // console.log("Remote image capture: ", imageCapture);
+
+      // imageCapture.takePhoto()
+      //   .then(blob => createImageBitmap(blob))
+      //   .then(imageBitmap => {
+      //     console.log("Remote image: ", imageBitmap);
+      //   })
+
       let remoteVideo = document.createElement('video');
       remoteVideo.srcObject = remoteStream;
       remoteVideo.autoplay = true;
@@ -194,7 +339,8 @@ export default function Exam() {
       videoDivision.appendChild(remoteVideo);
     }
     function handleRemoteStreamRemoved(e) {
-
+      console.log(e);
+      console.log("student removed");
     }
 
     function doCall(remoteClientId) {
@@ -290,18 +436,23 @@ export default function Exam() {
               <div className={classes.content}>
                 <Typography variant="h6" gutterBottom>
                   Meeting Details
-            </Typography>
+                </Typography>
               </div>
               <Divider />
               <div className={classes.drawerContainer}>
                 <List>
-                  {['Omer Munam', 'Ahmed Ali', 'Omer Majid', 'Ahmed Ali'].map((text, index) => (
-                    <ListItem button key={index}>
-                      <ListItemIcon>{index % 2 === 0 ? <Avatar>OM</Avatar> : <Avatar>AA</Avatar>}</ListItemIcon>
-                      <ListItemText primary={text} />
-                      <ListItemIcon>{index % 2 === 0 ? <MicIcon></MicIcon> : <MicOffIcon></MicOffIcon>}</ListItemIcon>
-                    </ListItem>
-                  ))}
+                  {students && students.length > 0 ?
+                    students.map((student, index) => (
+                      <ListItem button key={index}>
+                        <ListItemIcon>{index % 2 === 0 ? <Avatar>{student.studentName[0] + student.studentName[1]}</Avatar> : <Avatar>AA</Avatar>}</ListItemIcon>
+                        <ListItemText primary={student.studentRegNo} />
+                        <ListItemText primary={student.studentName} />
+                        {/* <ListItemIcon>{index % 2 === 0 ? <MicIcon></MicIcon> : <MicOffIcon></MicOffIcon>}</ListItemIcon> */}
+                      </ListItem>
+                    ))
+                    :
+                    <Typography>No Students in the meeting</Typography>
+                  }
                 </List>
                 <Divider />
                 <div className={classes.content}>
@@ -311,12 +462,26 @@ export default function Exam() {
                 </div>
                 <Divider />
                 <List>
-                  {['Level 1', 'Level 2', 'Level 3', 'Level 4', 'Level 5'].map((text, index) => (
-                    <ListItem button key={text}>
-                      <ListItemIcon>{<ArrowForwardRoundedIcon />}</ListItemIcon>
-                      <ListItemText primary={text} />
-                    </ListItem>
-                  ))}
+                  <ListItem button key='Level 1' className={classes.lvl1} >
+                    <ListItemIcon>{<ArrowForwardRoundedIcon />}</ListItemIcon>
+                    <ListItemText primary='Level 1' />
+                  </ListItem>
+                  <ListItem button key='Level 2' className={classes.lvl2}>
+                    <ListItemIcon>{<ArrowForwardRoundedIcon />}</ListItemIcon>
+                    <ListItemText primary='Level 2' />
+                  </ListItem>
+                  <ListItem button key='Level 3' className={classes.lvl3}>
+                    <ListItemIcon>{<ArrowForwardRoundedIcon />}</ListItemIcon>
+                    <ListItemText primary='Level 3' />
+                  </ListItem>
+                  <ListItem button key='Level 4' className={classes.lvl4}>
+                    <ListItemIcon>{<ArrowForwardRoundedIcon />}</ListItemIcon>
+                    <ListItemText primary='Level 4' />
+                  </ListItem>
+                  <ListItem button key='Level 5' className={classes.lvl5}>
+                    <ListItemIcon>{<ArrowForwardRoundedIcon />}</ListItemIcon>
+                    <ListItemText primary='Level 5' />
+                  </ListItem>
                 </List>
               </div>
             </Grid>

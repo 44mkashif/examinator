@@ -7,7 +7,7 @@
     "client-install": "cd ../client && npm install",
     "webrtc-install": "cd ../WebRTC Server && npm install",
     "flask-install": "cd ../FlaskServer && pip install -r requirements.txt",
-    "start": "node bin/server.js",
+    "start": "node bin/www.js",
     "server": "nodemon bin/server.js",
     "client": "cd ../client && npm start",
     "webrtc": "cd ../WebRTC Server && nodemon",

@@ -1,0 +1,41 @@
+Student Body
+{
+        "fname": "Annas",
+        "lname": "Ali",
+        "userName": "2017074",
+        "email": "ali.annus02@gmail.com",
+        "password": "123456"
+}
+
+
+Instructor Body
+{
+    "fname": "Ali",
+    "lname": "Shoukat",
+    "userName": "ali.shoukat",
+    "email": "ali.shoukat@giki.edu.pk",
+    "password": "abcd1234"
+}
+
+{
+    "_id": {
+      "$oid": "63debe16b7f45f457404759d"
+    },
+    "fName": "Ali",
+    "lName": "Shoukat",
+    "userName": "ali.shoukat",
+    "password": "$2b$10$8NQ0XfBmqA9R6pykZQyiSueOlC3aMLoE6lMPuw0AaqTlBbO5mF5HW",
+    "email": "ali.shoukat@giki.edu.pk",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1675542038543"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1675542197245"
+      }
+    },
+    "__v": 0,
+    "authToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2M2RlYmUxNmI3ZjQ1ZjQ1NzQwNDc1OWQiLCJpYXQiOjE2NzU1NDIxOTcsImV4cCI6MTcwNzA3ODE5N30.odp-bQ5ec7V8GDC7IFk0SkoDXJrGfi_a9p_7DDTn-dA"
+  }

@@ -1,0 +1,672 @@
+{
+	"info": {
+		"_postman_id": "dc8a2b82-f392-4870-a084-082ae30211f1",
+		"name": "examinator",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "15660914"
+	},
+	"item": [
+		{
+			"name": "Add Instructor",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"fname\": \"Ahmer\",\r\n    \"lname\": \"Rashid\",\r\n    \"username\": \"ahmer.rashid\",\r\n    \"password\": \"abcd\",\r\n    \"email\": \"ahmer@giki.edu.pk\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4000/api/admin/addInstructor",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"admin",
+						"addInstructor"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Instructor",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": ""
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Student",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "auth-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDMzZmIwNDMzOWI2NTI0ODA0NWMzZTIiLCJpYXQiOjE2MTQwMjU1ODYsImV4cCI6MTY0NTU2MTU4Nn0.A5XSrojyiZa8XhDBftYk4nurh98wiLfy20j3xygmIEI",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"fname\": \"Saif\",\r\n    \"lname\": \"Ur Rehman\",\r\n    \"regNo\": \"2017403\",\r\n    \"password\": \"1234\",\r\n    \"email\": \"u2017403@giki.edu.pk\",\r\n    \"imgUrl\": \"https://ibb.co/WBHgb9D\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4000/api/instructor/addStudent",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"instructor",
+						"addStudent"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Dekete Student",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "auth-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDMzZmIwNDMzOWI2NTI0ODA0NWMzZTIiLCJpYXQiOjE2MTQwMjU1ODYsImV4cCI6MTY0NTU2MTU4Nn0.A5XSrojyiZa8XhDBftYk4nurh98wiLfy20j3xygmIEI",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:4000/api/instructor/deleteStudent?id=60342d38158d9d334040a3a1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"instructor",
+						"deleteStudent"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "60342d38158d9d334040a3a1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login Instructor",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\" : \"ahmer786.rashid@giki.edu.pk\",\r\n    \"password\": \"abcd\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4000/api/login-instructor",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"login-instructor"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Check Instructor Auth",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "auth-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cC1I6IkpXVCJ9.eyJfaWQiOiI2MDMzZmIwNDMzOWI2NTI0ODA0NWMzZTIiLCJpYXQiOjE2MTQwMjU1ODYsImV4cCI6MTY0NTU2MTU4Nn0.A5XSrojyiZa8XhDBftYk4nurh98wiLfy20j3xygmIEI",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:4000/api/check-instructor-auth",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"check-instructor-auth"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login Student",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\" : \"u2017403@giki.edu.pk\",\r\n    \"password\": \"1234\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4000/api/login-student",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"login-student"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Check Student Auth",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "auth-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.em,lyJfaWQiOiI2MDM0MWMyMTJlYzgwMTMyM2M0N2UyNzUiLCJpYXQiOjE2MTQwMjc4NTQsImV4cCI6MTY0NTU2Mzg1NH0.refVp8shp6vSoYw-D84LJILOkj0hqXwCs5F2cLcQCgQ",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:4000/api/check-student-auth",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"check-student-auth"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "check",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "auth-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDM0MmQzODE1OGQ5ZDMzNDA0MGEzYTEiLCJpYXQiOjE2MTQwMzIyMDIsImV4cCI6MTY0NTU2ODIwMn0.L3Ouin0Xib-9Fe1SQnMBUieOHRfSv-vqx9P48WfGOQw",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:4000/api/student/check",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"student",
+						"check"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Exam",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "auth-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDMzZmIwNDMzOWI2NTI0ODA0NWMzZTIiLCJpYXQiOjE2MTQwMjU1ODYsImV4cCI6MTY0NTU2MTU4Nn0.A5XSrojyiZa8XhDBftYk4nurh98wiLfy20j3xygmIEI",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"courseId\": \"5033fa00039b65248045c3e2\",\r\n    \"duration\": 3,\r\n    \"startTime\": \"29/02/2021 09:00\",\r\n    \"endTime\": \"29/02/2021 10:00\",\r\n    \"totalMarks\": 10,\r\n    \"questions\": [\r\n        {\r\n            \"statement\": \"st 1\",\r\n            \"options\": [\"op1\", \"op12\", \"op3\"],\r\n            \"correctOption\": \"op2\",\r\n            \"marks\": 5\r\n        },\r\n        {\r\n            \"statement\": \"st 2\",\r\n            \"options\": [\"opt1\", \"opt12\", \"opt3\"],\r\n            \"correctOption\": \"opt1\",\r\n            \"marks\": 5\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4000/api/instructor/exam",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"instructor",
+						"exam"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delet Exam",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "auth-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDMzZmIwNDMzOWI2NTI0ODA0NWMzZTIiLCJpYXQiOjE2MTQwMjU1ODYsImV4cCI6MTY0NTU2MTU4Nn0.A5XSrojyiZa8XhDBftYk4nurh98wiLfy20j3xygmIEI",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:4000/api/instructor/exam?courseId=5033fa00039b65248045c3e2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"instructor",
+						"exam"
+					],
+					"query": [
+						{
+							"key": "courseId",
+							"value": "5033fa00039b65248045c3e2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Exam",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "auth-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDgzMDEwM2NiY2ViYjMwYTBkZjI3YWEiLCJpYXQiOjE2MTkxOTgzNDUsImV4cCI6MTY1MDczNDM0NX0.akPWWaw-6A2VrXaTjXQQXdYVQv9SLMkjs5GBQW8Oamo",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:4000/api/student/exams?courseId=603d293259141d49e00e1fe5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"student",
+						"exams"
+					],
+					"query": [
+						{
+							"key": "courseId",
+							"value": "603d293259141d49e00e1fe5"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update exam",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "auth-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDMzZmIwNDMzOWI2NTI0ODA0NWMzZTIiLCJpYXQiOjE2MTQwMjU1ODYsImV4cCI6MTY0NTU2MTU4Nn0.A5XSrojyiZa8XhDBftYk4nurh98wiLfy20j3xygmIEI",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"courseId\": \"5033fa00039b65248045c3e2\",\r\n    \"duration\": 3,\r\n    \"startTime\": \"29/02/2021 09:00\",\r\n    \"endTime\": \"29/02/2021 10:00\",\r\n    \"totalMarks\": 15,\r\n    \"questions\": [\r\n        {\r\n            \"statement\": \"st 1\",\r\n            \"options\": [\"op1\", \"op12\", \"op3\"],\r\n            \"correctOption\": \"op2\",\r\n            \"marks\": 5\r\n        },\r\n        {\r\n            \"statement\": \"st 2\",\r\n            \"options\": [\"opt1\", \"opt12\", \"opt3\"],\r\n            \"correctOption\": \"opt1\",\r\n            \"marks\": 5\r\n        },\r\n        {\r\n            \"statement\": \"st 3\",\r\n            \"options\": [\"opt1\", \"opt12\", \"opt3\"],\r\n            \"correctOption\": \"opt3\",\r\n            \"marks\": 5\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4000/api/instructor/exam?",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"instructor",
+						"exam"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": ""
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Course",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "auth-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2M2RlYmUxNmI3ZjQ1ZjQ1NzQwNDc1OWQiLCJpYXQiOjE2NzU1NDIxOTcsImV4cCI6MTcwNzA3ODE5N30.odp-bQ5ec7V8GDC7IFk0SkoDXJrGfi_a9p_7DDTn-dA",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"courseName\": \"DevOps\",\r\n    \"courseCode\": \"DO101\",\r\n    \"creditHours\": \"3\",\r\n    \"faculty\": \"Computer Science\",\r\n    \"instructorId\": \"63debe16b7f45f457404759d\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4000/api/instructor/course",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"instructor",
+						"course"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Courses",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "auth-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDMzZmIwNDMzOWI2NTI0ODA0NWMzZTIiLCJpYXQiOjE2MTQwMjU1ODYsImV4cCI6MTY0NTU2MTU4Nn0.A5XSrojyiZa8XhDBftYk4nurh98wiLfy20j3xygmIEI",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:4000/api/instructor/courses?instructorId=6033fb04339b65248045c3e2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"instructor",
+						"courses"
+					],
+					"query": [
+						{
+							"key": "instructorId",
+							"value": "6033fb04339b65248045c3e2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All  Exams",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "auth-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDgzMDEwM2NiY2ViYjMwYTBkZjI3YWEiLCJpYXQiOjE2MTkxOTgzNDUsImV4cCI6MTY1MDczNDM0NX0.akPWWaw-6A2VrXaTjXQQXdYVQv9SLMkjs5GBQW8Oamo",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:4000/api/student/exam?examId=6083158fd7c8da360c931c6d",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"student",
+						"exam"
+					],
+					"query": [
+						{
+							"key": "examId",
+							"value": "6083158fd7c8da360c931c6d"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Image",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "authToken",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDgzMDEwM2NiY2ViYjMwYTBkZjI3YWEiLCJpYXQiOjE2MTkxOTgzNDUsImV4cCI6MTY1MDczNDM0NX0.akPWWaw-6A2VrXaTjXQQXdYVQv9SLMkjs5GBQW8Oamo",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:4000/api/student/get-image?userId=60830103cbcebb30a0df27aa",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"student",
+						"get-image"
+					],
+					"query": [
+						{
+							"key": "userId",
+							"value": "60830103cbcebb30a0df27aa"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Submit Answer",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "auth-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDgzMDEwM2NiY2ViYjMwYTBkZjI3YWEiLCJpYXQiOjE2MTkxOTgzNDUsImV4cCI6MTY1MDczNDM0NX0.akPWWaw-6A2VrXaTjXQQXdYVQv9SLMkjs5GBQW8Oamo",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"questionId\": \"608315a7d7c8da360c931c75\",\r\n    \"studentId\": \"60830103cbcebb30a0df27aa\",\r\n    \"markedOption\": 1 \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4000/api/student/submit-answer",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"student",
+						"submit-answer"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Result",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "auth-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDgzMDEwM2NiY2ViYjMwYTBkZjI3YWEiLCJpYXQiOjE2MTkxOTgzNDUsImV4cCI6MTY1MDczNDM0NX0.akPWWaw-6A2VrXaTjXQQXdYVQv9SLMkjs5GBQW8Oamo",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"examId\": \"6083158fd7c8da360c931c6d\",\r\n    \"studentId\": \"60830103cbcebb30a0df27ab\",\r\n    \"totalMarks\": 10,\r\n    \"obtainedMarks\": 7 \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4000/api/student/add-result",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"student",
+						"add-result"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Result",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:4000/api/student/result",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"student",
+						"result"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Answers",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": ""
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Student Details",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": ""
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Hall Created",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": ""
+				}
+			},
+			"response": []
+		}
+	]
+}
